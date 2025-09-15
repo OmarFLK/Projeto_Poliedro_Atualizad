@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página de Login</title>
+  <link rel="stylesheet" href="styles/Login.css" />
+</head>
+
+<body>
+  <main class="login-container">
+    <section class="login-box">
+      <img src="Assets/poliedro02.png" alt="Logo Poliedro" class="logo" />
+
+      <!-- Alternar entre Aluno e Professor -->
+      <nav class="toggle-buttons" aria-label="Tipo de login">
+        <button type="button" id="btnAluno" class="active">Aluno</button>
+        <button type="button" id="btnProfessor">Professor</button>
+      </nav>
+
+      <form id="loginForm">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required />
+
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required />
+
+        <button type="submit">Acessar</button>
+      </form>
+
+      <aside class="extra-links">
+        <a href="LoginRecover.html">Recuperar a senha</a>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+  </footer>
+
+  <script>
+    let tipoLogin = "aluno";
+
+    document.getElementById("btnAluno").addEventListener("click", () => {
+      tipoLogin = "aluno";
+      document.getElementById("btnAluno").classList.add("active");
+      document.getElementById("btnProfessor").classList.remove("active");
+    });
+
+    document.getElementById("btnProfessor").addEventListener("click", () => {
+      tipoLogin = "professor";
+      document.getElementById("btnProfessor").classList.add("active");
+      document.getElementById("btnAluno").classList.remove("active");
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value.trim();
+
+      if (tipoLogin === "aluno" && email === "aluno@aluno.com" && senha === "aluno") {
+        window.location.href = "HomeAluno.html";
+      } else if (tipoLogin === "professor" && email === "professor@professor.com" && senha === "professor") {
+        window.location.href = "HomeProfessor.html";
+      } else {
+        alert("E-mail ou senha incorretos para " + tipoLogin + ".");
+      }
+    });
+  </script>
+</body>
+
+</html>

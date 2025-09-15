@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/Login.css" />
+    <link rel="stylesheet" href="styles/StyleAlunos.css" />
+    <title>Atividades do Aluno</title>
+  </head>
+  <body>
+    <header>
+      <div class="header-aluno">
+        <img
+          src="Assets/poliedro.png"
+          alt="Logo Poliedro"
+          class="poliedro-logo-header"
+        />
+        <nav class="header-nav">
+          <a href="HomeAluno.html" class="header-link">Home</a>
+          <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
+          <a href="AtividadesAluno.html" class="header-link active"
+            >Atividades</a
+          >
+          <a href="NotasAluno.html" class="header-link">Notas</a>
+          <a href="MensagensAluno.html" class="header-link">Mensagens</a>
+          <a href="eventosAlunos.html" class="header-link">Eventos</a>
+
+          <select id="daltonismo-select">
+            <option value="">Normal</option>
+            <option value="protanopia">Protanopia</option>
+            <option value="deuteranopia">Deuteranopia</option>
+            <option value="tritanopia">Tritanopia</option>
+          </select>
+        </nav>
+        <img
+          src="Assets/LogoUsuario.png"
+          alt="Meu cadastro"
+          class="header-profile-img"
+        />
+      </div>
+    </header>
+    <!-- COMEÇA O CODIGO APARTIR DA AQUI PARA NAO BAGUNÇAR IMBECIL -->
+    <footer>
+      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
+
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+
+    <script>
+      const daltonismoSelect = document.getElementById("daltonismo-select");
+      daltonismoSelect.addEventListener("change", () => {
+        document.body.classList.remove(
+          "protanopia",
+          "deuteranopia",
+          "tritanopia"
+        );
+        const val = daltonismoSelect.value;
+        if (val) document.body.classList.add(val);
+      });
+    </script>
+  </body>
+</html>

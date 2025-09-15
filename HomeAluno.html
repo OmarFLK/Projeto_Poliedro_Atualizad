@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Home do Aluno</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/Login.css" />
+    <link rel="stylesheet" href="styles/StyleAlunos.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-aluno">
+        <img
+          src="Assets/poliedro.png"
+          alt="Logo Poliedro"
+          class="poliedro-logo-header"
+        />
+        <nav class="header-nav">
+          <a href="HomeAluno.html" class="header-link active">Home</a>
+          <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
+          <a href="AtividadesAluno.html" class="header-link">Atividades</a>
+          <a href="NotasAluno.html" class="header-link">Notas</a>
+          <a href="MensagensAluno.html" class="header-link">Mensagens</a>
+          <a href="eventosAlunos.html" class="header-link">Eventos</a>
+
+          <select id="daltonismo-select">
+            <option value="">Normal</option>
+            <option value="protanopia">Protanopia</option>
+            <option value="deuteranopia">Deuteranopia</option>
+            <option value="tritanopia">Tritanopia</option>
+          </select>
+        </nav>
+        <img
+          src="Assets/LogoUsuario.png"
+          alt="Meu cadastro"
+          class="header-profile-img"
+        />
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="section-card">
+        <div class="section-title">Últimas Notificações</div>
+        <div class="notification">Bem-vindo ao Portal Escolar!</div>
+        <div class="notification">Sua matrícula foi confirmada.</div>
+      </section>
+      <section class="section-card">
+        <div class="section-title">Atividades a Vencer</div>
+        <div class="activity">Redação sobre Meio Ambiente - até 10/09</div>
+        <div class="activity">Exercícios de Matemática - até 12/09</div>
+      </section>
+      <section class="section-card">
+        <div class="section-title">Mensagens Recentes</div>
+        <div class="message">De aluno01: Oi, fez a atividade de hoje?</div>
+        <div class="message">
+          De aluno02: Alguém pode me ajudar com a tarefa?
+        </div>
+      </section>
+      <section class="section-card">
+        <div class="section-title">Eventos</div>
+        <div class="event">Prova de História - 15/09</div>
+        <div class="event">Festival de Ciências - 20/09</div>
+      </section>
+    </main>
+
+    <footer>
+      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
+
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+
+    <script>
+      const daltonismoSelect = document.getElementById("daltonismo-select");
+      daltonismoSelect.addEventListener("change", () => {
+        document.body.classList.remove(
+          "protanopia",
+          "deuteranopia",
+          "tritanopia"
+        );
+        const val = daltonismoSelect.value;
+        if (val) document.body.classList.add(val);
+      });
+    </script>
+  </body>
+</html>

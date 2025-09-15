@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/Login.css" />
+    <link rel="stylesheet" href="styles/StyleAlunos.css" />
+    <title>Atividades Professor</title>
+    <style>
+      main {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+      }
+
+      h1 {
+        color: var(--azul-principal, #1a4e9b);
+        margin-bottom: 20px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      input,
+      textarea {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+
+      button[type="submit"] {
+        padding: 10px;
+        background: var(--azul-principal, #1a4e9b);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background: var(--azul-escuro, #163f7a);
+      }
+
+      section#lista-tarefas {
+        margin-top: 20px;
+      }
+
+      article.tarefa {
+        background: #fff;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      article.tarefa h3 {
+        margin: 0 0 10px;
+        color: var(--azul-escuro, #163f7a);
+      }
+
+      article.tarefa p {
+        margin: 0 0 10px;
+      }
+
+      article.tarefa a {
+        color: var(--azul-principal, #1a4e9b);
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      article.tarefa a:hover {
+        text-decoration: underline;
+      }
+
+      .btn-excluir {
+        background: #e74c3c;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 7px 14px;
+        cursor: pointer;
+        margin-top: 5px;
+        font-size: 13px;
+      }
+
+      .btn-excluir:hover {
+        background: #c0392b;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-aluno">
+        <img
+          src="Assets/poliedro.png"
+          alt="Logo Poliedro"
+          class="poliedro-logo-header"
+        />
+        <nav class="header-nav">
+          <a href="HomeProfessor.html" class="header-link">Home</a>
+          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+          <a href="AtividadesProfessor.html" class="header-link active"
+            >Atividades</a
+          >
+          <a href="NotasProfessor.html" class="header-link">Notas</a>
+          <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
+          <a href="EventosProfessores.html" class="header-link">Eventos</a>
+
+          <select id="daltonismo-select">
+            <option value="">Normal</option>
+            <option value="protanopia">Protanopia</option>
+            <option value="deuteranopia">Deuteranopia</option>
+            <option value="tritanopia">Tritanopia</option>
+          </select>
+        </nav>
+        <img
+          src="Assets/LogoUsuario.png"
+          alt="Meu cadastro"
+          class="header-profile-img"
+        />
+      </div>
+    </header>
+
+    <main>
+      <h1>Atividades do Professor</h1>
+
+      <!-- Formulário para postar tarefa -->
+      <form id="form-tarefa">
+        <input
+          type="text"
+          id="titulo"
+          placeholder="Título da tarefa"
+          required
+        />
+        <textarea
+          id="descricao"
+          placeholder="Descrição da tarefa"
+          rows="3"
+        ></textarea>
+        <input type="file" id="arquivo" />
+        <button type="submit">Postar Tarefa</button>
+      </form>
+
+      <!-- Lista de tarefas -->
+      <section id="lista-tarefas"></section>
+    </main>
+
+    <footer>
+      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
+
+    <!-- VLibras -->
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+
+    <script>
+      const daltonismoSelect = document.getElementById("daltonismo-select");
+      daltonismoSelect.addEventListener("change", () => {
+        document.body.classList.remove(
+          "protanopia",
+          "deuteranopia",
+          "tritanopia"
+        );
+        const val = daltonismoSelect.value;
+        if (val) document.body.classList.add(val);
+      });
+
+      // ------------ ATIVIDADES ------------
+      const form = document.getElementById("form-tarefa");
+      const lista = document.getElementById("lista-tarefas");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const titulo = document.getElementById("titulo").value;
+        const descricao = document.getElementById("descricao").value;
+        const arquivo = document.getElementById("arquivo").files[0];
+
+        let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+
+        let novaTarefa = { titulo, descricao };
+
+        if (arquivo) {
+          const urlArquivo = URL.createObjectURL(arquivo);
+          novaTarefa.arquivo = urlArquivo;
+          novaTarefa.nomeArquivo = arquivo.name;
+        }
+
+        tarefas.push(novaTarefa);
+        localStorage.setItem("tarefas", JSON.stringify(tarefas));
+
+        form.reset();
+        carregarTarefas();
+      });
+
+      function carregarTarefas() {
+        lista.innerHTML = "";
+        const tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+
+        if (tarefas.length === 0) {
+          lista.innerHTML = "<p>Nenhuma tarefa postada ainda.</p>";
+          return;
+        }
+
+        tarefas.forEach((tarefa, index) => {
+          lista.innerHTML += `
+            <article class="tarefa">
+              <h3>${tarefa.titulo}</h3>
+              <p>${tarefa.descricao}</p>
+              ${
+                tarefa.arquivo
+                  ? `<a href="${tarefa.arquivo}" download="${tarefa.nomeArquivo}">📎 ${tarefa.nomeArquivo}</a>`
+                  : ""
+              }
+              <button class="btn-excluir" data-index="${index}">Excluir</button>
+            </article>
+          `;
+        });
+
+        // Adiciona evento aos botões de excluir
+        document.querySelectorAll(".btn-excluir").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const idx = this.getAttribute("data-index");
+            excluirTarefa(idx);
+          });
+        });
+      }
+
+      function excluirTarefa(index) {
+        let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+        tarefas.splice(index, 1);
+        localStorage.setItem("tarefas", JSON.stringify(tarefas));
+        carregarTarefas();
+      }
+
+      // carregar automaticamente ao abrir a página
+      carregarTarefas();
+    </script>
+  </body>
+</html>
