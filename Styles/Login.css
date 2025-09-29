@@ -129,3 +129,28 @@ footer .footer-text {
   color: var(--texto-rodape);
 }
 
+@media (max-width: 480px) {
+  .login-box {
+    width: 100%;
+    max-width: 300px;
+    padding: 24px;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .toggle-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  button[type="submit"] {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  footer .footer-text {
+    font-size: 11px;
+  }
+}
