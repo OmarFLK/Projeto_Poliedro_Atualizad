@@ -7,87 +7,6 @@
     <link rel="stylesheet" href="styles/StyleAlunos.css" />
     <title>Eventos do Aluno</title>
   </head>
-</body>
-<script>
-  const eventForm = document.getElementById('eventForm');
-  const eventList = document.getElementById('eventList');
-
-  function formatDate(dateStr) {
-    const options = { day: '2-digit', month: 'long', year: 'numeric' };
-    const dateObj = new Date(dateStr);
-    return dateObj.toLocaleDateString('pt-BR', options);
-  }
-
-  function createEventCard(event) {
-    const card = document.createElement('article');
-    card.classList.add('event-card');
-
-    const title = document.createElement('h2');
-    title.classList.add('event-title');
-    title.textContent = event.title;
-
-    const date = document.createElement('p');
-    date.classList.add('event-date');
-    date.textContent = formatDate(event.date);
-
-    const desc = document.createElement('p');
-    desc.classList.add('event-desc');
-    desc.textContent = event.description;
-
-    card.appendChild(title);
-    card.appendChild(date);
-    card.appendChild(desc);
-
-    return card;
-  }
-
-  const initialEvents = [
-    {
-      title: 'Festa Junina',
-      date: '2025-06-24',
-      description: 'Venha comemorar a tradicional Festa Junina com comidas típicas, quadrilha e muita diversão!'
-    },
-    {
-      title: 'Festa de Halloween',
-      date: '2025-10-31',
-      description: 'Traga sua fantasia e participe da festa de Halloween com concursos e doces.'
-    },
-    {
-      title: 'Feriado Escolar',
-      date: '2025-11-15',
-      description: 'A escola estará fechada devido ao feriado nacional.'
-    }
-  ];
-
-  function renderEvents(events) {
-    eventList.innerHTML = '';
-    events.forEach(ev => {
-      const card = createEventCard(ev);
-      eventList.appendChild(card);
-    });
-  }
-
-  renderEvents(initialEvents);
-
-  eventForm.addEventListener('submit', e => {
-    e.preventDefault();
-
-    const newEvent = {
-      title: eventForm.title.value.trim(),
-      date: eventForm.date.value,
-      description: eventForm.description.value.trim()
-    };
-
-    if (!newEvent.title || !newEvent.date || !newEvent.description) {
-      alert('Por favor, preencha todos os campos.');
-      return;
-    }
-
-    initialEvents.push(newEvent);
-    renderEvents(initialEvents);
-    eventForm.reset();
-  });
-</script>
   <body>
     <header>
       <div class="header-aluno">
@@ -97,7 +16,7 @@
           class="poliedro-logo-header"
         />
         <nav class="header-nav">
-          <a href="HomeProfessor.html" class="header-link active">Home</a>
+          <a href="HomeProfessor.html" class="header-link">Home</a>
           <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
           <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
           <a href="NotasProfessor.html" class="header-link">Notas</a>
@@ -118,147 +37,27 @@
         />
       </div>
     </header>
-    <!-- Começo -->
-    <style>
-  /* Container principal dos eventos */
-  .event-container {
-    background: white;
-    width: 380px;
-    border-radius: 10px;
-    padding: 1.5rem 2rem;
-    box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
-    margin: 2rem auto;
-    color: #222f5b;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
 
-  .event-container h1 {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a2e6e;
-    text-align: center;
-  }
+    <div class="event-container">
+      <h1>Eventos</h1>
+      <form id="eventForm">
+        <input type="text" id="title" placeholder="Título do evento" required />
+        <input type="date" id="date" required />
+        <textarea
+          id="description"
+          placeholder="Descrição do evento"
+          required
+        ></textarea>
+        <button type="submit">Adicionar Evento</button>
+      </form>
 
-  form#eventForm {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    margin-bottom: 1.5rem;
-  }
+      <section class="event-list" id="eventList"></section>
+    </div>
 
-  form#eventForm input[type="text"],
-  form#eventForm input[type="date"],
-  form#eventForm textarea {
-    border: 1.5px solid #ccc;
-    border-radius: 6px;
-    padding: 0.5rem;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-    font-family: inherit;
-    resize: vertical;
-  }
-
-  form#eventForm input[type="text"]:focus,
-  form#eventForm input[type="date"]:focus,
-  form#eventForm textarea:focus {
-    outline: none;
-    border-color: #1a2e6e;
-  }
-
-  form#eventForm textarea {
-    min-height: 70px;
-  }
-
-  form#eventForm button {
-    background-color: #1a2e6e;
-    color: white;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    padding: 0.7rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  form#eventForm button:hover {
-    background-color: #354a9a;
-  }
-
-  .event-list {
-    max-height: 300px;
-    overflow-y: auto;
-    border-top: 2px solid #1a2e6e;
-    padding-top: 1rem;
-  }
-
-  .event-card {
-    background-color: #f4f7fd;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 1px 4px rgb(0 0 0 / 0.05);
-    border-left: 5px solid #1a2e6e;
-    transition: background-color 0.3s ease;
-  }
-
-  .event-card:hover {
-    background-color: #e1e8ff;
-  }
-
-  .event-title {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #1a2e6e;
-    margin-bottom: 0.3rem;
-  }
-
-  .event-date {
-    font-size: 0.9rem;
-    color: #576fbd;
-    margin-bottom: 0.5rem;
-    font-style: italic;
-  }
-
-  .event-desc {
-    font-size: 0.95rem;
-    color: #444a6d;
-    white-space: pre-line;
-  }
-
-  /* Scrollbar custom para a lista */
-  .event-list::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  .event-list::-webkit-scrollbar-track {
-    background: #f4f7fd;
-    border-radius: 8px;
-  }
-
-  .event-list::-webkit-scrollbar-thumb {
-    background: #1a2e6e;
-    border-radius: 8px;
-  }
-</style>
-<div class="event-container">
-  <h1>Eventos</h1>
-  <form id="eventForm">
-    <input type="text" id="title" placeholder="Título do evento" required />
-    <input type="date" id="date" required />
-    <textarea id="description" placeholder="Descrição do evento" required></textarea>
-    <button type="submit">Adicionar Evento</button>
-  </form>
-
-  <section class="event-list" id="eventList">
-    <!-- Eventos vão aparecer aqui -->
-  </section>
-</div>
-
-  <!-- FIM  -->
     <footer>
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
+
     <div vw class="enabled">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper></div>
@@ -267,9 +66,16 @@
     <script>
       new window.VLibras.Widget("https://vlibras.gov.br/app");
     </script>
-      
 
     <script>
+      // 🔹 Header ativo automático
+      const currentPage = window.location.pathname.split("/").pop();
+      document.querySelectorAll(".header-link").forEach((link) => {
+        if (link.getAttribute("href") === currentPage)
+          link.classList.add("active");
+      });
+
+      // 🔹 Daltonismo
       const daltonismoSelect = document.getElementById("daltonismo-select");
       daltonismoSelect.addEventListener("change", () => {
         document.body.classList.remove(
@@ -280,6 +86,186 @@
         const val = daltonismoSelect.value;
         if (val) document.body.classList.add(val);
       });
+
+      // 🔹 Eventos
+      const eventForm = document.getElementById("eventForm");
+      const eventList = document.getElementById("eventList");
+
+      function formatDate(dateStr) {
+        const options = { day: "2-digit", month: "long", year: "numeric" };
+        return new Date(dateStr).toLocaleDateString("pt-BR", options);
+      }
+
+      function createEventCard(event) {
+        const card = document.createElement("article");
+        card.classList.add("event-card");
+
+        const title = document.createElement("h2");
+        title.classList.add("event-title");
+        title.textContent = event.title;
+
+        const date = document.createElement("p");
+        date.classList.add("event-date");
+        date.textContent = formatDate(event.date);
+
+        const desc = document.createElement("p");
+        desc.classList.add("event-desc");
+        desc.textContent = event.description;
+
+        card.append(title, date, desc);
+        return card;
+      }
+
+      const initialEvents = [
+        {
+          title: "Festa Junina",
+          date: "2025-06-24",
+          description:
+            "Venha comemorar a tradicional Festa Junina com comidas típicas, quadrilha e muita diversão!",
+        },
+        {
+          title: "Festa de Halloween",
+          date: "2025-10-31",
+          description:
+            "Traga sua fantasia e participe da festa de Halloween com concursos e doces.",
+        },
+        {
+          title: "Feriado Escolar",
+          date: "2025-11-15",
+          description: "A escola estará fechada devido ao feriado nacional.",
+        },
+      ];
+
+      function renderEvents(events) {
+        eventList.innerHTML = "";
+        events.forEach((ev) => eventList.appendChild(createEventCard(ev)));
+      }
+
+      renderEvents(initialEvents);
+
+      eventForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const newEvent = {
+          title: eventForm.title.value.trim(),
+          date: eventForm.date.value,
+          description: eventForm.description.value.trim(),
+        };
+        if (!newEvent.title || !newEvent.date || !newEvent.description) {
+          alert("Por favor, preencha todos os campos.");
+          return;
+        }
+        initialEvents.push(newEvent);
+        renderEvents(initialEvents);
+        eventForm.reset();
+      });
     </script>
+
+    <style>
+      .event-container {
+        background: white;
+        width: 380px;
+        border-radius: 10px;
+        padding: 1.5rem 2rem;
+        box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+        margin: 2rem auto;
+        color: #222f5b;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .event-container h1 {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1a2e6e;
+        text-align: center;
+      }
+
+      form#eventForm {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+      }
+
+      form#eventForm input[type="text"],
+      form#eventForm input[type="date"],
+      form#eventForm textarea {
+        border: 1.5px solid #ccc;
+        border-radius: 6px;
+        padding: 0.5rem;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        font-family: inherit;
+        resize: vertical;
+      }
+      form#eventForm input[type="text"]:focus,
+      form#eventForm input[type="date"]:focus,
+      form#eventForm textarea:focus {
+        outline: none;
+        border-color: #1a2e6e;
+      }
+      form#eventForm textarea {
+        min-height: 70px;
+      }
+      form#eventForm button {
+        background-color: #1a2e6e;
+        color: white;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        padding: 0.7rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      form#eventForm button:hover {
+        background-color: #354a9a;
+      }
+      .event-list {
+        max-height: 300px;
+        overflow-y: auto;
+        border-top: 2px solid #1a2e6e;
+        padding-top: 1rem;
+      }
+      .event-card {
+        background-color: #f4f7fd;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 4px rgb(0 0 0 / 0.05);
+        border-left: 5px solid #1a2e6e;
+        transition: background-color 0.3s ease;
+      }
+      .event-card:hover {
+        background-color: #e1e8ff;
+      }
+      .event-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #1a2e6e;
+        margin-bottom: 0.3rem;
+      }
+      .event-date {
+        font-size: 0.9rem;
+        color: #576fbd;
+        margin-bottom: 0.5rem;
+        font-style: italic;
+      }
+      .event-desc {
+        font-size: 0.95rem;
+        color: #444a6d;
+        white-space: pre-line;
+      }
+      .event-list::-webkit-scrollbar {
+        width: 8px;
+      }
+      .event-list::-webkit-scrollbar-track {
+        background: #f4f7fd;
+        border-radius: 8px;
+      }
+      .event-list::-webkit-scrollbar-thumb {
+        background: #1a2e6e;
+        border-radius: 8px;
+      }
+    </style>
   </body>
 </html>
