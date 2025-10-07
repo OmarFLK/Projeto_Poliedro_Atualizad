@@ -6,6 +6,118 @@
     <link rel="stylesheet" href="styles/Login.css" />
     <link rel="stylesheet" href="styles/StyleAlunos.css" />
     <title>Notas do Professor</title>
+    <style>
+      .container-notas {
+        max-width: 1100px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 32px;
+        border-radius: 16px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      .container-notas h2 {
+        color: var(--section-title);
+        margin-bottom: 20px;
+        font-size: 20px;
+      }
+
+      form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      form input,
+      form select {
+        padding: 10px;
+        border: 1px solid var(--input-border);
+        border-radius: 8px;
+        font-size: 15px;
+      }
+
+      form button {
+        padding: 12px 16px;
+        background: var(--primary-blue);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.2s;
+      }
+
+      form button:hover {
+        background: var(--primary-blue-dark);
+      }
+
+      .delete-buttons {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .delete-buttons button {
+        flex: 1;
+        padding: 12px 16px;
+        background: #c0392b;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.2s;
+      }
+
+      .delete-buttons button:hover {
+        background: #962d22;
+      }
+
+      .ano-section {
+        margin-bottom: 40px;
+      }
+
+      .ano-title {
+        background: var(--primary-blue-light);
+        color: #fff;
+        padding: 12px;
+        border-radius: 8px 8px 0 0;
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0;
+        border-radius: 0 0 8px 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      }
+
+      table th,
+      table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+      }
+
+      table th {
+        background: #f0f4f8;
+        color: var(--text-color);
+      }
+
+      .stats {
+        margin-top: 24px;
+        padding: 16px;
+        background: #f9fafc;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -23,7 +135,6 @@
           <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
           <a href="EventosProfessores.html" class="header-link">Eventos</a>
 
-
           <select id="daltonismo-select">
             <option value="">Normal</option>
             <option value="protanopia">Protanopia</option>
@@ -38,15 +149,78 @@
         />
       </div>
     </header>
-    <!-- COMEÇA O CODIGO APARTIR DA AQUI PARA NAO BAGUNÇAR IMBECIL -->
+
+    <!-- CONTEÚDO DE NOTAS -->
+    <main class="container-notas">
+      <h2>Lançar Notas</h2>
+      <form id="notaForm">
+        <select id="ano" required>
+          <option value="">Selecione o Ano</option>
+          <option>1º Ano</option>
+          <option>2º Ano</option>
+          <option>3º Ano</option>
+        </select>
+        <input type="text" id="aluno" placeholder="Nome do aluno" required />
+        <select id="semestre" required>
+          <option value="">Semestre</option>
+          <option>1º Semestre</option>
+          <option>2º Semestre</option>
+        </select>
+        <input
+          type="number"
+          id="prova1"
+          placeholder="Prova 1 (0-10)"
+          min="0"
+          max="10"
+          step="0.1"
+          required
+        />
+        <input
+          type="number"
+          id="prova2"
+          placeholder="Prova 2 (0-10)"
+          min="0"
+          max="10"
+          step="0.1"
+          required
+        />
+        <input
+          type="number"
+          id="atv1"
+          placeholder="Atividade 1 (0-10)"
+          min="0"
+          max="10"
+          step="0.1"
+          required
+        />
+        <input
+          type="number"
+          id="atv2"
+          placeholder="Atividade 2 (0-10)"
+          min="0"
+          max="10"
+          step="0.1"
+          required
+        />
+        <button type="submit">Adicionar</button>
+      </form>
+
+      <!-- Botões de exclusão -->
+      <div class="delete-buttons">
+        <button id="excluirUltima">Excluir última atividade</button>
+        <button id="excluirTodas">Excluir todas</button>
+      </div>
+
+      <h2>Notas Lançadas</h2>
+      <div id="anosContainer"></div>
+
+      <div class="stats" id="estatisticas"></div>
+    </main>
+
     <footer>
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
 
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper></div>
-    </div>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
       new window.VLibras.Widget("https://vlibras.gov.br/app");
@@ -63,6 +237,126 @@
         const val = daltonismoSelect.value;
         if (val) document.body.classList.add(val);
       });
+
+      const form = document.getElementById("notaForm");
+      const anosContainer = document.getElementById("anosContainer");
+      const estatisticasDiv = document.getElementById("estatisticas");
+
+      let notas = JSON.parse(localStorage.getItem("notas")) || [];
+
+      function calcularMedia(p1, p2, a1, a2) {
+        return (p1 * 2 + p2 * 2 + a1 * 1 + a2 * 1) / 6;
+      }
+
+      function atualizarTabela() {
+        anosContainer.innerHTML = "";
+        const agrupado = {};
+        notas.forEach((n) => {
+          if (!agrupado[n.ano]) agrupado[n.ano] = [];
+          agrupado[n.ano].push(n);
+        });
+
+        let todasMedias = [];
+
+        for (let ano in agrupado) {
+          const div = document.createElement("div");
+          div.classList.add("ano-section");
+          div.innerHTML = `
+            <div class="ano-title">${ano}</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Aluno</th>
+                  <th>Semestre</th>
+                  <th>Prova 1</th>
+                  <th>Prova 2</th>
+                  <th>Atv 1</th>
+                  <th>Atv 2</th>
+                  <th>Média Final</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${agrupado[ano]
+                  .map((n) => {
+                    const media = calcularMedia(n.p1, n.p2, n.a1, n.a2);
+                    todasMedias.push(media);
+                    return `
+                    <tr>
+                      <td>${n.aluno}</td>
+                      <td>${n.semestre}</td>
+                      <td>${n.p1}</td>
+                      <td>${n.p2}</td>
+                      <td>${n.a1}</td>
+                      <td>${n.a2}</td>
+                      <td><b>${media.toFixed(1)}</b></td>
+                    </tr>`;
+                  })
+                  .join("")}
+              </tbody>
+            </table>
+          `;
+          anosContainer.appendChild(div);
+        }
+
+        if (todasMedias.length > 0) {
+          const mediaTurma = (
+            todasMedias.reduce((a, b) => a + b, 0) / todasMedias.length
+          ).toFixed(2);
+          const acima = todasMedias.filter((m) => m >= 6).length;
+          const abaixo = todasMedias.length - acima;
+
+          estatisticasDiv.innerHTML = `
+            <h3>📊 Estatísticas Gerais</h3>
+            Média geral da turma: <b>${mediaTurma}</b><br>
+            Alunos acima da média (≥6): <b>${acima}</b><br>
+            Alunos abaixo da média: <b>${abaixo}</b>
+          `;
+        } else {
+          estatisticasDiv.innerHTML = "";
+        }
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const ano = document.getElementById("ano").value;
+        const aluno = document.getElementById("aluno").value;
+        const semestre = document.getElementById("semestre").value;
+        const p1 = parseFloat(document.getElementById("prova1").value);
+        const p2 = parseFloat(document.getElementById("prova2").value);
+        const a1 = parseFloat(document.getElementById("atv1").value);
+        const a2 = parseFloat(document.getElementById("atv2").value);
+
+        notas.push({ ano, aluno, semestre, p1, p2, a1, a2 });
+        localStorage.setItem("notas", JSON.stringify(notas));
+
+        form.reset();
+        atualizarTabela();
+      });
+
+      // Botões de exclusão
+      document.getElementById("excluirUltima").addEventListener("click", () => {
+        if (
+          notas.length > 0 &&
+          confirm("Deseja excluir a última atividade adicionada?")
+        ) {
+          notas.pop();
+          localStorage.setItem("notas", JSON.stringify(notas));
+          atualizarTabela();
+        }
+      });
+
+      document.getElementById("excluirTodas").addEventListener("click", () => {
+        if (
+          notas.length > 0 &&
+          confirm("Tem certeza que deseja excluir TODAS as atividades?")
+        ) {
+          notas = [];
+          localStorage.removeItem("notas");
+          atualizarTabela();
+        }
+      });
+
+      atualizarTabela();
     </script>
   </body>
 </html>
