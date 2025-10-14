@@ -107,13 +107,10 @@
         <nav class="header-nav">
           <a href="HomeProfessor.html" class="header-link">Home</a>
           <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-          <a href="AtividadesProfessor.html" class="header-link active"
-            >Atividades</a
-          >
+          <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
           <a href="NotasProfessor.html" class="header-link">Notas</a>
           <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
           <a href="EventosProfessores.html" class="header-link">Eventos</a>
-
           <select id="daltonismo-select">
             <option value="">Normal</option>
             <option value="protanopia">Protanopia</option>
@@ -131,8 +128,6 @@
 
     <main>
       <h1>Atividades do Professor</h1>
-
-      <!-- Formulário para postar tarefa -->
       <form id="form-tarefa">
         <input
           type="text"
@@ -148,8 +143,6 @@
         <input type="file" id="arquivo" />
         <button type="submit">Postar Tarefa</button>
       </form>
-
-      <!-- Lista de tarefas -->
       <section id="lista-tarefas"></section>
     </main>
 
@@ -157,7 +150,6 @@
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
 
-    <!-- VLibras -->
     <div vw class="enabled">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper></div>
@@ -168,6 +160,7 @@
     </script>
 
     <script>
+      // Daltonismo
       const daltonismoSelect = document.getElementById("daltonismo-select");
       daltonismoSelect.addEventListener("change", () => {
         document.body.classList.remove(
@@ -179,7 +172,16 @@
         if (val) document.body.classList.add(val);
       });
 
-      // ------------ ATIVIDADES ------------
+      // Menu ativo automático
+      document.querySelectorAll('.header-link').forEach(link => {
+        if (window.location.pathname.endsWith(link.getAttribute('href'))) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      // CRUD de tarefas
       const form = document.getElementById("form-tarefa");
       const lista = document.getElementById("lista-tarefas");
 
@@ -231,7 +233,6 @@
           `;
         });
 
-        // Adiciona evento aos botões de excluir
         document.querySelectorAll(".btn-excluir").forEach((btn) => {
           btn.addEventListener("click", function () {
             const idx = this.getAttribute("data-index");
@@ -247,7 +248,6 @@
         carregarTarefas();
       }
 
-      // carregar automaticamente ao abrir a página
       carregarTarefas();
     </script>
   </body>

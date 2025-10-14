@@ -6,6 +6,100 @@
     <link rel="stylesheet" href="styles/Login.css" />
     <link rel="stylesheet" href="styles/StyleAlunos.css" />
     <title>Atividades do Aluno</title>
+    <style>
+      .atividades-aluno-container {
+        max-width: 600px;
+        margin: 40px auto 0 auto;
+        padding: 24px 16px 16px 16px;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+      }
+
+      .atividades-titulo {
+        text-align: center;
+        color: var(--azul-principal, #1a4e9b);
+        margin-bottom: 24px;
+        font-size: 1.6rem;
+        letter-spacing: 1px;
+      }
+
+      .tarefa {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        background: #f8fafd;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        padding: 18px 16px;
+        margin-bottom: 18px;
+        position: relative;
+        transition: background 0.2s;
+      }
+
+      .tarefa.feita {
+        background: #eafbe7;
+        opacity: 0.7;
+      }
+
+      .tarefa-checkbox {
+        margin-top: 4px;
+        min-width: 28px;
+        min-height: 28px;
+        appearance: none;
+        border: 2px solid var(--azul-principal, #1a4e9b);
+        border-radius: 6px;
+        width: 28px;
+        height: 28px;
+        background: #fff;
+        cursor: pointer;
+        position: relative;
+        transition: border 0.2s;
+      }
+
+      .tarefa-checkbox:checked {
+        border: 2px solid #4bb543;
+        background: #eafbe7;
+      }
+
+      .tarefa-checkbox:checked::after {
+        content: "✔";
+        color: #4bb543;
+        font-size: 1.3rem;
+        position: absolute;
+        left: 4px;
+        top: 0px;
+      }
+
+      .tarefa-conteudo {
+        flex: 1;
+      }
+
+      .tarefa-titulo {
+        font-size: 1.15rem;
+        color: var(--azul-escuro, #163f7a);
+        margin: 0 0 6px 0;
+        font-weight: bold;
+      }
+
+      .tarefa-desc {
+        margin: 0 0 8px 0;
+        color: #444;
+        font-size: 1rem;
+      }
+
+      .tarefa-arquivo {
+        font-size: 0.97rem;
+        color: var(--azul-principal, #1a4e9b);
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 2px;
+      }
+
+      .tarefa-arquivo:hover {
+        text-decoration: underline;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -18,13 +112,10 @@
         <nav class="header-nav">
           <a href="HomeAluno.html" class="header-link">Home</a>
           <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
-          <a href="AtividadesAluno.html" class="header-link active"
-            >Atividades</a
-          >
+          <a href="AtividadesAluno.html" class="header-link">Atividades</a>
           <a href="NotasAluno.html" class="header-link">Notas</a>
           <a href="MensagensAluno.html" class="header-link">Mensagens</a>
           <a href="eventosAlunos.html" class="header-link">Eventos</a>
-
           <select id="daltonismo-select">
             <option value="">Normal</option>
             <option value="protanopia">Protanopia</option>
@@ -39,21 +130,24 @@
         />
       </div>
     </header>
-    <!-- COMEÇA O CODIGO APARTIR DA AQUI PARA NAO BAGUNÇAR IMBECIL -->
-    <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-    </footer>
 
     <div vw class="enabled">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper></div>
     </div>
+    <section class="atividades-aluno-container">
+      <h2 class="atividades-titulo">Minhas Atividades</h2>
+      <div id="lista-tarefas-aluno"></div>
+    </section>
+    <footer>
+      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
       new window.VLibras.Widget("https://vlibras.gov.br/app");
     </script>
-
     <script>
+      // Daltonismo
       const daltonismoSelect = document.getElementById("daltonismo-select");
       daltonismoSelect.addEventListener("change", () => {
         document.body.classList.remove(
@@ -64,6 +158,66 @@
         const val = daltonismoSelect.value;
         if (val) document.body.classList.add(val);
       });
+
+      // Menu ativo automático
+      document.querySelectorAll(".header-link").forEach((link) => {
+        if (window.location.pathname.endsWith(link.getAttribute("href"))) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      });
+
+      // Exibe tarefas do localStorage com checkbox de feito
+      function carregarTarefasAluno() {
+        const lista = document.getElementById("lista-tarefas-aluno");
+        const tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+        const feitas =
+          JSON.parse(localStorage.getItem("tarefasFeitasAluno")) || [];
+
+        if (tarefas.length === 0) {
+          lista.innerHTML =
+            "<p style='text-align:center;color:#888;'>Nenhuma tarefa postada ainda.</p>";
+          return;
+        }
+        lista.innerHTML = "";
+        tarefas.forEach((tarefa, idx) => {
+          const feita = feitas.includes(idx);
+          lista.innerHTML += `
+            <div class="tarefa${feita ? " feita" : ""}">
+              <input type="checkbox" class="tarefa-checkbox" id="check-tarefa-${idx}" ${
+            feita ? "checked" : ""
+          } data-idx="${idx}">
+              <div class="tarefa-conteudo">
+                <div class="tarefa-titulo">${tarefa.titulo}</div>
+                <div class="tarefa-desc">${tarefa.descricao}</div>
+                ${
+                  tarefa.arquivo
+                    ? `<a class="tarefa-arquivo" href="${tarefa.arquivo}" download="${tarefa.nomeArquivo}">📎 ${tarefa.nomeArquivo}</a>`
+                    : ""
+                }
+              </div>
+            </div>
+          `;
+        });
+
+        // Checkbox handler
+        document.querySelectorAll(".tarefa-checkbox").forEach((cb) => {
+          cb.addEventListener("change", function () {
+            let feitas =
+              JSON.parse(localStorage.getItem("tarefasFeitasAluno")) || [];
+            const idx = parseInt(this.getAttribute("data-idx"));
+            if (this.checked) {
+              if (!feitas.includes(idx)) feitas.push(idx);
+            } else {
+              feitas = feitas.filter((i) => i !== idx);
+            }
+            localStorage.setItem("tarefasFeitasAluno", JSON.stringify(feitas));
+            carregarTarefasAluno();
+          });
+        });
+      }
+      carregarTarefasAluno();
     </script>
   </body>
 </html>
