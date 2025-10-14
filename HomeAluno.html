@@ -6,17 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/Login.css" />
     <link rel="stylesheet" href="styles/StyleAlunos.css" />
+    <style>
+      .painel-resumo {
+        max-width: 900px;
+        margin: 32px auto 0 auto;
+        padding: 24px 16px;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+      }
+      .painel-resumo h2 {
+        text-align: center;
+        color: var(--azul-principal, #1a4e9b);
+        margin-bottom: 24px;
+        font-size: 1.5rem;
+      }
+      .resumo-blocos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        justify-content: space-between;
+      }
+      .resumo-bloco {
+        flex: 1 1 200px;
+        min-width: 200px;
+        background: #f8fafd;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        padding: 18px 14px;
+        margin-bottom: 0;
+      }
+      .resumo-bloco h3 {
+        margin: 0 0 10px 0;
+        color: var(--azul-escuro, #163f7a);
+        font-size: 1.08rem;
+      }
+      .resumo-conteudo {
+        color: #444;
+        font-size: 1rem;
+      }
+      @media (max-width: 800px) {
+        .resumo-blocos { flex-direction: column; gap: 14px; }
+      }
+    </style>
   </head>
   <body>
     <header>
       <div class="header-aluno">
-         <a href="PerfilAluno.html">
-          <img
-            src="Assets/LogoUsuario.png"
-            alt="Meu cadastro"
-            class="header-profile-img"
-          />
-        </a>
+        <img
+          src="Assets/poliedro.png"
+          alt="Logo Poliedro"
+          class="poliedro-logo-header"
+        />
         <nav class="header-nav">
           <a href="HomeAluno.html" class="header-link active">Home</a>
           <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
@@ -24,7 +65,6 @@
           <a href="NotasAluno.html" class="header-link">Notas</a>
           <a href="MensagensAluno.html" class="header-link">Mensagens</a>
           <a href="eventosAlunos.html" class="header-link">Eventos</a>
-
           <select id="daltonismo-select">
             <option value="">Normal</option>
             <option value="protanopia">Protanopia</option>
@@ -32,36 +72,37 @@
             <option value="tritanopia">Tritanopia</option>
           </select>
         </nav>
-        <img
-          src="Assets/LogoUsuario.png"
-          alt="Meu cadastro"
-          class="header-profile-img"
-        />
+        <a href="PerfilAluno.html">
+          <img
+            src="Assets/LogoUsuario.png"
+            alt="Meu cadastro"
+            class="header-profile-img"
+          />
+        </a>
       </div>
     </header>
 
-    <main class="main-content">
-      <section class="section-card">
-        <div class="section-title">Últimas Notificações</div>
-        <div class="notification">Bem-vindo ao Portal Escolar!</div>
-        <div class="notification">Sua matrícula foi confirmada.</div>
-      </section>
-      <section class="section-card">
-        <div class="section-title">Atividades a Vencer</div>
-        <div class="activity">Redação sobre Meio Ambiente - até 10/09</div>
-        <div class="activity">Exercícios de Matemática - até 12/09</div>
-      </section>
-      <section class="section-card">
-        <div class="section-title">Mensagens Recentes</div>
-        <div class="message">De aluno01: Oi, fez a atividade de hoje?</div>
-        <div class="message">
-          De aluno02: Alguém pode me ajudar com a tarefa?
+    <main>
+      <section class="painel-resumo">
+        <h2>Resumo Rápido</h2>
+        <div class="resumo-blocos">
+          <div class="resumo-bloco" id="resumo-eventos">
+            <h3>Último Evento</h3>
+            <div class="resumo-conteudo"></div>
+          </div>
+          <div class="resumo-bloco" id="resumo-atividades">
+            <h3>Última Atividade</h3>
+            <div class="resumo-conteudo"></div>
+          </div>
+          <div class="resumo-bloco" id="resumo-mensagens">
+            <h3>Última Mensagem</h3>
+            <div class="resumo-conteudo"></div>
+          </div>
+          <div class="resumo-bloco" id="resumo-notas">
+            <h3>Última Nota</h3>
+            <div class="resumo-conteudo"></div>
+          </div>
         </div>
-      </section>
-      <section class="section-card">
-        <div class="section-title">Eventos</div>
-        <div class="event">Prova de História - 15/09</div>
-        <div class="event">Festival de Ciências - 20/09</div>
       </section>
     </main>
 
@@ -77,8 +118,8 @@
     <script>
       new window.VLibras.Widget("https://vlibras.gov.br/app");
     </script>
-
     <script>
+      // Daltonismo
       const daltonismoSelect = document.getElementById("daltonismo-select");
       daltonismoSelect.addEventListener("change", () => {
         document.body.classList.remove(
@@ -89,6 +130,50 @@
         const val = daltonismoSelect.value;
         if (val) document.body.classList.add(val);
       });
+
+      // Menu ativo automático
+      document.querySelectorAll('.header-link').forEach(link => {
+        if (window.location.pathname.endsWith(link.getAttribute('href'))) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      // Painel Resumo - busca últimos itens do localStorage
+      function formatDate(dateStr) {
+        if (!dateStr) return "";
+        const options = { day: '2-digit', month: 'long', year: 'numeric' };
+        return new Date(dateStr).toLocaleDateString('pt-BR', options);
+      }
+
+      // EVENTOS
+      const eventos = JSON.parse(localStorage.getItem("eventos")) || [];
+      const evento = eventos.length ? eventos[eventos.length-1] : null;
+      document.querySelector("#resumo-eventos .resumo-conteudo").innerHTML = evento
+        ? `<strong>${evento.title}</strong><br><span style="color:#576fbd">${formatDate(evento.date)}</span><br>${evento.description}`
+        : "<span style='color:#888'>Nenhum evento recente.</span>";
+
+      // ATIVIDADES
+      const atividades = JSON.parse(localStorage.getItem("tarefas")) || [];
+      const atividade = atividades.length ? atividades[atividades.length-1] : null;
+      document.querySelector("#resumo-atividades .resumo-conteudo").innerHTML = atividade
+        ? `<strong>${atividade.titulo}</strong><br>${atividade.descricao || ""}`
+        : "<span style='color:#888'>Nenhuma atividade recente.</span>";
+
+      // MENSAGENS
+      const mensagens = JSON.parse(localStorage.getItem("mensagens")) || [];
+      const mensagem = mensagens.length ? mensagens[mensagens.length-1] : null;
+      document.querySelector("#resumo-mensagens .resumo-conteudo").innerHTML = mensagem
+        ? `<strong>${mensagem.titulo || "Mensagem"}</strong><br>${mensagem.texto || mensagem.conteudo || ""}`
+        : "<span style='color:#888'>Nenhuma mensagem recente.</span>";
+
+      // NOTAS
+      const notas = JSON.parse(localStorage.getItem("notas")) || [];
+      const nota = notas.length ? notas[notas.length-1] : null;
+      document.querySelector("#resumo-notas .resumo-conteudo").innerHTML = nota
+        ? `<strong>${nota.titulo || "Nota"}</strong><br>Nota: <b>${nota.valor || nota.nota || ""}</b>`
+        : "<span style='color:#888'>Nenhuma nota recente.</span>";
     </script>
   </body>
 </html>

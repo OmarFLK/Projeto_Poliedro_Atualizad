@@ -1,0 +1,118 @@
+<!-- HTML - PerfilAluno.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/Login.css" />
+    <link rel="stylesheet" href="styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="styles/PerfilAluno.css" />
+    <title>Perfil do Aluno</title>
+  </head>
+  <body>
+    <header>
+      <div class="header-aluno">
+        <img
+          src="Assets/poliedro.png"
+          alt="Logo Poliedro"
+          class="poliedro-logo-header"
+        />
+        <nav class="header-nav">
+          <a href="HomeAluno.html" class="header-link">Home</a>
+          <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
+          <a href="AtividadesAluno.html" class="header-link">Atividades</a>
+          <a href="NotasAluno.html" class="header-link">Notas</a>
+          <a href="MensagensAluno.html" class="header-link">Mensagens</a>
+          <a href="eventosAlunos.html" class="header-link">Eventos</a>
+          <select id="daltonismo-select">
+            <option value="">Normal</option>
+            <option value="protanopia">Protanopia</option>
+            <option value="deuteranopia">Deuteranopia</option>
+            <option value="tritanopia">Tritanopia</option>
+          </select>
+        </nav>
+        <a href="PerfilAluno.html">
+          <img
+            src="Assets/LogoUsuario.png"
+            alt="Meu cadastro"
+            class="header-profile-img"
+          />
+        </a>
+      </div>
+    </header>
+    <div class="perfil-container-bg">
+      <form class="perfil-box" autocomplete="off">
+        <div class="perfil-header">
+          <img src="Assets/LogoUsuario.png" alt="Avatar" class="perfil-avatar" id="avatar-preview" />
+          <div class="perfil-info">
+            <label class="perfil-label" for="nome">Nome</label>
+            <input type="text" id="nome" class="perfil-input" value="NomeAluno" readonly />
+            <label class="perfil-label" for="sobrenome">Sobrenome</label>
+            <input type="text" id="sobrenome" class="perfil-input" value="SobrenomeAluno" readonly />
+            <label class="perfil-btn avatar" for="avatar-upload">Alterar foto</label>
+            <input type="file" id="avatar-upload" accept="image/*" style="display:none" />
+          </div>
+        </div>
+        <div>
+          <div class="perfil-section-title">Alterar senha</div>
+          <div class="perfil-passwords">
+            <input type="password" class="perfil-password-input" placeholder="Nova senha" autocomplete="new-password" />
+            <input type="password" class="perfil-password-input" placeholder="Confirmar nova senha" autocomplete="new-password" />
+          </div>
+        </div>
+        <div class="perfil-btns">
+          <button type="button" class="perfil-btn cancel">Cancelar</button>
+          <button type="submit" class="perfil-btn save">Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+    <footer>
+      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
+    <script>
+      // Daltonismo
+      const daltonismoSelect = document.getElementById("daltonismo-select");
+      daltonismoSelect?.addEventListener("change", () => {
+        document.body.classList.remove("protanopia","deuteranopia","tritanopia");
+        const val = daltonismoSelect.value;
+        if (val) document.body.classList.add(val);
+      });
+
+      // Menu ativo automático
+      document.querySelectorAll('.header-link').forEach(link => {
+        if (window.location.pathname.endsWith(link.getAttribute('href'))) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      // Preview da imagem de avatar
+      document.getElementById('avatar-upload').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            document.getElementById('avatar-preview').src = ev.target.result;
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Botão cancelar (reseta avatar para padrão)
+      document.querySelector('.perfil-btn.cancel').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('avatar-preview').src = "Assets/LogoUsuario.png";
+        document.getElementById('avatar-upload').value = "";
+        // Limpa campos de senha
+        document.querySelectorAll('.perfil-password-input').forEach(input => input.value = "");
+      });
+
+      // Impede submit real (pois não há backend)
+      document.querySelector('.perfil-box').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Alterações salvas (simulação front-end)');
+      });
+    </script>
+  </body>
+</html>

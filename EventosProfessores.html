@@ -5,163 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/Login.css" />
     <link rel="stylesheet" href="styles/StyleAlunos.css" />
-    <title>Eventos do Aluno</title>
-  </head>
-  <body>
-    <header>
-      <div class="header-aluno">
-        <img
-          src="Assets/poliedro.png"
-          alt="Logo Poliedro"
-          class="poliedro-logo-header"
-        />
-        <nav class="header-nav">
-          <a href="HomeProfessor.html" class="header-link">Home</a>
-          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-          <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
-          <a href="NotasProfessor.html" class="header-link">Notas</a>
-          <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
-          <a href="EventosProfessores.html" class="header-link">Eventos</a>
-
-          <select id="daltonismo-select">
-            <option value="">Normal</option>
-            <option value="protanopia">Protanopia</option>
-            <option value="deuteranopia">Deuteranopia</option>
-            <option value="tritanopia">Tritanopia</option>
-          </select>
-        </nav>
-         <a href="PerfilProfessor.html">
-          <img
-            src="Assets/LogoUsuario.png"
-            alt="Meu cadastro"
-            class="header-profile-img"
-          />
-        </a>
-      </div>
-    </header>
-
-    <div class="event-container">
-      <h1>Eventos</h1>
-      <form id="eventForm">
-        <input type="text" id="title" placeholder="Título do evento" required />
-        <input type="date" id="date" required />
-        <textarea
-          id="description"
-          placeholder="Descrição do evento"
-          required
-        ></textarea>
-        <button type="submit">Adicionar Evento</button>
-      </form>
-
-      <section class="event-list" id="eventList"></section>
-    </div>
-
-    <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-    </footer>
-
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper></div>
-    </div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-      new window.VLibras.Widget("https://vlibras.gov.br/app");
-    </script>
-
-    <script>
-      // 🔹 Header ativo automático
-      const currentPage = window.location.pathname.split("/").pop();
-      document.querySelectorAll(".header-link").forEach((link) => {
-        if (link.getAttribute("href") === currentPage)
-          link.classList.add("active");
-      });
-
-      // 🔹 Daltonismo
-      const daltonismoSelect = document.getElementById("daltonismo-select");
-      daltonismoSelect.addEventListener("change", () => {
-        document.body.classList.remove(
-          "protanopia",
-          "deuteranopia",
-          "tritanopia"
-        );
-        const val = daltonismoSelect.value;
-        if (val) document.body.classList.add(val);
-      });
-
-      // 🔹 Eventos
-      const eventForm = document.getElementById("eventForm");
-      const eventList = document.getElementById("eventList");
-
-      function formatDate(dateStr) {
-        const options = { day: "2-digit", month: "long", year: "numeric" };
-        return new Date(dateStr).toLocaleDateString("pt-BR", options);
-      }
-
-      function createEventCard(event) {
-        const card = document.createElement("article");
-        card.classList.add("event-card");
-
-        const title = document.createElement("h2");
-        title.classList.add("event-title");
-        title.textContent = event.title;
-
-        const date = document.createElement("p");
-        date.classList.add("event-date");
-        date.textContent = formatDate(event.date);
-
-        const desc = document.createElement("p");
-        desc.classList.add("event-desc");
-        desc.textContent = event.description;
-
-        card.append(title, date, desc);
-        return card;
-      }
-
-      const initialEvents = [
-        {
-          title: "Festa Junina",
-          date: "2025-06-24",
-          description:
-            "Venha comemorar a tradicional Festa Junina com comidas típicas, quadrilha e muita diversão!",
-        },
-        {
-          title: "Festa de Halloween",
-          date: "2025-10-31",
-          description:
-            "Traga sua fantasia e participe da festa de Halloween com concursos e doces.",
-        },
-        {
-          title: "Feriado Escolar",
-          date: "2025-11-15",
-          description: "A escola estará fechada devido ao feriado nacional.",
-        },
-      ];
-
-      function renderEvents(events) {
-        eventList.innerHTML = "";
-        events.forEach((ev) => eventList.appendChild(createEventCard(ev)));
-      }
-
-      renderEvents(initialEvents);
-
-      eventForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const newEvent = {
-          title: eventForm.title.value.trim(),
-          date: eventForm.date.value,
-          description: eventForm.description.value.trim(),
-        };
-        if (!newEvent.title || !newEvent.date || !newEvent.description) {
-          alert("Por favor, preencha todos os campos.");
-          return;
-        }
-        initialEvents.push(newEvent);
-        renderEvents(initialEvents);
-        eventForm.reset();
-      });
-    </script>
-
+    <title>Eventos do Professor</title>
     <style>
       .event-container {
         background: white;
@@ -269,5 +113,149 @@
         border-radius: 8px;
       }
     </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-aluno">
+        <img
+          src="Assets/poliedro.png"
+          alt="Logo Poliedro"
+          class="poliedro-logo-header"
+        />
+        <nav class="header-nav">
+          <a href="HomeProfessor.html" class="header-link">Home</a>
+          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+          <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
+          <a href="NotasProfessor.html" class="header-link">Notas</a>
+          <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
+          <a href="EventosProfessores.html" class="header-link">Eventos</a>
+          <select id="daltonismo-select">
+            <option value="">Normal</option>
+            <option value="protanopia">Protanopia</option>
+            <option value="deuteranopia">Deuteranopia</option>
+            <option value="tritanopia">Tritanopia</option>
+          </select>
+        </nav>
+        <a href="PerfilProfessor.html">
+          <img
+            src="Assets/LogoUsuario.png"
+            alt="Meu cadastro"
+            class="header-profile-img"
+          />
+        </a>
+      </div>
+    </header>
+
+    <div class="event-container">
+      <h1>Eventos</h1>
+      <form id="eventForm">
+        <input type="text" id="title" placeholder="Título do evento" required />
+        <input type="date" id="date" required />
+        <textarea
+          id="description"
+          placeholder="Descrição do evento"
+          required
+        ></textarea>
+        <button type="submit">Adicionar Evento</button>
+      </form>
+      <section class="event-list" id="eventList"></section>
+    </div>
+
+    <footer>
+      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
+
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+    <script>
+      // Header ativo automático
+      const currentPage = window.location.pathname.split("/").pop();
+      document.querySelectorAll(".header-link").forEach((link) => {
+        if (link.getAttribute("href") === currentPage)
+          link.classList.add("active");
+      });
+
+      // Daltonismo
+      const daltonismoSelect = document.getElementById("daltonismo-select");
+      daltonismoSelect.addEventListener("change", () => {
+        document.body.classList.remove(
+          "protanopia",
+          "deuteranopia",
+          "tritanopia"
+        );
+        const val = daltonismoSelect.value;
+        if (val) document.body.classList.add(val);
+      });
+
+      // Eventos - localStorage compartilhado com alunos
+      const eventForm = document.getElementById("eventForm");
+      const eventList = document.getElementById("eventList");
+
+      function formatDate(dateStr) {
+        const options = { day: "2-digit", month: "long", year: "numeric" };
+        return new Date(dateStr).toLocaleDateString("pt-BR", options);
+      }
+
+      function createEventCard(event) {
+        const card = document.createElement("article");
+        card.classList.add("event-card");
+
+        const title = document.createElement("h2");
+        title.classList.add("event-title");
+        title.textContent = event.title;
+
+        const date = document.createElement("p");
+        date.classList.add("event-date");
+        date.textContent = formatDate(event.date);
+
+        const desc = document.createElement("p");
+        desc.classList.add("event-desc");
+        desc.textContent = event.description;
+
+        card.append(title, date, desc);
+        return card;
+      }
+
+      function renderEvents(events) {
+        eventList.innerHTML = "";
+        if (!events || events.length === 0) {
+          eventList.innerHTML =
+            "<p style='text-align:center;color:#888;'>Nenhum evento cadastrado.</p>";
+          return;
+        }
+        events.forEach((ev) => eventList.appendChild(createEventCard(ev)));
+      }
+
+      function carregarEventosProfessor() {
+        const eventos = JSON.parse(localStorage.getItem("eventos")) || [];
+        renderEvents(eventos);
+      }
+
+      eventForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const title = eventForm.title.value.trim();
+        const date = eventForm.date.value;
+        const description = eventForm.description.value.trim();
+
+        if (!title || !date || !description) {
+          alert("Por favor, preencha todos os campos.");
+          return;
+        }
+
+        const eventos = JSON.parse(localStorage.getItem("eventos")) || [];
+        eventos.push({ title, date, description });
+        localStorage.setItem("eventos", JSON.stringify(eventos));
+        eventForm.reset();
+        carregarEventosProfessor();
+      });
+
+      carregarEventosProfessor();
+    </script>
   </body>
 </html>
