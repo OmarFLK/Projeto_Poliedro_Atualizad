@@ -12,12 +12,10 @@
         margin: 20px auto;
         padding: 20px;
       }
-
       h1 {
         color: var(--azul-principal, #1a4e9b);
         margin-bottom: 20px;
       }
-
       form {
         display: flex;
         flex-direction: column;
@@ -27,15 +25,14 @@
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
-
       input,
-      textarea {
+      textarea,
+      select {
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 6px;
         font-size: 14px;
       }
-
       button[type="submit"] {
         padding: 10px;
         background: var(--azul-principal, #1a4e9b);
@@ -44,15 +41,12 @@
         border-radius: 6px;
         cursor: pointer;
       }
-
       button[type="submit"]:hover {
         background: var(--azul-escuro, #163f7a);
       }
-
       section#lista-tarefas {
         margin-top: 20px;
       }
-
       article.tarefa {
         background: #fff;
         padding: 15px;
@@ -60,26 +54,26 @@
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
-
+      .tarefa-info {
+        font-size: 0.98rem;
+        color: #444;
+        margin-bottom: 8px;
+      }
       article.tarefa h3 {
         margin: 0 0 10px;
         color: var(--azul-escuro, #163f7a);
       }
-
       article.tarefa p {
         margin: 0 0 10px;
       }
-
       article.tarefa a {
         color: var(--azul-principal, #1a4e9b);
         text-decoration: none;
         font-size: 14px;
       }
-
       article.tarefa a:hover {
         text-decoration: underline;
       }
-
       .btn-excluir {
         background: #e74c3c;
         color: #fff;
@@ -90,9 +84,15 @@
         margin-top: 5px;
         font-size: 13px;
       }
-
       .btn-excluir:hover {
         background: #c0392b;
+      }
+      .resolucao-info {
+        background: #eafbe7;
+        padding: 8px;
+        border-radius: 6px;
+        font-size: 0.98rem;
+        margin-top: 10px;
       }
     </style>
   </head>
@@ -131,6 +131,33 @@
     <main>
       <h1>Atividades do Professor</h1>
       <form id="form-tarefa">
+        <select id="turma" required>
+          <option value="">Selecione o ano</option>
+          <option value="1º Ano">1º Ano</option>
+          <option value="2º Ano">2º Ano</option>
+          <option value="3º Ano">3º Ano</option>
+        </select>
+        <select id="subSala" required>
+          <option value="">Selecione a sub-sala</option>
+          <option value="Sub 1">Sub 1</option>
+          <option value="Sub 2">Sub 2</option>
+          <option value="Sub 3">Sub 3</option>
+        </select>
+        <select id="materia" required>
+          <option value="">Selecione a matéria</option>
+          <option value="Português">Português</option>
+          <option value="Matemática">Matemática</option>
+          <option value="Biologia">Biologia</option>
+          <option value="Física">Física</option>
+          <option value="Química">Química</option>
+          <option value="Geografia">Geografia</option>
+          <option value="História">História</option>
+          <option value="Filosofia">Filosofia</option>
+          <option value="Sociologia">Sociologia</option>
+          <option value="Artes">Artes</option>
+          <option value="Educação Física">Educação Física</option>
+          <option value="Inglês">Inglês</option>
+        </select>
         <input
           type="text"
           id="titulo"
@@ -160,7 +187,6 @@
     <script>
       new window.VLibras.Widget("https://vlibras.gov.br/app");
     </script>
-
     <script>
       // Daltonismo
       const daltonismoSelect = document.getElementById("daltonismo-select");
@@ -175,11 +201,11 @@
       });
 
       // Menu ativo automático
-      document.querySelectorAll('.header-link').forEach(link => {
-        if (window.location.pathname.endsWith(link.getAttribute('href'))) {
-          link.classList.add('active');
+      document.querySelectorAll(".header-link").forEach((link) => {
+        if (window.location.pathname.endsWith(link.getAttribute("href"))) {
+          link.classList.add("active");
         } else {
-          link.classList.remove('active');
+          link.classList.remove("active");
         }
       });
 
@@ -190,13 +216,16 @@
       form.addEventListener("submit", function (e) {
         e.preventDefault();
 
+        const turma = document.getElementById("turma").value;
+        const subSala = document.getElementById("subSala").value;
+        const materia = document.getElementById("materia").value;
         const titulo = document.getElementById("titulo").value;
         const descricao = document.getElementById("descricao").value;
         const arquivo = document.getElementById("arquivo").files[0];
 
         let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
 
-        let novaTarefa = { titulo, descricao };
+        let novaTarefa = { turma, subSala, materia, titulo, descricao };
 
         if (arquivo) {
           const urlArquivo = URL.createObjectURL(arquivo);
@@ -214,6 +243,8 @@
       function carregarTarefas() {
         lista.innerHTML = "";
         const tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+        const resolucoes =
+          JSON.parse(localStorage.getItem("resolucoesAluno")) || [];
 
         if (tarefas.length === 0) {
           lista.innerHTML = "<p>Nenhuma tarefa postada ainda.</p>";
@@ -221,13 +252,36 @@
         }
 
         tarefas.forEach((tarefa, index) => {
+          const resolucao = resolucoes[index];
           lista.innerHTML += `
             <article class="tarefa">
+              <div class="tarefa-info">
+                <b>Turma:</b> ${tarefa.turma} &nbsp; 
+                <b>Sub-sala:</b> ${tarefa.subSala} &nbsp; 
+                <b>Matéria:</b> ${tarefa.materia}
+              </div>
               <h3>${tarefa.titulo}</h3>
               <p>${tarefa.descricao}</p>
               ${
                 tarefa.arquivo
                   ? `<a href="${tarefa.arquivo}" download="${tarefa.nomeArquivo}">📎 ${tarefa.nomeArquivo}</a>`
+                  : ""
+              }
+              ${
+                resolucao
+                  ? `<div class="resolucao-info">
+                      <b>Resolução do aluno:</b><br>
+                      ${
+                        resolucao.link
+                          ? `<a href="${resolucao.link}" target="_blank">${resolucao.link}</a><br>`
+                          : ""
+                      }
+                      ${
+                        resolucao.arquivo
+                          ? `<a href="${resolucao.arquivo}" download="${resolucao.nomeArquivo}">📎 ${resolucao.nomeArquivo}</a>`
+                          : ""
+                      }
+                    </div>`
                   : ""
               }
               <button class="btn-excluir" data-index="${index}">Excluir</button>
@@ -247,6 +301,11 @@
         let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
         tarefas.splice(index, 1);
         localStorage.setItem("tarefas", JSON.stringify(tarefas));
+        // Também remove resolução correspondente
+        let resolucoes =
+          JSON.parse(localStorage.getItem("resolucoesAluno")) || [];
+        resolucoes.splice(index, 1);
+        localStorage.setItem("resolucoesAluno", JSON.stringify(resolucoes));
         carregarTarefas();
       }
 

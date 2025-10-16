@@ -15,7 +15,6 @@
         border-radius: 14px;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
       }
-
       .atividades-titulo {
         text-align: center;
         color: var(--azul-principal, #1a4e9b);
@@ -23,7 +22,6 @@
         font-size: 1.6rem;
         letter-spacing: 1px;
       }
-
       .tarefa {
         display: flex;
         align-items: flex-start;
@@ -36,12 +34,10 @@
         position: relative;
         transition: background 0.2s;
       }
-
       .tarefa.feita {
         background: #eafbe7;
         opacity: 0.7;
       }
-
       .tarefa-checkbox {
         margin-top: 4px;
         min-width: 28px;
@@ -56,12 +52,10 @@
         position: relative;
         transition: border 0.2s;
       }
-
       .tarefa-checkbox:checked {
         border: 2px solid #4bb543;
         background: #eafbe7;
       }
-
       .tarefa-checkbox:checked::after {
         content: "✔";
         color: #4bb543;
@@ -70,24 +64,25 @@
         left: 4px;
         top: 0px;
       }
-
       .tarefa-conteudo {
         flex: 1;
       }
-
+      .tarefa-info {
+        font-size: 0.98rem;
+        color: #444;
+        margin-bottom: 8px;
+      }
       .tarefa-titulo {
         font-size: 1.15rem;
         color: var(--azul-escuro, #163f7a);
         margin: 0 0 6px 0;
         font-weight: bold;
       }
-
       .tarefa-desc {
         margin: 0 0 8px 0;
         color: #444;
         font-size: 1rem;
       }
-
       .tarefa-arquivo {
         font-size: 0.97rem;
         color: var(--azul-principal, #1a4e9b);
@@ -95,9 +90,53 @@
         display: inline-block;
         margin-top: 2px;
       }
-
       .tarefa-arquivo:hover {
         text-decoration: underline;
+      }
+      .resolucao-area {
+        margin-top: 10px;
+      }
+      .btn-resolucao {
+        background: var(--azul-principal, #1a4e9b);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 7px 14px;
+        cursor: pointer;
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+      .btn-resolucao:hover {
+        background: var(--azul-escuro, #163f7a);
+      }
+      .form-resolucao input[type="url"],
+      .form-resolucao input[type="file"] {
+        display: block;
+        margin-bottom: 6px;
+        width: 100%;
+      }
+      .form-resolucao button {
+        margin-right: 8px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        border: none;
+        font-size: 0.97rem;
+        cursor: pointer;
+      }
+      .form-resolucao button[type="submit"] {
+        background: #4bb543;
+        color: #fff;
+      }
+      .form-resolucao .btn-cancelar-resolucao {
+        background: #eee;
+        color: #444;
+        border: 1px solid #ccc;
+      }
+      .resolucao-info {
+        background: #eafbe7;
+        padding: 8px;
+        border-radius: 6px;
+        font-size: 0.98rem;
       }
     </style>
   </head>
@@ -170,12 +209,12 @@
         }
       });
 
-      // Exibe tarefas do localStorage com checkbox de feito
+      // Exibe tarefas do localStorage com envio de resolução
       function carregarTarefasAluno() {
         const lista = document.getElementById("lista-tarefas-aluno");
-        const tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
-        const feitas =
-          JSON.parse(localStorage.getItem("tarefasFeitasAluno")) || [];
+        let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+        let feitas = JSON.parse(localStorage.getItem("tarefasFeitasAluno")) || [];
+        let resolucoes = JSON.parse(localStorage.getItem("resolucoesAluno")) || [];
 
         if (tarefas.length === 0) {
           lista.innerHTML =
@@ -184,13 +223,18 @@
         }
         lista.innerHTML = "";
         tarefas.forEach((tarefa, idx) => {
-          const feita = feitas.includes(idx);
+          const feita = feitas.includes(idx) || resolucoes[idx];
+          const resolucao = resolucoes[idx];
+
           lista.innerHTML += `
             <div class="tarefa${feita ? " feita" : ""}">
-              <input type="checkbox" class="tarefa-checkbox" id="check-tarefa-${idx}" ${
-            feita ? "checked" : ""
-          } data-idx="${idx}">
+              <input type="checkbox" class="tarefa-checkbox" id="check-tarefa-${idx}" ${feita ? "checked" : ""} data-idx="${idx}" disabled>
               <div class="tarefa-conteudo">
+                <div class="tarefa-info">
+                  <b>Turma:</b> ${tarefa.turma} &nbsp; 
+                  <b>Sub-sala:</b> ${tarefa.subSala} &nbsp; 
+                  <b>Matéria:</b> ${tarefa.materia}
+                </div>
                 <div class="tarefa-titulo">${tarefa.titulo}</div>
                 <div class="tarefa-desc">${tarefa.descricao}</div>
                 ${
@@ -198,22 +242,73 @@
                     ? `<a class="tarefa-arquivo" href="${tarefa.arquivo}" download="${tarefa.nomeArquivo}">📎 ${tarefa.nomeArquivo}</a>`
                     : ""
                 }
+                <div class="resolucao-area" id="resolucao-area-${idx}">
+                  ${
+                    resolucao
+                      ? `<div class="resolucao-info"><b>Resolução enviada:</b> ${
+                          resolucao.link
+                            ? `<a href="${resolucao.link}" target="_blank">${resolucao.link}</a>`
+                            : ""
+                        }
+                        ${
+                          resolucao.arquivo
+                            ? `<a href="${resolucao.arquivo}" download="${resolucao.nomeArquivo}">📎 ${resolucao.nomeArquivo}</a>`
+                            : ""
+                        }
+                        </div>`
+                      : `<button class="btn-resolucao" data-idx="${idx}">Enviar Resolução</button>
+                        <form class="form-resolucao" id="form-resolucao-${idx}" style="display:none;margin-top:8px;">
+                          <input type="url" name="link" placeholder="Link da resolução (opcional)" style="margin-bottom:6px;">
+                          <input type="file" name="arquivo" style="margin-bottom:6px;">
+                          <button type="submit">Enviar</button>
+                          <button type="button" class="btn-cancelar-resolucao">Cancelar</button>
+                        </form>`
+                  }
+                </div>
               </div>
             </div>
           `;
         });
 
-        // Checkbox handler
-        document.querySelectorAll(".tarefa-checkbox").forEach((cb) => {
-          cb.addEventListener("change", function () {
-            let feitas =
-              JSON.parse(localStorage.getItem("tarefasFeitasAluno")) || [];
-            const idx = parseInt(this.getAttribute("data-idx"));
-            if (this.checked) {
-              if (!feitas.includes(idx)) feitas.push(idx);
-            } else {
-              feitas = feitas.filter((i) => i !== idx);
+        // Botão para abrir formulário de resolução
+        document.querySelectorAll(".btn-resolucao").forEach(btn => {
+          btn.addEventListener("click", function() {
+            const idx = this.getAttribute("data-idx");
+            document.getElementById(`form-resolucao-${idx}`).style.display = "block";
+            this.style.display = "none";
+          });
+        });
+
+        // Botão cancelar resolução
+        document.querySelectorAll(".btn-cancelar-resolucao").forEach(btn => {
+          btn.addEventListener("click", function() {
+            const form = this.closest("form");
+            form.style.display = "none";
+            form.previousElementSibling.style.display = "inline-block";
+          });
+        });
+
+        // Submissão da resolução
+        document.querySelectorAll(".form-resolucao").forEach(form => {
+          form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const idx = parseInt(this.id.replace("form-resolucao-", ""));
+            const link = this.link.value.trim();
+            const arquivoInput = this.arquivo;
+            let resolucoes = JSON.parse(localStorage.getItem("resolucoesAluno")) || [];
+            let feitas = JSON.parse(localStorage.getItem("tarefasFeitasAluno")) || [];
+            let resolucao = {};
+
+            if (link) resolucao.link = link;
+            if (arquivoInput.files[0]) {
+              const file = arquivoInput.files[0];
+              resolucao.arquivo = URL.createObjectURL(file);
+              resolucao.nomeArquivo = file.name;
             }
+            resolucoes[idx] = resolucao;
+            if (!feitas.includes(idx)) feitas.push(idx);
+
+            localStorage.setItem("resolucoesAluno", JSON.stringify(resolucoes));
             localStorage.setItem("tarefasFeitasAluno", JSON.stringify(feitas));
             carregarTarefasAluno();
           });

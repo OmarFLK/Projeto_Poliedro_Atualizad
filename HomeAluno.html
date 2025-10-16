@@ -84,7 +84,7 @@
 
     <main>
       <section class="painel-resumo">
-        <h2>Resumo Rápido</h2>
+        <h2>
         <div class="resumo-blocos">
           <div class="resumo-bloco" id="resumo-eventos">
             <h3>Último Evento</h3>
@@ -105,7 +105,7 @@
         </div>
       </section>
     </main>
-
+</h2>
     <footer>
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
@@ -140,35 +140,35 @@
         }
       });
 
-      // Painel Resumo - busca últimos itens do localStorage
+      // resumindo o resumo do resumo coisado home XD
       function formatDate(dateStr) {
         if (!dateStr) return "";
         const options = { day: '2-digit', month: 'long', year: 'numeric' };
         return new Date(dateStr).toLocaleDateString('pt-BR', options);
       }
 
-      // EVENTOS
+      // EVENTOS poggers
       const eventos = JSON.parse(localStorage.getItem("eventos")) || [];
       const evento = eventos.length ? eventos[eventos.length-1] : null;
       document.querySelector("#resumo-eventos .resumo-conteudo").innerHTML = evento
         ? `<strong>${evento.title}</strong><br><span style="color:#576fbd">${formatDate(evento.date)}</span><br>${evento.description}`
         : "<span style='color:#888'>Nenhum evento recente.</span>";
 
-      // ATIVIDADES
+      // ATIVIDADES aaaaaaaaa
       const atividades = JSON.parse(localStorage.getItem("tarefas")) || [];
       const atividade = atividades.length ? atividades[atividades.length-1] : null;
       document.querySelector("#resumo-atividades .resumo-conteudo").innerHTML = atividade
         ? `<strong>${atividade.titulo}</strong><br>${atividade.descricao || ""}`
         : "<span style='color:#888'>Nenhuma atividade recente.</span>";
 
-      // MENSAGENS
+      // MENSAGENS nao
       const mensagens = JSON.parse(localStorage.getItem("mensagens")) || [];
       const mensagem = mensagens.length ? mensagens[mensagens.length-1] : null;
       document.querySelector("#resumo-mensagens .resumo-conteudo").innerHTML = mensagem
         ? `<strong>${mensagem.titulo || "Mensagem"}</strong><br>${mensagem.texto || mensagem.conteudo || ""}`
         : "<span style='color:#888'>Nenhuma mensagem recente.</span>";
 
-      // NOTAS
+      // NOTAS fazer as estatisticas ainda, graficos e etc tlg ne paizao mete bala ai
       const notas = JSON.parse(localStorage.getItem("notas")) || [];
       const nota = notas.length ? notas[notas.length-1] : null;
       document.querySelector("#resumo-notas .resumo-conteudo").innerHTML = nota

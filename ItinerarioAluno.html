@@ -13,6 +13,30 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+    <style>
+      table, thead, tbody, tr, th, td{
+        border: 1px, solid, black;
+        color: white;
+        table-layout: fixed;
+      }
+      table{
+        background-color: #6a9bd1;
+        box-shadow: 0 4px 8px #163f7a;
+        border-radius: 8px;
+      }
+      th{
+        color: black;
+      }
+      th, td{
+        padding: 20px 10px;
+        min-height: 70px;
+        text-align: center;
+      }
+      div>p{
+        color: white;
+        font-size: 160%;
+      }
+    </style>
   </head>
   <body>
     <!-- Link do bootstrap -->
@@ -45,7 +69,7 @@
             <option value="tritanopia">Tritanopia</option>
           </select>
         </nav>
-         <a href="PerfilAluno.html">
+        <a href="PerfilAluno.html">
           <img
             src="Assets/LogoUsuario.png"
             alt="Meu cadastro"
@@ -55,75 +79,81 @@
       </div>
     </header>
     <!-- COMEÇO DA TABELA DOS ITINERÁRIOS -->
-    <!-- Classe ta associada ao bootstrap -->
-    <table class="table table-success table-striped">
-      <thead>
-        <tr>
-          <th>Horários</th>
-          <th>Segunda</th>
-          <th>Terça</th>
-          <th>Quarta</th>
-          <th>Quinta</th>
-          <th>Sexta</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr>
-          <td>7:30 ~ 8:20</td>
-          <td>Matemática</td>
-          <td>Português</td>
-          <td>Inglês</td>
-          <td>Educação física</td>
-          <td>Química</td>
-        </tr>
-
-        <tr>
-          <td>8:30 ~ 9:20</td>
-          <td>Biologia</td>
-          <td>Física</td>
-          <td>Matemática</td>
-          <td>Educação física</td>
-          <td>Espanhol</td>
-        </tr>
-
-        <tr>
-          <td>9:30 ~ 10:00</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-
-        <tr>
-          <td>10:00 ~ 10:50</td>
-          <td>Português</td>
-          <td>Química</td>
-          <td>História</td>
-          <td>Geografia</td>
-          <td>Física</td>
-        </tr>
-
-        <tr>
-          <td>11:00 ~ 11:50</td>
-          <td>Biologia</td>
-          <td>Matemática</td>
-          <td>História</td>
-          <td>Geografia</td>
-          <td>Espanhol</td>
-        </tr>
-
-        <tr>
-          <td>12:00 ~ 12:50</td>
-          <td>Inglês</td>
-          <td>Português</td>
-          <td>Matemática</td>
-          <td>Sociologia</td>
-          <td>Filosofia</td>
-        </tr>
-      </tbody>
-    </table>
+     <div class="row">
+      <p>Branco</p>
+     </div>
+    <div class="container-lg">
+      <div class="row">
+        <table>
+          <thead>
+            <tr>
+              <th>Horários</th>
+              <th>Segunda</th>
+              <th>Terça</th>
+              <th>Quarta</th>
+              <th>Quinta</th>
+              <th>Sexta</th>
+            </tr>
+          </thead>
+    
+          <tbody>
+            <tr>
+              <td>7:30 ~ 8:20</td>
+              <td>Matemática</td>
+              <td>Português</td>
+              <td>Inglês</td>
+              <td>Educação física</td>
+              <td>Química</td>
+            </tr>
+    
+            <tr>
+              <td>8:30 ~ 9:20</td>
+              <td>Biologia</td>
+              <td>Física</td>
+              <td>Matemática</td>
+              <td>Educação física</td>
+              <td>Espanhol</td>
+            </tr>
+    
+            <tr>
+              <td>9:30 ~ 10:00</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+    
+            <tr>
+              <td>10:00 ~ 10:50</td>
+              <td>Português</td>
+              <td>Química</td>
+              <td>História</td>
+              <td>Geografia</td>
+              <td>Física</td>
+            </tr>
+    
+            <tr>
+              <td>11:00 ~ 11:50</td>
+              <td>Biologia</td>
+              <td>Matemática</td>
+              <td>História</td>
+              <td>Geografia</td>
+              <td>Espanhol</td>
+            </tr>
+    
+            <tr>
+              <td>12:00 ~ 12:50</td>
+              <td>Inglês</td>
+              <td>Português</td>
+              <td>Matemática</td>
+              <td>Sociologia</td>
+              <td>Filosofia</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <!-- FIM DA TABELA DOS ITINERÁRIOS -->
     <footer>
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
