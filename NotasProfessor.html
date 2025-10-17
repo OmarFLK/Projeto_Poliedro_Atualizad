@@ -7,6 +7,18 @@
     <link rel="stylesheet" href="styles/StyleAlunos.css" />
     <title>Notas do Professor</title>
     <style>
+      :root {
+        --primary-blue: #1a4e9b;
+        --primary-blue-dark: #163f7a;
+        --primary-blue-light: #2b5db3;
+        --input-border: #d6dbe8;
+        --text-color: #1f2d4a;
+      }
+      body {
+        background: #f5f6fa;
+        font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+        margin: 0;
+      }
       .container-notas {
         max-width: 1100px;
         margin: 40px auto;
@@ -15,20 +27,17 @@
         border-radius: 16px;
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
       }
-
       .container-notas h2 {
-        color: var(--section-title);
+        color: var(--primary-blue);
         margin-bottom: 20px;
         font-size: 20px;
       }
-
       form {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
         gap: 12px;
         margin-bottom: 24px;
       }
-
       form input,
       form select {
         padding: 10px;
@@ -36,7 +45,6 @@
         border-radius: 8px;
         font-size: 15px;
       }
-
       form button {
         padding: 12px 16px;
         background: var(--primary-blue);
@@ -47,17 +55,14 @@
         font-weight: bold;
         transition: background 0.2s;
       }
-
       form button:hover {
         background: var(--primary-blue-dark);
       }
-
       .delete-buttons {
         display: flex;
         gap: 12px;
         margin-bottom: 24px;
       }
-
       .delete-buttons button {
         flex: 1;
         padding: 12px 16px;
@@ -67,17 +72,13 @@
         border-radius: 8px;
         cursor: pointer;
         font-weight: bold;
-        transition: background 0.2s;
       }
-
       .delete-buttons button:hover {
         background: #962d22;
       }
-
       .ano-section {
         margin-bottom: 40px;
       }
-
       .ano-title {
         background: var(--primary-blue-light);
         color: #fff;
@@ -86,7 +87,6 @@
         font-size: 18px;
         font-weight: bold;
       }
-
       table {
         width: 100%;
         border-collapse: collapse;
@@ -95,27 +95,30 @@
         overflow: hidden;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       }
-
       table th,
       table td {
-        border: 1px solid #ddd;
+        border: 1px solid #e8edf7;
         padding: 12px;
         text-align: center;
       }
-
       table th {
-        background: #f0f4f8;
+        background: #f4f7fd;
         color: var(--text-color);
+        font-weight: 700;
       }
-
       .stats {
         margin-top: 24px;
         padding: 16px;
         background: #f9fafc;
-        border: 1px solid #ddd;
+        border: 1px solid #e8edf7;
         border-radius: 12px;
         font-size: 15px;
         line-height: 1.6;
+      }
+      @media (max-width: 800px) {
+        form {
+          grid-template-columns: 1fr 1fr;
+        }
       }
     </style>
   </head>
@@ -134,7 +137,6 @@
           <a href="NotasProfessor.html" class="header-link active">Notas</a>
           <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
           <a href="EventosProfessores.html" class="header-link">Eventos</a>
-
           <select id="daltonismo-select">
             <option value="">Normal</option>
             <option value="protanopia">Protanopia</option>
@@ -142,7 +144,7 @@
             <option value="tritanopia">Tritanopia</option>
           </select>
         </nav>
-         <a href="PerfilProfessor.html">
+        <a href="PerfilProfessor.html">
           <img
             src="Assets/LogoUsuario.png"
             alt="Meu cadastro"
@@ -152,7 +154,6 @@
       </div>
     </header>
 
-    <!-- CONTEÚDO DE NOTAS -->
     <main class="container-notas">
       <h2>Lançar Notas</h2>
       <form id="notaForm">
@@ -162,12 +163,21 @@
           <option>2º Ano</option>
           <option>3º Ano</option>
         </select>
+
+        <select id="turma" required>
+          <option value="">Sub-sala</option>
+          <option>Sub 1</option>
+          <option>Sub 2</option>
+          <option>Sub 3</option>
+        </select>
+
         <input type="text" id="aluno" placeholder="Nome do aluno" required />
         <select id="semestre" required>
           <option value="">Semestre</option>
           <option>1º Semestre</option>
           <option>2º Semestre</option>
         </select>
+
         <input
           type="number"
           id="prova1"
@@ -204,16 +214,16 @@
           step="0.1"
           required
         />
+
         <button type="submit">Adicionar</button>
       </form>
 
-      <!-- Botões de exclusão -->
       <div class="delete-buttons">
-        <button id="excluirUltima">Excluir última atividade</button>
+        <button id="excluirUltima">Excluir última entrada</button>
         <button id="excluirTodas">Excluir todas</button>
       </div>
 
-      <h2>Notas Lançadas</h2>
+      <h2>Notas Lançadas (por ano)</h2>
       <div id="anosContainer"></div>
 
       <div class="stats" id="estatisticas"></div>
@@ -223,14 +233,18 @@
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
 
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
+    </div>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
-      new window.VLibras.Widget("https://vlibras.gov.br/app");
+      new window.VLibras?.Widget("https://vlibras.gov.br/app");
     </script>
 
     <script>
       const daltonismoSelect = document.getElementById("daltonismo-select");
-      daltonismoSelect.addEventListener("change", () => {
+      daltonismoSelect?.addEventListener("change", () => {
         document.body.classList.remove(
           "protanopia",
           "deuteranopia",
@@ -240,20 +254,33 @@
         if (val) document.body.classList.add(val);
       });
 
+      // Storage keys:
+      // notasDetalhadas -> array of objects { ano, turma, aluno, semestre, p1, p2, a1, a2, media }
+      // notas -> array of summary objects used by NotasAluno { nome, valor, materia, turma }
+      let notasDetalhadas =
+        JSON.parse(localStorage.getItem("notasDetalhadas")) || [];
+      let notasResumo = JSON.parse(localStorage.getItem("notas")) || []; // mantém compatibilidade com NotasAluno.html
+
       const form = document.getElementById("notaForm");
       const anosContainer = document.getElementById("anosContainer");
       const estatisticasDiv = document.getElementById("estatisticas");
-
-      let notas = JSON.parse(localStorage.getItem("notas")) || [];
 
       function calcularMedia(p1, p2, a1, a2) {
         return (p1 * 2 + p2 * 2 + a1 * 1 + a2 * 1) / 6;
       }
 
+      function salvarLocal() {
+        localStorage.setItem(
+          "notasDetalhadas",
+          JSON.stringify(notasDetalhadas)
+        );
+        localStorage.setItem("notas", JSON.stringify(notasResumo));
+      }
+
       function atualizarTabela() {
         anosContainer.innerHTML = "";
         const agrupado = {};
-        notas.forEach((n) => {
+        notasDetalhadas.forEach((n) => {
           if (!agrupado[n.ano]) agrupado[n.ano] = [];
           agrupado[n.ano].push(n);
         });
@@ -264,11 +291,12 @@
           const div = document.createElement("div");
           div.classList.add("ano-section");
           div.innerHTML = `
-            <div class="ano-title">${ano}</div>
+            <div class="ano-title">${escapeHtml(ano)}</div>
             <table>
               <thead>
                 <tr>
                   <th>Aluno</th>
+                  <th>Turma</th>
                   <th>Semestre</th>
                   <th>Prova 1</th>
                   <th>Prova 2</th>
@@ -280,17 +308,19 @@
               <tbody>
                 ${agrupado[ano]
                   .map((n) => {
-                    const media = calcularMedia(n.p1, n.p2, n.a1, n.a2);
+                    const media =
+                      n.media ?? calcularMedia(n.p1, n.p2, n.a1, n.a2);
                     todasMedias.push(media);
                     return `
                     <tr>
-                      <td>${n.aluno}</td>
-                      <td>${n.semestre}</td>
+                      <td>${escapeHtml(n.aluno)}</td>
+                      <td>${escapeHtml(n.turma)}</td>
+                      <td>${escapeHtml(n.semestre)}</td>
                       <td>${n.p1}</td>
                       <td>${n.p2}</td>
                       <td>${n.a1}</td>
                       <td>${n.a2}</td>
-                      <td><b>${media.toFixed(1)}</b></td>
+                      <td><b>${Number(media).toFixed(1)}</b></td>
                     </tr>`;
                   })
                   .join("")}
@@ -321,42 +351,60 @@
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         const ano = document.getElementById("ano").value;
-        const aluno = document.getElementById("aluno").value;
+        const turma = document.getElementById("turma").value;
+        const aluno = document.getElementById("aluno").value.trim();
         const semestre = document.getElementById("semestre").value;
         const p1 = parseFloat(document.getElementById("prova1").value);
         const p2 = parseFloat(document.getElementById("prova2").value);
         const a1 = parseFloat(document.getElementById("atv1").value);
         const a2 = parseFloat(document.getElementById("atv2").value);
 
-        notas.push({ ano, aluno, semestre, p1, p2, a1, a2 });
-        localStorage.setItem("notas", JSON.stringify(notas));
+        const media = calcularMedia(p1, p2, a1, a2);
 
+        const detalhe = { ano, turma, aluno, semestre, p1, p2, a1, a2, media };
+        notasDetalhadas.push(detalhe);
+
+        // Atualiza resumo usado pelo HomeAluno/NotasAluno (mantém compatibilidade)
+        // Guarda matéria vazia por enquanto (pode ser enviado se tiver campo de matéria)
+        notasResumo.push({
+          nome: aluno,
+          valor: Number(media.toFixed(2)),
+          materia: "",
+          turma,
+        });
+
+        salvarLocal();
         form.reset();
         atualizarTabela();
       });
 
-      // Botões de exclusão
+      // exclusão
       document.getElementById("excluirUltima").addEventListener("click", () => {
-        if (
-          notas.length > 0 &&
-          confirm("Deseja excluir a última atividade adicionada?")
-        ) {
-          notas.pop();
-          localStorage.setItem("notas", JSON.stringify(notas));
-          atualizarTabela();
-        }
+        if (notasDetalhadas.length === 0) return;
+        if (!confirm("Deseja excluir a última entrada?")) return;
+        notasDetalhadas.pop();
+        notasResumo.pop();
+        salvarLocal();
+        atualizarTabela();
       });
 
       document.getElementById("excluirTodas").addEventListener("click", () => {
-        if (
-          notas.length > 0 &&
-          confirm("Tem certeza que deseja excluir TODAS as atividades?")
-        ) {
-          notas = [];
-          localStorage.removeItem("notas");
-          atualizarTabela();
-        }
+        if (notasDetalhadas.length === 0) return;
+        if (!confirm("Tem certeza que deseja excluir TODAS as entradas?"))
+          return;
+        notasDetalhadas = [];
+        notasResumo = [];
+        salvarLocal();
+        atualizarTabela();
       });
+
+      // Inicializa
+      function escapeHtml(str) {
+        return String(str || "").replace(
+          /[&<>"]/g,
+          (s) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[s])
+        );
+      }
 
       atualizarTabela();
     </script>

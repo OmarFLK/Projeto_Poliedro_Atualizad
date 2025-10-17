@@ -2,19 +2,96 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <title>Notas do Aluno</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/Login.css" />
     <link rel="stylesheet" href="styles/StyleAlunos.css" />
-    <title>Notas do Aluno</title>
+    <style>
+      :root{
+        --azul-principal:#1a4e9b;
+        --azul-escuro:#163f7a;
+        --fundo:#f5f6fa;
+      }
+      body{background:var(--fundo);font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;margin:0}
+      .container{
+        max-width:1000px;
+        margin:36px auto;
+        padding:22px;
+      }
+      .notas-box{
+        background:#fff;
+        border-radius:12px;
+        padding:18px;
+        box-shadow:0 6px 20px rgba(0,0,0,0.08);
+      }
+      .notas-header{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+        margin-bottom:14px;
+      }
+      .notas-title{
+        font-size:1.35rem;
+        color:var(--azul-principal);
+        margin:0;
+      }
+      .notas-sub{
+        color:#666;
+        font-size:0.95rem;
+      }
+      .table-wrap{
+        overflow:auto;
+      }
+      table.notas-table{
+        width:100%;
+        border-collapse:collapse;
+        min-width:720px;
+      }
+      table.notas-table thead th{
+        text-align:left;
+        padding:12px 10px;
+        background:#f4f7fd;
+        color:var(--azul-escuro);
+        font-weight:700;
+        border-bottom:1px solid #e6ecff;
+      }
+      table.notas-table tbody td{
+        padding:12px 10px;
+        border-bottom:1px solid #f1f3fb;
+        color:#333;
+        vertical-align:middle;
+      }
+      .pos{
+        width:56px;
+        font-weight:700;
+        color:#1a2e6e;
+      }
+      .nota-badge{
+        display:inline-block;
+        padding:6px 10px;
+        border-radius:999px;
+        background:#e9f0ff;
+        color:var(--azul-escuro);
+        font-weight:700;
+      }
+      .no-notes{
+        text-align:center;
+        color:#888;
+        padding:28px 12px;
+      }
+      /* responsive */
+      @media (max-width:720px){
+        .container{padding:12px}
+        .notas-title{font-size:1.1rem}
+        table.notas-table{min-width:600px}
+      }
+    </style>
   </head>
   <body>
     <header>
       <div class="header-aluno">
-        <img
-          src="Assets/poliedro.png"
-          alt="Logo Poliedro"
-          class="poliedro-logo-header"
-        />
+        <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
         <nav class="header-nav">
           <a href="HomeAluno.html" class="header-link">Home</a>
           <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
@@ -22,7 +99,6 @@
           <a href="NotasAluno.html" class="header-link active">Notas</a>
           <a href="MensagensAluno.html" class="header-link">Mensagens</a>
           <a href="eventosAlunos.html" class="header-link">Eventos</a>
-
           <select id="daltonismo-select">
             <option value="">Normal</option>
             <option value="protanopia">Protanopia</option>
@@ -30,18 +106,29 @@
             <option value="tritanopia">Tritanopia</option>
           </select>
         </nav>
-         <a href="PerfilAluno.html">
-          <img
-            src="Assets/LogoUsuario.png"
-            alt="Meu cadastro"
-            class="header-profile-img"
-          />
+        <a href="PerfilAluno.html">
+          <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
         </a>
       </div>
     </header>
-    <!-- COMEÇA O CODIGO APARTIR DA AQUI PARA NAO BAGUNÇAR IMBECIL -->
+
+    <main class="container">
+      <div class="notas-box" id="notasBox">
+        <div class="notas-header">
+          <div>
+            <h1 class="notas-title">Quadro de Notas</h1>
+            <div class="notas-sub">Visão geral das notas lançadas pelos professores (ordenada por nota).</div>
+          </div>
+        </div>
+
+        <div class="table-wrap" id="tableWrap">
+          <!-- tabela será injetada aqui -->
+        </div>
+      </div>
+    </main>
+
     <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+      <p class="footer-text" style="text-align:center">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
 
     <div vw class="enabled">
@@ -49,21 +136,83 @@
       <div vw-plugin-wrapper></div>
     </div>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-      new window.VLibras.Widget("https://vlibras.gov.br/app");
-    </script>
+    <script> new window.VLibras?.Widget("https://vlibras.gov.br/app"); </script>
 
     <script>
+      // Daltonismo safe
       const daltonismoSelect = document.getElementById("daltonismo-select");
-      daltonismoSelect.addEventListener("change", () => {
-        document.body.classList.remove(
-          "protanopia",
-          "deuteranopia",
-          "tritanopia"
-        );
+      daltonismoSelect?.addEventListener("change", () => {
+        document.body.classList.remove("protanopia","deuteranopia","tritanopia");
         const val = daltonismoSelect.value;
         if (val) document.body.classList.add(val);
       });
+
+      // Menu ativo automático
+      document.querySelectorAll('.header-link').forEach(link => {
+        if (window.location.pathname.endsWith(link.getAttribute('href'))) link.classList.add('active');
+      });
+
+      // Carrega notas do localStorage e renderiza tabela ordenada
+      function carregarNotasAluno() {
+        const raw = JSON.parse(localStorage.getItem('notas')) || [];
+        // espera array de objetos: { nome, valor, materia, turma } - valor pode ser number ou string
+        const notas = raw.map(item => ({
+          nome: (item.nome || '').trim(),
+          valor: (item.valor !== undefined && item.valor !== null) ? Number(item.valor) : NaN,
+          materia: item.materia || '',
+          turma: item.turma || ''
+        }));
+
+        if (!notas.length) {
+          document.getElementById('tableWrap').innerHTML = '<div class="no-notes">Nenhuma nota lançada ainda.</div>';
+          return;
+        }
+
+        // ordena por valor desc, se igual por inicial do nome (A..Z)
+        notas.sort((a,b) => {
+          const va = isNaN(a.valor) ? -Infinity : a.valor;
+          const vb = isNaN(b.valor) ? -Infinity : b.valor;
+          if (vb !== va) return vb - va;
+          const ia = (a.nome[0] || '').toUpperCase();
+          const ib = (b.nome[0] || '').toUpperCase();
+          if (ia === ib) return a.nome.localeCompare(b.nome, 'pt-BR');
+          return ia.localeCompare(ib);
+        });
+
+        // monta tabela
+        let html = `<table class="notas-table" aria-label="Tabela de notas">
+            <thead>
+              <tr>
+                <th class="pos">#</th>
+                <th>Nome</th>
+                <th>Turma</th>
+                <th>Matéria</th>
+                <th>Nota</th>
+              </tr>
+            </thead>
+            <tbody>`;
+
+        notas.forEach((n, i) => {
+          const notaDisplay = isNaN(n.valor) ? '-' : (Number.isInteger(n.valor) ? n.valor : n.valor.toFixed(2));
+          html += `<tr>
+              <td class="pos">${i+1}</td>
+              <td>${escapeHtml(n.nome)}</td>
+              <td>${escapeHtml(n.turma)}</td>
+              <td>${escapeHtml(n.materia)}</td>
+              <td><span class="nota-badge">${notaDisplay}</span></td>
+            </tr>`;
+        });
+
+        html += `</tbody></table>`;
+        document.getElementById('tableWrap').innerHTML = html;
+      }
+
+      // pequena função para evitar injeção simples
+      function escapeHtml(str){
+        return String(str||'').replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
+      }
+
+      carregarNotasAluno();
     </script>
   </body>
 </html>
