@@ -1,0 +1,124 @@
+:root {
+  --azul-principal: #1a4e9b;
+  --azul-escuro: #163f7a;
+  --fundo: #f5f6fa;
+  --texto: #333;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--fundo);
+  color: var(--texto);
+  line-height: 1.6;
+}
+
+/* Container principal */
+main {
+  max-width: 850px;
+  background: #fff;
+  margin: 40px auto;
+  padding: 40px 50px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+main::before {
+  content: "";
+  display: block;
+  width: 140px;
+  height: 60px;
+  margin: 0 auto 30px;
+  background-image: url("../Assets/poliedro02.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Títulos */
+h1 {
+  color: var(--azul-principal);
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: var(--azul-escuro);
+  font-size: 20px;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+h3 {
+  color: var(--azul-principal);
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+/* Parágrafos e listas */
+p {
+  margin-bottom: 12px;
+  text-align: justify;
+}
+
+ul {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+ul li {
+  margin-bottom: 8px;
+}
+
+/* Links */
+a {
+  color: var(--azul-principal);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Rodapé */
+footer {
+  margin-top: 30px;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+  font-size: 14px;
+  text-align: center;
+  color: #555;
+}
+
+footer a {
+  color: var(--azul-principal);
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  main {
+    width: 90%;
+    padding: 25px 20px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+}
