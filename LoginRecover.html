@@ -4,7 +4,82 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recuperar Senha</title>
-    <link rel="stylesheet" href="styles/Login.css" />
+    <link rel="stylesheet" href="Styles/LoginRecover.css" />
   </head>
-  <body></body>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <img src="Assets/poliedro.png" alt="Poliedro Logo" />
+      </div>
+
+      <h2>Recuperar Senha</h2>
+      <p>Digite seu <strong>e-mail</strong> para receber o código de recuperação.</p>
+
+      <form id="recoverForm">
+        <label for="identificador">E-mail</label>
+        <input
+          type="text"
+          id="identificador"
+          name="identificador"
+          required
+          placeholder="usuario@exemplo.com"
+        />
+
+        <button type="submit">Enviar código</button>
+      </form>
+
+      <div class="message" id="mensagemEnvio"></div>
+
+      <a href="login.html">Voltar para login</a>
+    </div>
+
+    <div class="footer">
+      © Projeto desenvolvido por: [Nossos nomes]
+    </div>
+
+    <script>
+      const form = document.getElementById("recoverForm");
+      const mensagem = document.getElementById("mensagemEnvio");
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const identificador = document.getElementById("identificador").value.trim();
+
+        if (identificador === "") {
+          mensagem.style.color = "red";
+          mensagem.textContent = "Por favor, preencha o campo.";
+          return;
+        }
+
+        try {
+          // === Simulação de envio ===
+          mensagem.style.color = "green";
+          mensagem.textContent = `Um código de recuperação foi enviado para ${identificador}. Verifique seu e-mail.`;
+
+          // === Envio real (backend) ===
+          /*
+          const resposta = await fetch("http://seu-servidor.com/api/enviar-codigo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ identificador }),
+          });
+
+          const resultado = await resposta.json();
+
+          if (resultado.sucesso) {
+            mensagem.style.color = "green";
+            mensagem.textContent = "E-mail de recuperação enviado com sucesso!";
+          } else {
+            mensagem.style.color = "red";
+            mensagem.textContent = "Erro ao enviar o e-mail. Tente novamente.";
+          }
+          */
+        } catch (erro) {
+          mensagem.style.color = "red";
+          mensagem.textContent = "Ocorreu um erro ao enviar o e-mail.";
+          console.error(erro);
+        }
+      });
+    </script>
+  </body>
 </html>
