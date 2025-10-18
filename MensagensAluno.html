@@ -6,6 +6,145 @@
     <link rel="stylesheet" href="styles/Login.css" />
     <link rel="stylesheet" href="styles/StyleAlunos.css" />
     <title>Mensagens do Aluno</title>
+    <style>
+      /* ======== LAYOUT PRINCIPAL ======== */
+      .mensagens-container {
+        display: flex;
+        height: calc(100vh - 160px);
+        background-color: #f8f9fa;
+      }
+
+      /* ======== LISTA DE PROFESSORES ======== */
+      .lista-professores {
+        width: 30%;
+        background-color: #ffffff;
+        border-right: 1px solid #ddd;
+        overflow-y: auto;
+        padding: 15px;
+      }
+
+      .lista-professores h2 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .professor-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .professor-item:hover,
+      .professor-item.active {
+        background-color: #e3f2fd;
+      }
+
+      .professor-item img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .professor-item span {
+        font-size: 1rem;
+        color: #333;
+      }
+
+      /* ======== CHAT ======== */
+      .chat-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: #f4f6f8;
+      }
+
+      .chat-header {
+        background-color: #0d47a1;
+        color: white;
+        padding: 12px 20px;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .mensagem {
+        max-width: 70%;
+        padding: 10px 15px;
+        border-radius: 15px;
+        font-size: 0.95rem;
+        word-wrap: break-word;
+      }
+
+      .aluno {
+        align-self: flex-end;
+        background-color: #1976d2;
+        color: white;
+        border-bottom-right-radius: 2px;
+      }
+
+      .professor {
+        align-self: flex-start;
+        background-color: #e0e0e0;
+        color: #000;
+        border-bottom-left-radius: 2px;
+      }
+
+      .chat-input {
+        display: flex;
+        padding: 15px;
+        background-color: #fff;
+        border-top: 1px solid #ddd;
+      }
+
+      .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        outline: none;
+      }
+
+      .chat-input button {
+        margin-left: 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 20px;
+        background-color: #0d47a1;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .chat-input button:hover {
+        background-color: #1565c0;
+      }
+
+      /* ======== RESPONSIVIDADE ======== */
+      @media (max-width: 768px) {
+        .mensagens-container {
+          flex-direction: column;
+        }
+        .lista-professores {
+          width: 100%;
+          border-right: none;
+          border-bottom: 1px solid #ddd;
+        }
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -22,15 +161,14 @@
           <a href="NotasAluno.html" class="header-link">Notas</a>
           <a href="MensagensAluno.html" class="header-link active">Mensagens</a>
           <a href="eventosAlunos.html" class="header-link">Eventos</a>
-
-            <select id="daltonismo-select">
+          <select id="daltonismo-select">
             <option value="">Normal</option>
             <option value="protanopia">Protanopia</option>
             <option value="deuteranopia">Deuteranopia</option>
             <option value="tritanopia">Tritanopia</option>
           </select>
         </nav>
-         <a href="PerfilAluno.html">
+        <a href="PerfilAluno.html">
           <img
             src="Assets/LogoUsuario.png"
             alt="Meu cadastro"
@@ -39,12 +177,60 @@
         </a>
       </div>
     </header>
-    <!-- COMEÇA O CODIGO APARTIR DA AQUI PARA NAO BAGUNÇAR IMBECIL -->
+
+    <!-- ======== CONTEÚDO PRINCIPAL ======== -->
+    <div class="mensagens-container">
+      <!-- LISTA DE PROFESSORES -->
+      <aside class="lista-professores">
+        <h2>Professores</h2>
+        <div class="professor-item active" data-professor="1">
+          <img src="Assets/prof1.png" alt="Professor 1" />
+          <span>Prof. João - Matemática</span>
+        </div>
+        <div class="professor-item" data-professor="2">
+          <img src="Assets/prof2.png" alt="Professor 2" />
+          <span>Prof.ª Ana - Redação</span>
+        </div>
+        <div class="professor-item" data-professor="3">
+          <img src="Assets/prof3.png" alt="Professor 3" />
+          <span>Prof. Lucas - Física</span>
+        </div>
+        <div class="professor-item" data-professor="4">
+          <img src="Assets/prof4.png" alt="Professor 4" />
+          <span>Prof.ª Carla - História</span>
+        </div>
+      </aside>
+
+      <!-- ÁREA DO CHAT -->
+      <section class="chat-area">
+        <div class="chat-header">Prof. João - Matemática</div>
+
+        <div class="chat-messages" id="chatMensagens">
+          <div class="mensagem professor">Bom dia! Tudo bem?</div>
+          <div class="mensagem aluno">Oi, professor! Tudo sim, e o senhor?</div>
+          <div class="mensagem professor">
+            Tudo ótimo. Conseguiu resolver a lista 3?
+          </div>
+        </div>
+
+        <div class="chat-input">
+          <input
+            type="text"
+            id="mensagemInput"
+            placeholder="Digite sua mensagem..."
+          />
+          <button id="enviarMensagem">Enviar</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- ======== FOOTER ======== -->
     <footer>
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
 
-        <div vw class="enabled">
+    <!-- ======== VLibras ======== -->
+    <div vw class="enabled">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper></div>
     </div>
@@ -53,14 +239,7 @@
       new window.VLibras.Widget('https://vlibras.gov.br/app');
     </script>
 
-    <script>
-      const daltonismoSelect = document.getElementById('daltonismo-select');
-      daltonismoSelect.addEventListener('change', () => {
-        document.body.classList.remove('protanopia','deuteranopia','tritanopia');
-        const val = daltonismoSelect.value;
-        if(val) document.body.classList.add(val);
-      });
-    </script>
+    <script src="Scripts/MensagensAluno.js"></script>
 
   </body>
 </html>

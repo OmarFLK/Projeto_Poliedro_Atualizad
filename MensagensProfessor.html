@@ -1,67 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/Login.css" />
-    <link rel="stylesheet" href="styles/StyleAlunos.css" />
-    <title>Mensagens do Professor</title>
-  </head>
-  <body>
-    <header>
-      <div class="header-aluno">
-        <img
-          src="Assets/poliedro.png"
-          alt="Logo Poliedro"
-          class="poliedro-logo-header"
-        />
-        <nav class="header-nav">
-          <a href="HomeProfessor.html" class="header-link">Home</a>
-          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-          <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
-          <a href="NotasProfessor.html" class="header-link">Notas</a>
-          <a href="MensagensProfessor.html" class="header-link active">Mensagens</a>
-          <a href="EventosProfessores.html" class="header-link">Eventos</a>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mensagens - Professor</title>
 
+ 
+  <link rel="stylesheet" href="styles/Login.css" />
+  <link rel="stylesheet" href="styles/StyleAlunos.css" />
 
-            <select id="daltonismo-select">
-            <option value="">Normal</option>
-            <option value="protanopia">Protanopia</option>
-            <option value="deuteranopia">Deuteranopia</option>
-            <option value="tritanopia">Tritanopia</option>
-          </select>
-        </nav>
-        <a href="PerfilProfessor.html">
-          <img
-            src="Assets/LogoUsuario.png"
-            alt="Meu cadastro"
-            class="header-profile-img"
-          />
-        </a>
-      </div>
-    </header>
-    <!-- COMEÇA O CODIGO APARTIR DA AQUI PARA NAO BAGUNÇAR IMBECIL -->
-    <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-    </footer>
+  
+  <link rel="stylesheet" href="styles/chatProfessor.css" />
+</head>
+<body>
+  
+  <header>
+    <div class="header-aluno">
+      <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+      <nav class="header-nav">
+        <a href="HomeProfessor.html" class="header-link">Home</a>
+        <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+        <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
+        <a href="NotasProfessor.html" class="header-link">Notas</a>
+        <a href="MensagensProfessor.html" class="header-link active">Mensagens</a>
+        <a href="EventosProfessores.html" class="header-link">Eventos</a>
 
-        <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper></div>
+        <select id="daltonismo-select">
+          <option value="">Normal</option>
+          <option value="protanopia">Protanopia</option>
+          <option value="deuteranopia">Deuteranopia</option>
+          <option value="tritanopia">Tritanopia</option>
+        </select>
+      </nav>
+      <a href="PerfilProfessor.html">
+        <img src="Assets/LogoUsuario.png" alt="Perfil" class="header-profile-img" />
+      </a>
     </div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-      new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script>
+  </header>
 
-    <script>
-      const daltonismoSelect = document.getElementById('daltonismo-select');
-      daltonismoSelect.addEventListener('change', () => {
-        document.body.classList.remove('protanopia','deuteranopia','tritanopia');
-        const val = daltonismoSelect.value;
-        if(val) document.body.classList.add(val);
-      });
-    </script>
+  <!-- === CHAT LAYOUT === -->
+  <div class="chat-page">
+    <!-- sidebar com salas e alunos -->
+    <aside class="chat-sidebar">
+      <div class="sidebar-top">
+        <h3>Conversas</h3>
+        <div class="search-wrap">
+          <input id="searchInput" placeholder="Buscar alunos/turmas..." />
+        </div>
+      </div>
 
-  </body>
+      <div class="rooms-section">
+        <h4>Salas (por turma)</h4>
+        <div id="roomsList" class="chat-room-list">
+         
+        </div>
+      </div>
+
+      <div class="people-section">
+        <h4>Privado (alunos)</h4>
+        <div id="peopleList" class="chat-room-list">
+          
+        </div>
+      </div>
+    </aside>
+
+    <!-- área principal do chat -->
+    <main class="chat-main">
+      <div class="chat-header">
+        <div class="chat-header-left">
+          <div id="activeBadge" class="badge">Sala</div>
+          <div id="chatTitle" class="chat-title">Selecione uma conversa</div>
+        </div>
+        <div class="chat-header-right">
+          <button id="refreshBtn" title="Atualizar">⟳</button>
+        </div>
+      </div>
+
+      <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+
+      <form id="chatForm" class="chat-input" autocomplete="off">
+        <input id="chatInput" type="text" placeholder="Digite uma mensagem..." />
+        <button type="submit" id="sendBtn" aria-label="Enviar">➤</button>
+      </form>
+    </main>
+  </div>
+
+  <footer>
+    <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+  </footer>
+
+  <!-- script do chat -->
+  <script src="scripts/chatProfessor.js"></script>
+</body>
 </html>
