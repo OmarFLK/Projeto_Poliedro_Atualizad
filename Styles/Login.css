@@ -183,3 +183,52 @@ footer .footer-text {
   text-decoration: underline;
   cursor: pointer;
 }
+.login-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centraliza horizontalmente o conteúdo */
+  padding: 20px;
+  box-sizing: border-box;
+  /* se quiser, limite a largura */
+  max-width: 400px;
+  margin: 0 auto; /* centraliza a caixa na tela */
+}
+
+form#loginForm {
+  width: 100%; /* ocupa toda a largura da login-box */
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* espaço entre os campos */
+}
+
+form#loginForm button[type="submit"] {
+  width: 100%; /* botão ocupa toda largura do form */
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff; /* cor do botão, pode ajustar */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+form#loginForm button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.extra-links {
+  margin-top: 10px;
+  width: 100%;
+  text-align: center; /* centraliza o link */
+}
+
+.extra-links a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.extra-links a:hover {
+  text-decoration: underline;
+}

@@ -1,6 +1,6 @@
 :root {
-  --azul-principal: #1a4e9b;
-  --azul-escuro: #163f7a;
+  --azul-principal: #1a209b;
+  --azul-escuro: #16167a;
   --fundo: #f5f6fa;
   --texto: #333;
 }
@@ -122,3 +122,4 @@ footer a:hover {
     font-size: 18px;
   }
 }
+ 
