@@ -47,7 +47,6 @@
                   type="checkbox"
                   id="aceitarTermos"
                   aria-label="Aceito os termos"
-                  disabled
                 />
                 <label for="aceitarTermos" class="terms-label-text">
                   Li e aceito os
@@ -386,11 +385,9 @@
       // init from localStorage: if already accepted enable login
       if (localStorage.getItem("termsAccepted") === "true") {
         chkAccept.checked = true;
-        chkAccept.disabled = false;
         loginBtn.disabled = false;
       } else {
         chkAccept.checked = false;
-        chkAccept.disabled = true;
         loginBtn.disabled = true;
       }
 
@@ -413,7 +410,6 @@
         if (localStorage.getItem("termsAccepted") !== "true") {
           setAcceptEnabled(false);
           chkAccept.checked = false;
-          chkAccept.disabled = true;
         }
         // focus modal for keyboard users
         modal.focus();
