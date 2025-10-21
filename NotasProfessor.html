@@ -11,7 +11,7 @@
       :root {
         --primary-blue: #1a4e9b;
         --primary-blue-dark: #163f7a;
-        --primary-blue-light: #2b5db3;
+        --primary-blue-light: #163f7a;
         --input-border: #d6dbe8;
         --text-color: #1f2d4a;
       }
@@ -285,7 +285,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
-      new window.VLibras?.Widget("https://vlibras.gov.br/app");
+      
+      const VLibrasWidget = window.VLibras?.Widget;
+      if (VLibrasWidget) new VLibrasWidget("https://vlibras.gov.br/app");
     </script>
 
     <script>
