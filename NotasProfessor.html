@@ -1,3 +1,4 @@
+<!-- ...existing code... -->
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -27,16 +28,15 @@
         border-radius: 16px;
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
       }
-      .container-notas h2 {
+      h2 {
         color: var(--primary-blue);
-        margin-bottom: 20px;
-        font-size: 20px;
+        margin-bottom: 18px;
       }
       form {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
         gap: 12px;
-        margin-bottom: 24px;
+        margin-bottom: 16px;
       }
       form input,
       form select {
@@ -52,32 +52,37 @@
         border: none;
         border-radius: 8px;
         cursor: pointer;
-        font-weight: bold;
-        transition: background 0.2s;
+        font-weight: 700;
       }
       form button:hover {
         background: var(--primary-blue-dark);
       }
-      .delete-buttons {
+      .controls {
         display: flex;
         gap: 12px;
-        margin-bottom: 24px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+        align-items: center;
       }
-      .delete-buttons button {
-        flex: 1;
-        padding: 12px 16px;
-        background: #c0392b;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
+      .charts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 20px;
       }
-      .delete-buttons button:hover {
-        background: #962d22;
+      .chart-card {
+        background: #fff;
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+      .chart-card h3 {
+        margin: 0 0 8px 0;
+        font-size: 15px;
+        color: var(--primary-blue-dark);
       }
       .ano-section {
-        margin-bottom: 40px;
+        margin-top: 18px;
       }
       .ano-title {
         background: var(--primary-blue-light);
@@ -98,7 +103,7 @@
       table th,
       table td {
         border: 1px solid #e8edf7;
-        padding: 12px;
+        padding: 8px;
         text-align: center;
       }
       table th {
@@ -107,15 +112,17 @@
         font-weight: 700;
       }
       .stats {
-        margin-top: 24px;
-        padding: 16px;
+        margin-top: 16px;
+        padding: 12px;
         background: #f9fafc;
         border: 1px solid #e8edf7;
         border-radius: 12px;
         font-size: 15px;
-        line-height: 1.6;
       }
-      @media (max-width: 800px) {
+      @media (max-width: 900px) {
+        .charts {
+          grid-template-columns: 1fr;
+        }
         form {
           grid-template-columns: 1fr 1fr;
         }
@@ -156,6 +163,7 @@
 
     <main class="container-notas">
       <h2>Lançar Notas</h2>
+
       <form id="notaForm">
         <select id="ano" required>
           <option value="">Selecione o Ano</option>
@@ -218,12 +226,48 @@
         <button type="submit">Adicionar</button>
       </form>
 
-      <div class="delete-buttons">
-        <button id="excluirUltima">Excluir última entrada</button>
-        <button id="excluirTodas">Excluir todas</button>
+      <div class="controls">
+        <div>
+          <button id="excluirUltima">Excluir última entrada</button>
+          <button id="excluirTodas">Excluir todas</button>
+        </div>
+
+        <div
+          style="
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+          "
+        >
+          <label for="filtroAno">Filtrar ano:</label>
+          <select id="filtroAno">
+            <option value="">Todos</option>
+          </select>
+          <label for="filtroTurma">Filtrar sub-sala:</label>
+          <select id="filtroTurma">
+            <option value="">Todas</option>
+          </select>
+        </div>
       </div>
 
-      <h2>Notas Lançadas (por ano)</h2>
+      <h2>Gráficos de Notas</h2>
+      <div class="charts">
+        <div class="chart-card">
+          <h3>Média por Sub-sala</h3>
+          <canvas id="chartSubTurma" height="200"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Média do Ano</h3>
+          <canvas id="chartAno" height="200"></canvas>
+        </div>
+        <div class="chart-card" style="grid-column: 1 / -1">
+          <h3>Média por Aluno (ord. por nota)</h3>
+          <canvas id="chartAlunos" height="200"></canvas>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 22px">Notas Lançadas (por ano)</h2>
       <div id="anosContainer"></div>
 
       <div class="stats" id="estatisticas"></div>
@@ -237,12 +281,15 @@
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper></div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
       new window.VLibras?.Widget("https://vlibras.gov.br/app");
     </script>
 
     <script>
+    
       const daltonismoSelect = document.getElementById("daltonismo-select");
       daltonismoSelect?.addEventListener("change", () => {
         document.body.classList.remove(
@@ -253,28 +300,186 @@
         const val = daltonismoSelect.value;
         if (val) document.body.classList.add(val);
       });
-
-      // Storage keys:
-      // notasDetalhadas -> array of objects { ano, turma, aluno, semestre, p1, p2, a1, a2, media }
-      // notas -> array of summary objects used by NotasAluno { nome, valor, materia, turma }
       let notasDetalhadas =
         JSON.parse(localStorage.getItem("notasDetalhadas")) || [];
-      let notasResumo = JSON.parse(localStorage.getItem("notas")) || []; // mantém compatibilidade com NotasAluno.html
+      let notasResumo = JSON.parse(localStorage.getItem("notas")) || [];
 
       const form = document.getElementById("notaForm");
       const anosContainer = document.getElementById("anosContainer");
       const estatisticasDiv = document.getElementById("estatisticas");
+      const filtroAno = document.getElementById("filtroAno");
+      const filtroTurma = document.getElementById("filtroTurma");
+
+      let chartSub = null,
+        chartYear = null,
+        chartStudents = null;
 
       function calcularMedia(p1, p2, a1, a2) {
         return (p1 * 2 + p2 * 2 + a1 * 1 + a2 * 1) / 6;
       }
-
       function salvarLocal() {
         localStorage.setItem(
           "notasDetalhadas",
           JSON.stringify(notasDetalhadas)
         );
         localStorage.setItem("notas", JSON.stringify(notasResumo));
+      }
+
+      function escapeHtml(s) {
+        return String(s || "").replace(
+          /[&<>"]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])
+        );
+      }
+
+      function atualizarFiltros() {
+        const anos = Array.from(
+          new Set(notasDetalhadas.map((n) => n.ano))
+        ).sort();
+        filtroAno.innerHTML =
+          '<option value="">Todos</option>' +
+          anos.map((a) => `<option>${escapeHtml(a)}</option>`).join("");
+        const turmas = Array.from(
+          new Set(notasDetalhadas.map((n) => n.turma))
+        ).sort();
+        filtroTurma.innerHTML =
+          '<option value="">Todas</option>' +
+          turmas.map((t) => `<option>${escapeHtml(t)}</option>`).join("");
+      }
+
+      function agruparPorAno(anoFilter) {
+        const agrupado = {};
+        notasDetalhadas.forEach((n) => {
+          if (!anoFilter || n.ano === anoFilter) {
+            if (!agrupado[n.ano]) agrupado[n.ano] = [];
+            agrupado[n.ano].push(n);
+          }
+        });
+        return agrupado;
+      }
+
+      function calcularSubTurmaAverages(anoFilter, turmaFilter) {
+        const filtered = notasDetalhadas.filter(
+          (n) =>
+            (!anoFilter || n.ano === anoFilter) &&
+            (!turmaFilter || n.turma === turmaFilter)
+        );
+        const map = {};
+        filtered.forEach((n) => {
+          if (!map[n.turma]) {
+            map[n.turma] = { sum: 0, count: 0 };
+          }
+          map[n.turma].sum += n.media ?? calcularMedia(n.p1, n.p2, n.a1, n.a2);
+          map[n.turma].count += 1;
+        });
+        return Object.keys(map).map((k) => ({
+          turma: k,
+          avg: map[k].sum / map[k].count,
+        }));
+      }
+
+      function calcularYearAverage(anoFilter) {
+        const filtered = notasDetalhadas.filter(
+          (n) => !anoFilter || n.ano === anoFilter
+        );
+        if (!filtered.length) return NaN;
+        const total = filtered.reduce(
+          (acc, n) => acc + (n.media ?? calcularMedia(n.p1, n.p2, n.a1, n.a2)),
+          0
+        );
+        return total / filtered.length;
+      }
+
+      function calcularStudentAverages(anoFilter, turmaFilter) {
+        const filtered = notasDetalhadas.filter(
+          (n) =>
+            (!anoFilter || n.ano === anoFilter) &&
+            (!turmaFilter || n.turma === turmaFilter)
+        );
+        const map = {};
+        filtered.forEach((n) => {
+          const nome = (n.aluno || "").trim();
+          if (!map[nome]) map[nome] = { sum: 0, count: 0 };
+          map[nome].sum += n.media ?? calcularMedia(n.p1, n.p2, n.a1, n.a2);
+          map[nome].count += 1;
+        });
+        return Object.keys(map).map((k) => ({
+          aluno: k,
+          avg: map[k].sum / map[k].count,
+        }));
+      }
+
+      function renderCharts() {
+        const anoSel = filtroAno.value || "";
+        const turmaSel = filtroTurma.value || "";
+        const subData = calcularSubTurmaAverages(anoSel, turmaSel);
+        const labelsSub = subData.map((s) => s.turma);
+        const dataSub = subData.map((s) => Number(s.avg.toFixed(2)));
+
+        const ctxSub = document
+          .getElementById("chartSubTurma")
+          .getContext("2d");
+        if (chartSub) chartSub.destroy();
+        chartSub = new Chart(ctxSub, {
+          type: "bar",
+          data: {
+            labels: labelsSub,
+            datasets: [
+              { label: "Média", data: dataSub, backgroundColor: "#4b7bd6" },
+            ],
+          },
+          options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true, max: 10 } },
+            plugins: { legend: { display: false } },
+          },
+        });
+        const yearAvg = calcularYearAverage(anoSel);
+        const ctxYear = document.getElementById("chartAno").getContext("2d");
+        if (chartYear) chartYear.destroy();
+        chartYear = new Chart(ctxYear, {
+          type: "bar",
+          data: {
+            labels: [anoSel || "Todos os anos"],
+            datasets: [
+              {
+                label: "Média do ano",
+                data: [isNaN(yearAvg) ? 0 : Number(yearAvg.toFixed(2))],
+                backgroundColor: "#6fcf97",
+              },
+            ],
+          },
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            scales: { x: { beginAtZero: true, max: 10 } },
+            plugins: { legend: { display: false } },
+          },
+        });
+        const students = calcularStudentAverages(anoSel, turmaSel).filter(
+          (s) => s.aluno
+        );
+        students.sort(
+          (a, b) => b.avg - a.avg || a.aluno.localeCompare(b.aluno, "pt-BR")
+        );
+        const labelsStud = students.map((s) => s.aluno);
+        const dataStud = students.map((s) => Number(s.avg.toFixed(2)));
+        const ctxStud = document.getElementById("chartAlunos").getContext("2d");
+        if (chartStudents) chartStudents.destroy();
+        chartStudents = new Chart(ctxStud, {
+          type: "bar",
+          data: {
+            labels: labelsStud,
+            datasets: [
+              { label: "Média", data: dataStud, backgroundColor: "#f6c85f" },
+            ],
+          },
+          options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true, max: 10 } },
+            plugins: { legend: { display: false } },
+          },
+        });
       }
 
       function atualizarTabela() {
@@ -284,7 +489,6 @@
           if (!agrupado[n.ano]) agrupado[n.ano] = [];
           agrupado[n.ano].push(n);
         });
-
         let todasMedias = [];
 
         for (let ano in agrupado) {
@@ -292,40 +496,27 @@
           div.classList.add("ano-section");
           div.innerHTML = `
             <div class="ano-title">${escapeHtml(ano)}</div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Aluno</th>
-                  <th>Turma</th>
-                  <th>Semestre</th>
-                  <th>Prova 1</th>
-                  <th>Prova 2</th>
-                  <th>Atv 1</th>
-                  <th>Atv 2</th>
-                  <th>Média Final</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${agrupado[ano]
-                  .map((n) => {
-                    const media =
-                      n.media ?? calcularMedia(n.p1, n.p2, n.a1, n.a2);
-                    todasMedias.push(media);
-                    return `
-                    <tr>
-                      <td>${escapeHtml(n.aluno)}</td>
-                      <td>${escapeHtml(n.turma)}</td>
-                      <td>${escapeHtml(n.semestre)}</td>
-                      <td>${n.p1}</td>
-                      <td>${n.p2}</td>
-                      <td>${n.a1}</td>
-                      <td>${n.a2}</td>
-                      <td><b>${Number(media).toFixed(1)}</b></td>
-                    </tr>`;
-                  })
-                  .join("")}
-              </tbody>
-            </table>
+            <table><thead><tr>
+              <th>Aluno</th><th>Turma</th><th>Semestre</th><th>P1</th><th>P2</th><th>A1</th><th>A2</th><th>Média Final</th>
+            </tr></thead>
+            <tbody>
+              ${agrupado[ano]
+                .map((n) => {
+                  const media =
+                    n.media ?? calcularMedia(n.p1, n.p2, n.a1, n.a2);
+                  todasMedias.push(media);
+                  return `<tr>
+                  <td>${escapeHtml(n.aluno)}</td>
+                  <td>${escapeHtml(n.turma)}</td>
+                  <td>${escapeHtml(n.semestre)}</td>
+                  <td>${n.p1}</td><td>${n.p2}</td><td>${n.a1}</td><td>${
+                    n.a2
+                  }</td>
+                  <td><b>${Number(media).toFixed(1)}</b></td>
+                </tr>`;
+                })
+                .join("")}
+            </tbody></table>
           `;
           anosContainer.appendChild(div);
         }
@@ -336,18 +527,12 @@
           ).toFixed(2);
           const acima = todasMedias.filter((m) => m >= 6).length;
           const abaixo = todasMedias.length - acima;
-
-          estatisticasDiv.innerHTML = `
-            <h3>📊 Estatísticas Gerais</h3>
-            Média geral da turma: <b>${mediaTurma}</b><br>
-            Alunos acima da média (≥6): <b>${acima}</b><br>
-            Alunos abaixo da média: <b>${abaixo}</b>
-          `;
-        } else {
-          estatisticasDiv.innerHTML = "";
-        }
+          estatisticasDiv.innerHTML = `<h3>📊 Estatísticas Gerais</h3>
+            Média geral: <b>${mediaTurma}</b><br>Alunos acima (≥6): <b>${acima}</b><br>Alunos abaixo: <b>${abaixo}</b>`;
+        } else estatisticasDiv.innerHTML = "";
       }
 
+      // events
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         const ano = document.getElementById("ano").value;
@@ -358,55 +543,56 @@
         const p2 = parseFloat(document.getElementById("prova2").value);
         const a1 = parseFloat(document.getElementById("atv1").value);
         const a2 = parseFloat(document.getElementById("atv2").value);
-
         const media = calcularMedia(p1, p2, a1, a2);
 
         const detalhe = { ano, turma, aluno, semestre, p1, p2, a1, a2, media };
         notasDetalhadas.push(detalhe);
-
-        // Atualiza resumo usado pelo HomeAluno/NotasAluno (mantém compatibilidade)
-        // Guarda matéria vazia por enquanto (pode ser enviado se tiver campo de matéria)
         notasResumo.push({
           nome: aluno,
           valor: Number(media.toFixed(2)),
           materia: "",
           turma,
         });
-
         salvarLocal();
         form.reset();
+        atualizarFiltros();
         atualizarTabela();
+        renderCharts();
       });
 
-      // exclusão
       document.getElementById("excluirUltima").addEventListener("click", () => {
-        if (notasDetalhadas.length === 0) return;
+        if (!notasDetalhadas.length) return;
         if (!confirm("Deseja excluir a última entrada?")) return;
         notasDetalhadas.pop();
         notasResumo.pop();
         salvarLocal();
+        atualizarFiltros();
         atualizarTabela();
+        renderCharts();
       });
 
       document.getElementById("excluirTodas").addEventListener("click", () => {
-        if (notasDetalhadas.length === 0) return;
+        if (!notasDetalhadas.length) return;
         if (!confirm("Tem certeza que deseja excluir TODAS as entradas?"))
           return;
         notasDetalhadas = [];
         notasResumo = [];
         salvarLocal();
+        atualizarFiltros();
         atualizarTabela();
+        renderCharts();
       });
 
-      // Inicializa
-      function escapeHtml(str) {
-        return String(str || "").replace(
-          /[&<>"]/g,
-          (s) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[s])
-        );
-      }
+      filtroAno.addEventListener("change", () => {
+        renderCharts();
+      });
+      filtroTurma.addEventListener("change", () => {
+        renderCharts();
+      });
 
+      atualizarFiltros();
       atualizarTabela();
+      renderCharts();
     </script>
   </body>
 </html>

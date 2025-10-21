@@ -132,43 +132,18 @@ body.tritanopia {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-@media (max-width: 800px) {
-  .header-aluno {
-    flex-direction: column;
-    height: auto;
-    padding: 12px 10px;
-  }
-  .header-nav {
-    gap: 16px;
-  }
-  .header-profile-img {
-    margin-left: 0;
-    margin-top: 10px;
-  }
-  .main-content {
-    grid-template-columns: 1fr;
-  }
-}
-
-#daltonismo-select {
-  margin-left: 20px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
-
 @media (max-width: 600px) {
   .header-aluno {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row; /* alterar para row */
+    align-items: center;
     padding: 10px;
     gap: 10px;
+    flex-wrap: nowrap; /* evitar quebra de linha */
+    justify-content: space-between; /* distribuir espaço */
   }
 
   .header-nav {
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* evitar quebra */
     justify-content: flex-start;
     gap: 10px;
   }
@@ -179,7 +154,7 @@ body.tritanopia {
   }
 
   .header-profile-img {
-    margin-top: 10px;
+    margin-top: 0; /* ajustar margem para não empurrar pra baixo */
   }
 
   .main-content {
@@ -197,25 +172,3 @@ body.tritanopia {
     font-size: 16px;
   }
 }
-
-@media (max-width: 400px) {
-  .header-nav {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .header-link {
-    width: 100%;
-    text-align: left;
-  }
-
-  #daltonismo-select {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  footer .footer-text {
-    font-size: 11px;
-  }
-}
-
