@@ -112,23 +112,215 @@
         background: #1a2e6e;
         border-radius: 8px;
       }
+
+          /* Top icons (ajusta como q empilha no mobile) */
+          .top-icons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: nowrap; /* mantem os ícones em uma fileira */
+      }
+
+      .top-icons a,
+      .top-icons button,
+      .top-icons img,
+      .top-icons i {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 36px;
+        min-height: 36px;
+        max-width: 48px;
+        max-height: 48px;
+        padding: 4px;
+        box-sizing: border-box;
+      }
+
+      .top-icons img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+
+      @media (max-width: 420px) {
+        .top-icons {
+          gap: 6px;
+        }
+        .top-icons a,
+        .top-icons button,
+        .top-icons img,
+        .top-icons i {
+          min-width: 32px;
+          min-height: 32px;
+          max-width: 40px;
+          max-height: 40px;
+        }
+      }
+
+      /* barra lateral */
+      .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #163f7a;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.3s;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .sidebar.open {
+        width: 250px;
+      }
+      .sidebar-link {
+        padding: 12px 24px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        color: white;
+        display: block;
+      }
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background-color: #6a9bd1;
+        color: white;
+      }
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
+
+      /* Botão hamburguer */
+      .menu-toggle {
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: #163f7a;
+        cursor: pointer;
+        display: none; /* só aparece no mobile */
+        margin-left: 15px;
+        align-self: center;
+      }
+
+      /* Nav header */
+      .header-aluno {
+        background-color: #163f7a;
+        display: flex;
+        align-items: flex;
+        justify-content: space-between;
+        padding: 10px 20px;
+        flex-wrap: nowrap;
+        gap: 10px;
+      }
+
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
+
+      .menu-toggle {
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: none; /* só aparece no mobile */
+      }
+
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid white;
+        cursor: pointer;
+      }
+
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+
+        /* mantém logo, menu e perfil na mesma linha */
+        .header-aluno {
+          justify-content: space-between;
+        }
+      }
+      #daltonismo-select {
+        padding: 6px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+
+      .daltonismo-select-sidebar {
+        margin: 0 24px 12px 24px;
+        padding: 6px;
+        font-size: 1rem;
+        border-radius: 4px;
+        border: none;
+      }
+
+      /* Responsividade */
+      @media (min-width: 992px) {
+        .menu-toggle {
+          display: none;
+        }
+        .sidebar {
+          display: none !important;
+        }
+        .header-nav {
+          display: flex !important;
+        }
+      }
+
+      @media (max-width: 991px) {
+        .header-nav {
+          display: none !important;
+        }
+        .menu-toggle {
+          display: inline-block;
+        }
+      }
     </style>
   </head>
   <body>
     <header>
       <div class="header-aluno">
         <img
-          src="Assets/poliedro.png"
+         src="Assets/poliedro.png"
           alt="Logo Poliedro"
           class="poliedro-logo-header"
         />
+
+        <!-- Botão hamburguer para mobile -->
+        <button
+          id="menu-toggle"
+          aria-label="Abrir menu"
+          class="menu-toggle"
+          type="button"
+        >
+          &#9776;
+        </button>
+
+        <!-- Navegação tradicional (desktop) -->
         <nav class="header-nav">
           <a href="HomeProfessor.html" class="header-link">Home</a>
           <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
           <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
           <a href="NotasProfessor.html" class="header-link">Notas</a>
           <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
-          <a href="EventosProfessores.html" class="header-link">Eventos</a>
+          <a href="eventosProfessor.html" class="header-link active">Eventos</a>
+
           <select id="daltonismo-select">
             <option value="">Normal</option>
             <option value="protanopia">Protanopia</option>
@@ -136,14 +328,40 @@
             <option value="tritanopia">Tritanopia</option>
           </select>
         </nav>
+
         <a href="PerfilProfessor.html">
           <img
             src="Assets/LogoUsuario.png"
             alt="Meu cadastro"
-            class="header-profile-img"
-          />
+            class="header-profile-img"/>
         </a>
       </div>
+
+      <!-- Sidebar para mobile -->
+      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
+        <button
+          id="menu-close"
+          aria-label="Fechar menu"
+          class="menu-close"
+          type="button">
+          &times;
+        </button>
+        <a href="HomeProfessor.html" class="sidebar-link">Home</a>
+        <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
+        <a href="AtividadesProfessor.html" class="sidebar-link">Atividades</a>
+        <a href="NotasProfessor.html" class="sidebar-link">Notas</a>
+        <a href="MensagensProfessor.html" class="sidebar-link">Mensagens</a>
+        <a href="eventosProfessor.html" class="sidebar-link active">Eventos</a>
+
+        <select
+          id="daltonismo-select-sidebar"
+          class="daltonismo-select-sidebar">
+          <option value="">Normal</option>
+          <option value="protanopia">Protanopia</option>
+          <option value="deuteranopia">Deuteranopia</option>
+          <option value="tritanopia">Tritanopia</option>
+        </select>
+      </nav>
     </header>
 
     <div class="event-container">
@@ -165,6 +383,7 @@
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
 
+    <!-- VLibras plugin -->
     <div vw class="enabled">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper></div>
@@ -172,6 +391,61 @@
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
       new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+
+    <!-- Scripts JS -->
+    <script>
+      // Seleção Daltonismo
+      const daltonismoSelect = document.getElementById("daltonismo-select");
+      const daltonismoSelectSidebar = document.getElementById(
+        "daltonismo-select-sidebar"
+      );
+
+      function changeDaltonismo(selectElement) {
+        document.body.classList.remove(
+          "protanopia",
+          "deuteranopia",
+          "tritanopia"
+        );
+        const val = selectElement.value;
+        if (val) document.body.classList.add(val);
+      }
+
+      if (daltonismoSelect) {
+        daltonismoSelect.addEventListener("change", () =>
+          changeDaltonismo(daltonismoSelect)
+        );
+      }
+      if (daltonismoSelectSidebar) {
+        daltonismoSelectSidebar.addEventListener("change", () =>
+          changeDaltonismo(daltonismoSelectSidebar)
+        );
+      }
+
+      // Sidebar toggle
+      const menuToggle = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+      const menuClose = document.getElementById("menu-close");
+
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.add("open");
+        menuClose.focus();
+      });
+
+      menuClose.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+      });
+
+      // Fecha sidebar clicando fora dela e fora do botão hamburguer
+      window.addEventListener("click", (e) => {
+        if (
+          sidebar.classList.contains("open") &&
+          !sidebar.contains(e.target) &&
+          !menuToggle.contains(e.target)
+        ) {
+          sidebar.classList.remove("open");
+        }
+      });
     </script>
     <script>
       // Header ativo automático
