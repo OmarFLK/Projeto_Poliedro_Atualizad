@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Página de Login</title>
-    <link rel="stylesheet" href="styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/Login.css" />
   </head>
   <body>
     <div id="pageContent">
@@ -369,162 +369,10 @@
       </div>
     </div>
 
-    <script>
-      // bindings
-      const openTerms = document.getElementById("openTermsLink");
-      const overlay = document.getElementById("termsOverlay");
-      const modal = document.querySelector(".terms-modal");
-      const content = document.getElementById("termsContent");
-      const btnAccept = document.getElementById("termsBtnAccept");
-      const btnCloseTop = document.getElementById("termsCloseBtn");
-      const btnCloseBottom = document.getElementById("termsBtnCloseBottom");
-      const chkAccept = document.getElementById("aceitarTermos");
-      const loginBtn = document.getElementById("btnLogin");
-      let lastFocused = null;
-
-      // init from localStorage: if already accepted enable login
-      if (localStorage.getItem("termsAccepted") === "true") {
-        chkAccept.checked = true;
-        loginBtn.disabled = false;
-      } else {
-        chkAccept.checked = false;
-        loginBtn.disabled = true;
-      }
-
-      // helper: enable/disable accept UI (adds class for CSS)
-      function setAcceptEnabled(enabled) {
-        btnAccept.disabled = !enabled;
-        if (enabled) btnAccept.classList.add("enabled");
-        else btnAccept.classList.remove("enabled");
-      }
-
-      // improved open: ensure overlay visible and force layout, then check scroll
-      openTerms.addEventListener("click", (e) => {
-        e.preventDefault();
-        lastFocused = document.activeElement;
-        overlay.setAttribute("aria-hidden", "false");
-        overlay.classList.add("visible");
-        overlay.style.display = "flex"; // force
-        document.getElementById("pageContent").classList.add("blurred");
-        document.body.style.overflow = "hidden";
-        if (localStorage.getItem("termsAccepted") !== "true") {
-          setAcceptEnabled(false);
-          chkAccept.checked = false;
-        }
-        // focus modal for keyboard users
-        modal.focus();
-        // ensure sizes computed and then check scroll; also observe size changes
-        setTimeout(() => checkScroll(), 120);
-      });
-
-      // close modal: restore focus
-      function closeModal() {
-        overlay.setAttribute("aria-hidden", "true");
-        overlay.classList.remove("visible");
-        overlay.style.display = ""; // revert
-        document.getElementById("pageContent").classList.remove("blurred");
-        document.body.style.overflow = "";
-        (lastFocused || openTerms).focus();
-      }
-      btnCloseTop.addEventListener("click", closeModal);
-      btnCloseBottom.addEventListener("click", closeModal);
-      overlay.addEventListener("click", (ev) => {
-        if (ev.target === overlay) closeModal();
-      });
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && overlay.classList.contains("visible"))
-          closeModal();
-      });
-
-      // scroll detection: enable accept when scrolled to bottom
-      function checkScroll() {
-        const el = content;
-        // allow small tolerance
-        const tolerance = 8;
-        // If content fits without scroll, enable immediately
-        if (el.scrollHeight <= el.clientHeight + tolerance) {
-          setAcceptEnabled(true);
-          return;
-        }
-        const atBottom =
-          el.scrollTop + el.clientHeight >= el.scrollHeight - tolerance;
-        setAcceptEnabled(atBottom);
-      }
-      content.addEventListener("scroll", checkScroll);
-      window.addEventListener("resize", checkScroll);
-
-      // observe mutations that change content size (fonts/images) and re-check
-      const resizeObs = new MutationObserver(() => checkScroll());
-      resizeObs.observe(content, {
-        childList: true,
-        subtree: true,
-        characterData: true,
-      });
-
-      // accept: persist, enable checkbox & login, close modal
-      btnAccept.addEventListener("click", () => {
-        if (btnAccept.disabled) return;
-        localStorage.setItem("termsAccepted", "true"); // persist acceptance
-        chkAccept.checked = true;
-        chkAccept.disabled = false;
-        loginBtn.disabled = false;
-        closeModal();
-        loginBtn.focus();
-      });
-
-      // manual checkbox toggle (if user toggles after accept)
-      chkAccept.addEventListener("change", () => {
-        loginBtn.disabled = !chkAccept.checked;
-        if (chkAccept.checked) localStorage.setItem("termsAccepted", "true");
-        else localStorage.removeItem("termsAccepted");
-      });
-
-      // toggles for aluno/professor
-      document.getElementById("btnAluno").addEventListener("click", () => {
-        document.getElementById("btnAluno").classList.add("active");
-        document.getElementById("btnProfessor").classList.remove("active");
-      });
-      document.getElementById("btnProfessor").addEventListener("click", () => {
-        document.getElementById("btnProfessor").classList.add("active");
-        document.getElementById("btnAluno").classList.remove("active");
-      });
-
-      // demo login behavior
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          if (!chkAccept.checked) {
-            openTerms.click();
-            return;
-          } // enforce acceptance
-          const tipo = document
-            .getElementById("btnProfessor")
-            .classList.contains("active")
-            ? "professor"
-            : "aluno";
-          const email = document.getElementById("email").value.trim();
-          const senha = document.getElementById("senha").value.trim();
-          if (
-            tipo === "aluno" &&
-            email === "aluno@aluno.com" &&
-            senha === "aluno"
-          ) {
-            window.location.href = "HomeAluno.html";
-          } else if (
-            tipo === "professor" &&
-            email === "professor@professor.com" &&
-            senha === "professor"
-          ) {
-            window.location.href = "HomeProfessor.html";
-          } else {
-            alert("E-mail ou senha incorretos para " + tipo + ".");
-          }
-        });
-    </script>
-
     <footer>
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
+    <script src="front/Scripts/login.js"></script>
+
   </body>
 </html>

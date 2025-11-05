@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/Login.css" />
-    <link rel="stylesheet" href="styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
     <title>Eventos do Aluno</title>
     <style>
       .event-container {
@@ -374,17 +374,6 @@
     </script>
 
     <script>
-      // Daltonismo
-      const daltonismoSelect = document.getElementById("daltonismo-select");
-      daltonismoSelect?.addEventListener("change", () => {
-        document.body.classList.remove(
-          "protanopia",
-          "deuteranopia",
-          "tritanopia"
-        );
-        const val = daltonismoSelect.value;
-        if (val) document.body.classList.add(val);
-      });
 
       // Menu ativo automático
       document.querySelectorAll(".header-link").forEach((link) => {
