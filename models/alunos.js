@@ -5,7 +5,9 @@ const alunoSchema = new mongoose.Schema({
   ra: { type: String, required: true, unique: true, trim: true },
   nome: { type: String, required: true, trim: true },
   senha: { type: String, required: true },
-  email: { type: String, trim: true, default: '' }
+  email: { type: String, trim: true, default: '' },
+  turma:  { type: String, required: true },    
+  subSala:{ type: String, required: true },    
 }, { timestamps: true });
 
 alunoSchema.plugin(uniqueValidator);
