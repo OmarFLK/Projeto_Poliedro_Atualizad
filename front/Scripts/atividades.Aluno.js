@@ -1,162 +1,151 @@
-document.addEventListener('DOMContentLoaded', initAtividadesAluno);
+// front/Scripts/atividades.Aluno.js
+document.addEventListener("DOMContentLoaded", () => {
+  const baseUrl = window.location.origin.replace(/:\d+$/, ":3000");
+  const listaAtividades = document.getElementById("lista-atividades");
+  const listaResolucoes = document.getElementById("lista-resolucoes");
 
-async function initAtividadesAluno() {
-  const lista = document.getElementById('lista-tarefas-aluno');
-  if (!lista) return;
+  // dados do aluno em teste; quando tiver login real, pegue do localStorage
+  const aluno = {
+    id: "690a63aa572e88232e5e6fe9",
+    nome: "João Silva",
+    ra: "2024001",
+    turma: "3º ano",
+    subSala: "Sub 1"
+  };
 
-  const aluno = safeParse(localStorage.getItem('usuario')) || {};
-  const token = localStorage.getItem('token') || '';
+  async function carregarAtividades() {
+    listaAtividades.innerHTML = "<p>Carregando atividades...</p>";
+    try {
+      const res = await fetch(
+        `${baseUrl}/api/atividades?turma=${encodeURIComponent(aluno.turma)}&subSala=${encodeURIComponent(aluno.subSala)}`
+      );
+      const atividades = await res.json();
 
-  if (!aluno || !aluno.ra) {
-    lista.textContent = 'Erro: aluno não autenticado.';
-    return;
-  }
-  if (!aluno.turma || !aluno.subSala) {
-    renderAvisoPerfilIncompleto(lista);
-    console.warn('Perfil incompleto:', aluno);
-    return;
-  }
+      if (!Array.isArray(atividades) || atividades.length === 0) {
+        listaAtividades.innerHTML = "<p>Nenhuma atividade disponível.</p>";
+        return;
+      }
 
-  // Base da API
-  const baseUrl = window.location.origin.replace(/:\d+$/, ':3000');
-  const url = `${baseUrl}/api/atividades?turma=${encodeURIComponent(aluno.turma)}&subSala=${encodeURIComponent(aluno.subSala)}`;
-  
-  console.log('Buscando atividades em:', url);
+      listaAtividades.innerHTML = "";
+      atividades.forEach((a) => {
+        const artigo = document.createElement("article");
+        artigo.className = "tarefa";
+        artigo.innerHTML = `
+          <div class="tarefa-info">
+            <b>Turma:</b> ${a.turma} | <b>Sub-sala:</b> ${a.subSala} | <b>Matéria:</b> ${a.materia}
+          </div>
+          <h3>${a.titulo}</h3>
+          <p>${a.descricao || ""}</p>
+          ${a.arquivoPath ? `<a href="${a.arquivoPath}" target="_blank" rel="noopener">📎 ${a.arquivoNome}</a>` : ""}
+          <div class="upload-area">
+            <textarea class="obs-input" placeholder="Observação (opcional)"></textarea>
+            <input type="file" class="file-input" accept=".pdf,.doc,.docx,.txt" />
+            <button class="btn-resolver" data-id="${a._id}">Enviar resolução</button>
+          </div>
+        `;
+        listaAtividades.appendChild(artigo);
+      });
 
-  try {
-    // FETCH DIRETO
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const atividades = await res.json();
+      document.querySelectorAll(".btn-resolver").forEach((btn) => {
+        btn.addEventListener("click", async function () {
+          const card = this.closest(".tarefa");
+          const obs = card.querySelector(".obs-input").value.trim();
+          const fileInput = card.querySelector(".file-input");
+          const arquivo = fileInput.files[0];
 
-    if (!res.ok || !Array.isArray(atividades) || atividades.length === 0) {
-      lista.innerHTML = '<p style="text-align:center;color:#888;">Nenhuma atividade disponível para sua turma.</p>';
-      console.warn('Nenhuma atividade encontrada ou erro na resposta:', atividades);
-      return;
+          if (!obs && !arquivo) {
+            alert("Preencha uma observação ou envie um arquivo.");
+            return;
+          }
+
+          const fd = new FormData();
+          fd.append("atividadeId", this.dataset.id);
+          fd.append("alunoId", aluno.id);
+          fd.append("nomeAluno", aluno.nome);
+          fd.append("raAluno", aluno.ra);
+          // adiciona turma e subSala do aluno
+          fd.append("turma", aluno.turma);
+          fd.append("subSala", aluno.subSala);
+          fd.append("observacao", obs);
+          if (arquivo) fd.append("arquivo", arquivo);
+
+          try {
+            const res = await fetch(`${baseUrl}/api/resolucoes`, {
+              method: "POST",
+              body: fd,
+            });
+
+            if (res.ok) {
+              alert("Resolução enviada com sucesso!");
+              carregarResolucoes();
+              fileInput.value = "";
+              card.querySelector(".obs-input").value = "";
+            } else {
+              const data = await res.json().catch(() => ({}));
+              alert("Erro ao enviar resolução." + (data.error ? ` (${data.error})` : ""));
+            }
+          } catch (err) {
+            console.error("Erro ao enviar:", err);
+            alert("Erro de conexão com o servidor.");
+          }
+        });
+      });
+    } catch (err) {
+      console.error("Erro ao carregar atividades:", err);
+      listaAtividades.innerHTML = "<p>Erro ao carregar atividades.</p>";
     }
-
-    //Renderiza lista normalmente
-    lista.innerHTML = '';
-    renderLista(lista, atividades, aluno, baseUrl);
-  } catch (err) {
-    console.error('Erro ao carregar atividades:', err);
-    lista.textContent = 'Erro ao carregar atividades.';
-  }
-}
-
-/* helpers */
-function safeParse(str) { try { return JSON.parse(str); } catch { return null; } }
-
-function makeEl(tag, className, text) {
-  const el = document.createElement(tag);
-  if (className) el.className = className;
-  if (text != null) el.textContent = text;
-  return el;
-}
-
-function makeP(text, color, align) {
-  const p = document.createElement('p');
-  p.textContent = text;
-  if (color) p.style.color = color;
-  if (align) p.style.textAlign = align;
-  return p;
-}
-
-function renderAvisoPerfilIncompleto(container) {
-  container.innerHTML = `
-    <div style="
-      background:#fff7da; border:1px solid #ffe08a; color:#6b5800;
-      padding:16px; border-radius:10px; text-align:center; max-width:700px; margin:20px auto;">
-      Seu perfil ainda não contém <b>turma</b> ou <b>sub-sala</b>.<br/>
-      Peça para o administrador atualizar seus dados antes de acessar as atividades.
-    </div>
-  `;
-}
-
-function renderLista(container, atividades, aluno, baseUrl) {
-  atividades.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  atividades.forEach(a => {
-    const card = renderTarefa(a, aluno, baseUrl);
-    container.appendChild(card);
-  });
-}
-
-function renderTarefa(a, aluno, baseUrl) {
-  const card = makeEl('div', 'tarefa');
-  const info = makeEl('div', 'tarefa-info');
-  info.innerHTML = `<b>Turma:</b> ${a.turma} &nbsp; <b>Sub-sala:</b> ${a.subSala} &nbsp; <b>Matéria:</b> ${a.materia}`;
-  card.appendChild(info);
-
-  card.appendChild(makeEl('div', 'tarefa-titulo', a.titulo || ''));
-  if (a.descricao) card.appendChild(makeEl('div', 'tarefa-desc', a.descricao));
-
-  if (a.arquivoPath) {
-    const link = document.createElement('a');
-    link.className = 'tarefa-arquivo';
-    link.href = a.arquivoPath;
-    link.target = '_blank';
-    link.rel = 'noopener';
-    link.textContent = `📎 ${a.arquivoNome || 'Arquivo'}`;
-    card.appendChild(link);
   }
 
-  const area = makeEl('div', 'resolucao-area');
-  area.appendChild(makeEl('h4', null, 'Enviar resolução'));
+  async function carregarResolucoes() {
+    listaResolucoes.innerHTML = "<p>Carregando resoluções...</p>";
+    try {
+      const res = await fetch(`${baseUrl}/api/resolucoes/aluno/${aluno.id}`);
+      const resolucoes = await res.json();
 
-  const form = makeEl('form', 'form-resolucao');
-  form.dataset.atividadeId = a._id;
+      if (!Array.isArray(resolucoes) || resolucoes.length === 0) {
+        listaResolucoes.innerHTML = "<p>Nenhuma resolução enviada ainda.</p>";
+        return;
+      }
 
-  const obs = document.createElement('textarea');
-  obs.name = 'observacao';
-  obs.placeholder = 'Adicione observações ou um link (opcional)';
-  form.appendChild(obs);
+      listaResolucoes.innerHTML = "";
+      resolucoes.forEach((r) => {
+        const atividade = r.atividadeId || {};
+        const card = document.createElement("div");
+        card.className = "resolucao-card";
+        card.innerHTML = `
+          <p><b>Atividade:</b> ${atividade.titulo || "Sem título"}</p>
+          <p><b>Matéria:</b> ${atividade.materia || "—"}</p>
+          <p><b>Turma:</b> ${atividade.turma || "—"} | <b>Sub-sala:</b> ${atividade.subSala || "—"}</p>
+          <p><b>Observação:</b> ${r.observacao || "Nenhuma"}</p>
+          ${r.arquivoPath ? `<a href="${r.arquivoPath}" target="_blank" rel="noopener">📄 ${r.arquivoNome}</a>` : ""}
+          <button class="btn-excluir" data-id="${r._id}">Excluir</button>
+        `;
+        listaResolucoes.appendChild(card);
+      });
 
-  const file = document.createElement('input');
-  file.type = 'file';
-  file.name = 'arquivo';
-  form.appendChild(file);
-
-  const btn = document.createElement('button');
-  btn.type = 'submit';
-  btn.textContent = 'Enviar';
-  form.appendChild(btn);
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    await enviarResolucao({
-      baseUrl,
-      atividadeId: form.dataset.atividadeId,
-      aluno,
-      observacao: obs.value.trim(),
-      arquivo: file.files[0] || null,
-      onOk: () => { alert('Resolução enviada com sucesso!'); form.reset(); },
-      onFail: (msg) => alert(msg || 'Erro ao enviar resolução.')
-    });
-  });
-
-  area.appendChild(form);
-  card.appendChild(area);
-
-  return card;
-}
-
-async function enviarResolucao({ baseUrl, atividadeId, aluno, observacao, arquivo, onOk, onFail }) {
-  const fd = new FormData();
-  fd.append('atividadeId', atividadeId);
-  fd.append('alunoId', aluno._id || aluno.id || '');
-  fd.append('nomeAluno', aluno.nome || '');
-  fd.append('raAluno', aluno.ra || '');
-  fd.append('observacao', observacao || '');
-  if (arquivo) fd.append('arquivo', arquivo);
-
-  try {
-    const res = await fetch(`${baseUrl}/api/resolucoes`, { method: 'POST', body: fd });
-    const data = await res.json().catch(() => ({}));
-    if (res.ok) onOk && onOk(data);
-    else onFail && onFail(data.error);
-  } catch (e) {
-    console.error(e);
-    onFail && onFail('Erro de conexão.');
+      document.querySelectorAll(".btn-excluir").forEach((btn) => {
+        btn.addEventListener("click", async function () {
+          if (!confirm("Deseja excluir esta resolução?")) return;
+          try {
+            const res = await fetch(`${baseUrl}/api/resolucoes/${this.dataset.id}`, { method: "DELETE" });
+            if (res.ok) {
+              alert("Resolução excluída.");
+              carregarResolucoes();
+            } else {
+              alert("Erro ao excluir resolução.");
+            }
+          } catch (err) {
+            console.error("Erro ao excluir:", err);
+            alert("Falha ao excluir resolução.");
+          }
+        });
+      });
+    } catch (err) {
+      console.error("Erro ao carregar resoluções:", err);
+      listaResolucoes.innerHTML = "<p>Erro ao carregar resoluções.</p>";
+    }
   }
-}
+
+  carregarAtividades();
+  carregarResolucoes();
+});

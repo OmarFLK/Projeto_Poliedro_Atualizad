@@ -3,66 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atividades do Aluno</title>
     <link rel="stylesheet" href="front/Styles/Login.css" />
     <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
     <link rel="stylesheet" href="front/Styles/AtividadesAluno.css" />
-    <title>Atividades do Aluno</title>
   </head>
 
   <body>
-
     <header>
-  <div class="header-aluno">
-    <img
-      src="Assets/poliedro.png"
-      alt="Logo Poliedro"
-      class="poliedro-logo-header"
-    />
-
-    <nav class="header-nav">
-      <a href="HomeAluno.html" class="header-link">Home</a>
-      <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
-      <a href="AtividadesAluno.html" class="header-link active">Atividades</a>
-      <a href="NotasAluno.html" class="header-link">Notas</a>
-      <a href="MensagensAluno.html" class="header-link">Mensagens</a>
-      <a href="eventosAlunos.html" class="header-link">Eventos</a>
-
-      <select id="daltonismo-select">
-        <option value="">Normal</option>
-        <option value="protanopia">Protanopia</option>
-        <option value="deuteranopia">Deuteranopia</option>
-        <option value="tritanopia">Tritanopia</option>
-      </select>
-    </nav>
-
-    <a href="PerfilAluno.html">
-      <img
-        src="Assets/LogoUsuario.png"
-        alt="Meu cadastro"
-        class="header-profile-img"
-      />
-    </a>
-  </div>
-</header>
-
-    <main class="atividades-aluno-container">
-      <h2 class="atividades-titulo">Minhas Atividades</h2>
-      <div id="lista-tarefas-aluno">
-        <!-- O JS vai preencher as atividades aqui -->
+      <div class="header-aluno">
+        <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+        <nav class="header-nav">
+          <a href="HomeAluno.html" class="header-link">Home</a>
+          <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
+          <a href="AtividadesAluno.html" class="header-link active">Atividades</a>
+          <a href="NotasAluno.html" class="header-link">Notas</a>
+          <a href="MensagensAluno.html" class="header-link">Mensagens</a>
+          <a href="EventosAluno.html" class="header-link">Eventos</a>
+          <select id="daltonismo-select">
+            <option value="">Normal</option>
+            <option value="protanopia">Protanopia</option>
+            <option value="deuteranopia">Deuteranopia</option>
+            <option value="tritanopia">Tritanopia</option>
+          </select>
+        </nav>
+        <a href="PerfilAluno.html">
+          <img src="Assets/LogoUsuario.png" alt="Meu perfil" class="header-profile-img" />
+        </a>
       </div>
-    </main>
+    </header>
+
+    <main>
+  <div class="painel-atividades">
+    <!-- Coluna esquerda -->
+    <section class="col-esquerda">
+      <h1>Minhas Atividades</h1>
+      <div id="lista-atividades"></div>
+    </section>
+
+    <!-- Coluna direita -->
+    <section class="col-direita">
+      <h2>Minhas Resoluções</h2>
+      <div id="lista-resolucoes"></div>
+    </section>
+  </div>
+</main>
+
 
     <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
 
-    <!-- VLibras plugin -->
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-      new window.VLibras.Widget("https://vlibras.gov.br/app");
-    </script>
-
-    
     <script src="front/Scripts/atividades.Aluno.js"></script>
   </body>
 </html>

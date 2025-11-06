@@ -1,165 +1,168 @@
-/*CONTAINER PRINCIPAL*/
-.atividades-aluno-container {
-  max-width: 750px;
-  margin: 40px auto;
-  padding: 28px;
+/* Estrutura principal */
+.painel-atividades {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: stretch;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 20px;
+  min-height: 80vh;
+}
+
+/* Coluna esquerda */
+.col-esquerda {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
-}
-
-.atividades-titulo {
-  text-align: center;
-  color: var(--azul-principal, #1a4e9b);
-  margin-bottom: 28px;
-  font-size: 1.7rem;
-  letter-spacing: 0.5px;
-  font-weight: 600;
-}
-
-/*CARD DE ATIVIDADE*/
-.tarefa-card {
-  background: #f8fafd;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  padding: 22px 24px;
-  margin-bottom: 24px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 20px;
 }
-.tarefa-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+#lista-atividades {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Card de atividade */
+.tarefa {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 18px;
 }
 
 .tarefa-info {
-  font-size: 0.96rem;
-  color: #555;
-  margin-bottom: 6px;
-}
-.tarefa-titulo {
-  font-size: 1.25rem;
-  color: var(--azul-escuro, #163f7a);
-  font-weight: 600;
-  margin: 8px 0 10px 0;
-}
-.tarefa-desc {
-  font-size: 1rem;
-  color: #444;
-  margin-bottom: 14px;
-  line-height: 1.45;
-}
-.tarefa-arquivo {
   font-size: 0.95rem;
+  color: #555;
+}
+
+.tarefa h3 {
+  color: var(--azul-escuro, #163f7a);
+  margin: 8px 0;
+}
+
+.tarefa a {
   color: var(--azul-principal, #1a4e9b);
   text-decoration: none;
-  display: inline-block;
-  margin-bottom: 18px; /* espaçamento maior pro botão */
+  font-size: 14px;
 }
-.tarefa-arquivo:hover {
+
+.tarefa a:hover {
   text-decoration: underline;
 }
 
-/*BOTÃO DE ENVIAR RESOLUÇÃO*/
-.btn-enviar-resolucao {
-  background: var(--azul-principal);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  cursor: pointer;
-  font-size: 0.96rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  margin-top: 4px;
-}
-.btn-enviar-resolucao:hover {
-  background: var(--azul-escuro);
-  transform: translateY(-1px);
-}
-
-/*FORMULÁRIO DE RESOLUÇÃO*/
-.form-resolucao {
-  display: none;
-  margin-top: 16px;
-  padding: 16px;
-  background: #f9fafc;
-  border-radius: 10px;
-  border: 1px solid #dce3f0;
-}
-.form-resolucao label {
-  font-size: 0.9rem;
-  color: #333;
-  margin-bottom: 4px;
-  display: block;
-}
-.form-resolucao input[type="text"],
-.form-resolucao input[type="file"],
-.form-resolucao textarea {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccd5e0;
-  font-size: 0.95rem;
-  background: #fff;
-}
-.form-resolucao textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-.form-botoes {
+/* Área de envio */
+.upload-area {
+  margin-top: 10px;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   gap: 8px;
 }
 
-.btn-confirmar {
-  background: #4bb543;
+.obs-input {
+  resize: none;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 14px;
+  height: 60px;
+}
+
+.file-input {
+  border: none;
+  font-size: 14px;
+}
+
+.btn-resolver {
+  background: var(--azul-principal, #1a4e9b);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  align-self: flex-start;
+  transition: transform 0.1s ease, background-color 0.2s ease;
+}
+
+.btn-resolver:hover {
+  background: var(--azul-escuro, #163f7a);
+  transform: translateY(-1px);
+}
+
+/* Coluna da direita */
+.col-direita {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.col-direita h2 {
+  color: var(--azul-escuro, #163f7a);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Card das resoluções */
+.resolucao-card {
+  background: #f9fbff;
+  border: 1px solid #dce3f0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.resolucao-card p {
+  margin: 4px 0;
+  color: #555;
+}
+
+.resolucao-card a {
+  color: var(--azul-principal, #1a4e9b);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.resolucao-card a:hover {
+  text-decoration: underline;
+}
+
+.btn-excluir {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
   padding: 8px 14px;
   cursor: pointer;
-  font-size: 0.95rem;
-  transition: background 0.2s ease;
-}
-.btn-confirmar:hover {
-  background: #3a9835;
-}
-
-.btn-cancelar {
-  background: #eee;
-  color: #444;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 8px 14px;
-  cursor: pointer;
-  font-size: 0.95rem;
-}
-.btn-cancelar:hover {
-  background: #ddd;
+  font-size: 13px;
+  display: block;
+  margin-top: 10px;
+  align-self: flex-start;
+  transition: transform 0.1s ease, background-color 0.2s ease;
 }
 
-/*FEEDBACK DE RESOLUÇÃO*/
-.resolucao-enviada {
-  background: #eafbe7;
-  padding: 10px 14px;
-  border-radius: 8px;
-  color: #2b7a2f;
-  font-weight: 500;
-  border: 1px solid #bde8c2;
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 0.95rem;
+.btn-excluir:hover {
+  background: #c0392b;
+  transform: translateY(-1px);
 }
 
-/* ======== RESPONSIVO ======== */
-@media (max-width: 768px) {
-  .atividades-aluno-container {
-    padding: 18px;
+/* Responsividade */
+@media (max-width: 900px) {
+  .painel-atividades {
+    grid-template-columns: 1fr;
   }
-  .tarefa-card {
-    padding: 18px;
+
+  .col-direita {
+    max-height: none;
   }
 }

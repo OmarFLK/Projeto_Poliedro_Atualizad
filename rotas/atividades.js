@@ -21,7 +21,7 @@ const upload = multer({ storage });
 // função para normalizar campos de texto
 const normalize = str => str ? str.trim().toLowerCase() : '';
 
-/*LISTAR ATIVIDADES (com filtro por turma e subSala) */
+// listar atividades com filtro
 router.get('/', async (req, res) => {
   const { turma, subSala, materia } = req.query;
 
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
     const filtro = {};
     if (turma) filtro.turma = new RegExp(`^${normalize(turma)}$`, 'i');
     if (subSala) filtro.subSala = new RegExp(`^${normalize(subSala)}$`, 'i');
-    if (materia) filtro.materia = materia;
+    if (materia) filtro.materia = new RegExp(`^${normalize(materia)}$`, 'i');
 
     const lista = await Atividade.find(filtro).sort({ createdAt: -1 });
     res.json(lista);
@@ -39,14 +39,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-/* CRIAR ATIVIDADE (professor envia)*/
+// criar atividade (professor)
 router.post('/', upload.single('arquivo'), async (req, res) => {
   try {
-    console.log("Requisição recebida no POST /api/atividades");
-console.log("Body:", req.body);
-console.log("File:", req.file);
-
     const { turma, subSala, materia, titulo, descricao } = req.body;
+
     if (!turma || !subSala || !materia || !titulo) {
       return res.status(400).json({
         error: 'turma, subSala, materia e titulo são obrigatórios'
@@ -70,7 +67,7 @@ console.log("File:", req.file);
   }
 });
 
-/*EXCLUIR ATIVIDADE*/
+// excluir atividade
 router.delete('/:id', async (req, res) => {
   try {
     const atividade = await Atividade.findById(req.params.id);
@@ -78,30 +75,6 @@ router.delete('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Atividade não encontrada' });
     }
 
-    // remove o arquivo físico se existir
-    if (atividade.arquivoPath) {
-      const fullPath = path.join(__dirname, '..', atividade.arquivoPath);
-      fs.unlink(fullPath, (err) => {
-        if (err) console.warn('Arquivo não encontrado para exclusão:', err.message);
-      });
-    }
-
-    await Atividade.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Atividade excluída com sucesso.' });
-  } catch (e) {
-    console.error('Erro ao excluir atividade:', e);
-    res.status(500).json({ error: 'Erro ao excluir atividade' });
-  }
-});
-/* EXCLUIR ATIVIDADE (professor) */
-router.delete('/:id', async (req, res) => {
-  try {
-    const atividade = await Atividade.findById(req.params.id);
-    if (!atividade) {
-      return res.status(404).json({ error: 'Atividade não encontrada' });
-    }
-
-    // Apagar o arquivo físico (se existir)
     if (atividade.arquivoPath) {
       const caminhoArquivo = path.join(process.cwd(), atividade.arquivoPath);
       fs.unlink(caminhoArquivo, (err) => {
@@ -118,6 +91,5 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ error: 'Erro ao excluir atividade.' });
   }
 });
-
 
 module.exports = router;

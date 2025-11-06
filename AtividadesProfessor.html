@@ -1,299 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8" />   
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="front/Styles/Login.css" />
     <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/AtividadesProfessor.css" />
     <title>Atividades Professor</title>
-    <style>
-      main {
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 20px;
-      }
-      h1 {
-        color: var(--azul-principal, #1a4e9b);
-        margin-bottom: 20px;
-      }
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        background: #fff;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      input,
-      textarea,
-      select {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 14px;
-      }
-      button[type="submit"] {
-        padding: 10px;
-        background: var(--azul-principal, #1a4e9b);
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-      button[type="submit"]:hover {
-        background: var(--azul-escuro, #163f7a);
-      }
-      section#lista-tarefas {
-        margin-top: 20px;
-      }
-      article.tarefa {
-        background: #fff;
-        padding: 15px;
-        margin-bottom: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      .tarefa-info {
-        font-size: 0.98rem;
-        color: #444;
-        margin-bottom: 8px;
-      }
-      article.tarefa h3 {
-        margin: 0 0 10px;
-        color: var(--azul-escuro, #163f7a);
-      }
-      article.tarefa p {
-        margin: 0 0 10px;
-      }
-      article.tarefa a {
-        color: var(--azul-principal, #1a4e9b);
-        text-decoration: none;
-        font-size: 14px;
-      }
-      article.tarefa a:hover {
-        text-decoration: underline;
-      }
-      .btn-excluir {
-        background: #e74c3c;
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        padding: 7px 14px;
-        cursor: pointer;
-        margin-top: 5px;
-        font-size: 13px;
-      }
-      .btn-excluir:hover {
-        background: #c0392b;
-      }
-      .resolucao-info {
-        background: #eafbe7;
-        padding: 8px;
-        border-radius: 6px;
-        font-size: 0.98rem;
-        margin-top: 10px;
-      }
-            /* Top icons (ajusta como q empilha no mobile) */
-            .top-icons {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 8px;
-        flex-wrap: nowrap; /* mantem os ícones em uma fileira */
-      }
-
-      .top-icons a,
-      .top-icons button,
-      .top-icons img,
-      .top-icons i {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 36px;
-        min-height: 36px;
-        max-width: 48px;
-        max-height: 48px;
-        padding: 4px;
-        box-sizing: border-box;
-      }
-
-      .top-icons img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-      }
-
-      @media (max-width: 420px) {
-        .top-icons {
-          gap: 6px;
-        }
-        .top-icons a,
-        .top-icons button,
-        .top-icons img,
-        .top-icons i {
-          min-width: 32px;
-          min-height: 32px;
-          max-width: 40px;
-          max-height: 40px;
-        }
-      }
-
-      /* barra lateral */
-      .sidebar {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #163f7a;
-        overflow-x: hidden;
-        padding-top: 60px;
-        transition: 0.3s;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-      .sidebar.open {
-        width: 250px;
-      }
-      .sidebar-link {
-        padding: 12px 24px;
-        text-decoration: none;
-        font-size: 1.2rem;
-        color: white;
-        display: block;
-      }
-      .sidebar-link:hover,
-      .sidebar-link.active {
-        background-color: #6a9bd1;
-        color: white;
-      }
-      .menu-close {
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-      }
-
-      /* Botão hamburguer */
-      .menu-toggle {
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: #163f7a;
-        cursor: pointer;
-        display: none; /* só aparece no mobile */
-        margin-left: 15px;
-        align-self: center;
-      }
-
-      /* Nav header */
-      .header-aluno {
-        background-color: #163f7a;
-        display: flex;
-        align-items: flex;
-        justify-content: space-between;
-        padding: 10px 20px;
-        flex-wrap: nowrap;
-        gap: 10px;
-      }
-
-      .poliedro-logo-header {
-        height: 40px;
-        cursor: pointer;
-      }
-
-      .menu-toggle {
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-        display: none; /* só aparece no mobile */
-      }
-
-      .header-profile-img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 2px solid white;
-        cursor: pointer;
-      }
-
-      @media (max-width: 991px) {
-        .menu-toggle {
-          display: inline-block;
-        }
-
-        /* mantém logo, menu e perfil na mesma linha */
-        .header-aluno {
-          justify-content: space-between;
-        }
-      }
-      #daltonismo-select {
-        padding: 6px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-      }
-
-      .daltonismo-select-sidebar {
-        margin: 0 24px 12px 24px;
-        padding: 6px;
-        font-size: 1rem;
-        border-radius: 4px;
-        border: none;
-      }
-
-      /* Responsividade */
-      @media (min-width: 992px) {
-        .menu-toggle {
-          display: none;
-        }
-        .sidebar {
-          display: none !important;
-        }
-        .header-nav {
-          display: flex !important;
-        }
-      }
-
-      @media (max-width: 991px) {
-        .header-nav {
-          display: none !important;
-        }
-        .menu-toggle {
-          display: inline-block;
-        }
-      }
-    </style>
   </head>
+
   <body>
+    <!-- Cabeçalho original preservado -->
     <header>
       <div class="header-aluno">
-        <img
-         src="Assets/poliedro.png"
-          alt="Logo Poliedro"
-          class="poliedro-logo-header"
-        />
+        <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
 
-        <!-- Botão hamburguer para mobile -->
-        <button
-          id="menu-toggle"
-          aria-label="Abrir menu"
-          class="menu-toggle"
-          type="button"
-        >
-          &#9776;
-        </button>
-
-        <!-- Navegação tradicional (desktop) -->
         <nav class="header-nav">
           <a href="HomeProfessor.html" class="header-link">Home</a>
           <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
@@ -311,102 +32,72 @@
         </nav>
 
         <a href="PerfilProfessor.html">
-          <img
-            src="Assets/LogoUsuario.png"
-            alt="Meu cadastro"
-            class="header-profile-img"/>
+          <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img"/>
         </a>
       </div>
-
-      <!-- Sidebar para mobile -->
-      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-        <button
-          id="menu-close"
-          aria-label="Fechar menu"
-          class="menu-close"
-          type="button">
-          &times;
-        </button>
-        <a href="HomeProfessor.html" class="sidebar-link">Home</a>
-        <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
-        <a href="AtividadesProfessor.html" class="sidebar-link active">Atividades</a>
-        <a href="NotasProfessor.html" class="sidebar-link">Notas</a>
-        <a href="MensagensProfessor.html" class="sidebar-link">Mensagens</a>
-        <a href="eventosProfessor.html" class="sidebar-link">Eventos</a>
-
-        <select
-          id="daltonismo-select-sidebar"
-          class="daltonismo-select-sidebar">
-          <option value="">Normal</option>
-          <option value="protanopia">Protanopia</option>
-          <option value="deuteranopia">Deuteranopia</option>
-          <option value="tritanopia">Tritanopia</option>
-        </select>
-      </nav>
     </header>
 
-    <main>
-      <h1>Atividades do Professor</h1>
-      <form id="form-tarefa">
-        <select id="turma" required>
-          <option value="">Selecione o ano</option>
-          <option value="1º Ano">1º Ano</option>
-          <option value="2º Ano">2º Ano</option>
-          <option value="3º Ano">3º Ano</option>
-        </select>
-        <select id="subSala" required>
-          <option value="">Selecione a sub-sala</option>
-          <option value="Sub 1">Sub 1</option>
-          <option value="Sub 2">Sub 2</option>
-          <option value="Sub 3">Sub 3</option>
-        </select>
-        <select id="materia" required>
-          <option value="">Selecione a matéria</option>
-          <option value="Português">Português</option>
-          <option value="Matemática">Matemática</option>
-          <option value="Biologia">Biologia</option>
-          <option value="Física">Física</option>
-          <option value="Química">Química</option>
-          <option value="Geografia">Geografia</option>
-          <option value="História">História</option>
-          <option value="Filosofia">Filosofia</option>
-          <option value="Sociologia">Sociologia</option>
-          <option value="Artes">Artes</option>
-          <option value="Educação Física">Educação Física</option>
-          <option value="Inglês">Inglês</option>
-        </select>
-        <input
-          type="text"
-          id="titulo"
-          placeholder="Título da tarefa"
-          required
-        />
-        <textarea
-          id="descricao"
-          placeholder="Descrição da tarefa"
-          rows="3"
-        ></textarea>
-        <input type="file" id="arquivo" />
-        <button type="submit">Postar Tarefa</button>
-      </form>
-      <section id="lista-tarefas"></section>
+    <!-- Corpo principal -->
+    <main class="painel-atividades">
+      <section class="col-esquerda">
+        <h1>Atividades do Professor</h1>
+        <form id="form-tarefa">
+          <select id="turma" required>
+            <option value="">Selecione o ano</option>
+            <option value="1º Ano">1º Ano</option>
+            <option value="2º Ano">2º Ano</option>
+            <option value="3º Ano">3º Ano</option>
+          </select>
+
+          <select id="subSala" required>
+            <option value="">Selecione a sub-sala</option>
+            <option value="Sub 1">Sub 1</option>
+            <option value="Sub 2">Sub 2</option>
+            <option value="Sub 3">Sub 3</option>
+          </select>
+
+          <select id="materia" required>
+            <option value="">Selecione a matéria</option>
+            <option value="Português">Português</option>
+            <option value="Matemática">Matemática</option>
+            <option value="Biologia">Biologia</option>
+            <option value="Física">Física</option>
+            <option value="Química">Química</option>
+            <option value="Geografia">Geografia</option>
+            <option value="História">História</option>
+            <option value="Filosofia">Filosofia</option>
+            <option value="Sociologia">Sociologia</option>
+            <option value="Artes">Artes</option>
+            <option value="Educação Física">Educação Física</option>
+            <option value="Inglês">Inglês</option>
+          </select>
+
+          <input type="text" id="titulo" placeholder="Título da tarefa" required />
+          <textarea id="descricao" placeholder="Descrição da tarefa" rows="3"></textarea>
+          <input type="file" id="arquivo" />
+          <button type="submit">Postar Tarefa</button>
+        </form>
+
+        <section id="lista-tarefas"></section>
+      </section>
+
+      <aside class="col-direita" id="painel-resolucoes">
+        <h2>Resoluções Enviadas</h2>
+        <div id="lista-resolucoes">
+          <p>Selecione uma atividade para visualizar as resoluções.</p>
+        </div>
+      </aside>
     </main>
 
     <footer>
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
 
-    <!-- VLibras plugin -->
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper></div>
-    </div>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
       new window.VLibras.Widget("https://vlibras.gov.br/app");
     </script>
 
     <script src="front/Scripts/atividades.Professor.js"></script>
-
   </body>
 </html>
