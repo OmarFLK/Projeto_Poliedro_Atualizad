@@ -7,13 +7,14 @@
     <link rel="stylesheet" href="front/Styles/Login.css" />
     <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
     <style>
+      /* --- SEU CSS ORIGINAL (sem alterações de estilo) --- */
       .painel-resumo {
         max-width: 900px;
         margin: 32px auto 0 auto;
         padding: 24px 16px;
         background: #fff;
         border-radius: 14px;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
       }
       .painel-resumo h2 {
         text-align: center;
@@ -32,7 +33,7 @@
         min-width: 200px;
         background: #f8fafd;
         border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
         padding: 18px 14px;
         margin-bottom: 0;
       }
@@ -46,19 +47,130 @@
         font-size: 1rem;
       }
       @media (max-width: 800px) {
-        .resumo-blocos { flex-direction: column; gap: 14px; }
+        .resumo-blocos {
+          flex-direction: column;
+          gap: 14px;
+        }
+      }
+
+      /* Ícones do topo */
+      .top-icons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: nowrap;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #163f7a;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.3s;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .sidebar.open {
+        width: 250px;
+      }
+      .sidebar-link {
+        padding: 12px 24px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        color: white;
+        display: block;
+      }
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background-color: #6a9bd1;
+        color: white;
+      }
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
+
+      /* Botão hamburguer */
+      .menu-toggle {
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: none;
+      }
+
+      /* Header */
+      .header-aluno {
+        background-color: #163f7a;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        gap: 10px;
+      }
+
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
+
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid white;
+        cursor: pointer;
+      }
+
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+        .header-nav {
+          display: none !important;
+        }
+      }
+
+      @media (min-width: 992px) {
+        .sidebar {
+          display: none !important;
+        }
+      }
+
+      footer {
+        padding: 15px;
+        background-color: #163f7a;
+        color: white;
+        text-align: center;
       }
     </style>
   </head>
+
   <body>
     <header>
       <div class="header-aluno">
-        <img
-          src="Assets/poliedro.png"
-          alt="Logo Poliedro"
-          class="poliedro-logo-header"
-          
-        />
+        <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+
+        <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
+          &#9776;
+        </button>
+
         <nav class="header-nav">
           <a href="HomeAluno.html" class="header-link active">Home</a>
           <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
@@ -66,6 +178,7 @@
           <a href="NotasAluno.html" class="header-link">Notas</a>
           <a href="MensagensAluno.html" class="header-link">Mensagens</a>
           <a href="eventosAlunos.html" class="header-link">Eventos</a>
+
           <select id="daltonismo-select">
             <option value="">Normal</option>
             <option value="protanopia">Protanopia</option>
@@ -73,19 +186,36 @@
             <option value="tritanopia">Tritanopia</option>
           </select>
         </nav>
+
         <a href="PerfilAluno.html">
-          <img
-            src="Assets/LogoUsuario.png"
-            alt="Meu cadastro"
-            class="header-profile-img"
-          />
+          <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
         </a>
       </div>
+
+      <!-- Sidebar -->
+      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
+        <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
+          &times;
+        </button>
+        <a href="HomeAluno.html" class="sidebar-link active">Home</a>
+        <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
+        <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
+        <a href="NotasAluno.html" class="sidebar-link">Notas</a>
+        <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
+        <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
+
+        <select id="daltonismo-select-sidebar" class="daltonismo-select-sidebar">
+          <option value="">Normal</option>
+          <option value="protanopia">Protanopia</option>
+          <option value="deuteranopia">Deuteranopia</option>
+          <option value="tritanopia">Tritanopia</option>
+        </select>
+      </nav>
     </header>
 
     <main>
       <section class="painel-resumo">
-        <h2>
+        <h2>Resumo do Aluno</h2>
         <div class="resumo-blocos">
           <div class="resumo-bloco" id="resumo-eventos">
             <h3>Último Evento</h3>
@@ -106,11 +236,12 @@
         </div>
       </section>
     </main>
-</h2>
+
     <footer>
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
 
+    <!-- VLibras -->
     <div vw class="enabled">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper></div>
@@ -119,59 +250,72 @@
     <script>
       new window.VLibras.Widget("https://vlibras.gov.br/app");
     </script>
+
+    <!-- Scripts -->
     <script>
-      // Daltonismo
-      const daltonismoSelect = document.getElementById("daltonismo-select");
-      daltonismoSelect.addEventListener("change", () => {
-        document.body.classList.remove(
-          "protanopia",
-          "deuteranopia",
-          "tritanopia"
-        );
-        const val = daltonismoSelect.value;
-        if (val) document.body.classList.add(val);
+      // Sidebar
+      const menuToggle = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+      const menuClose = document.getElementById("menu-close");
+
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.add("open");
+        menuClose.focus();
       });
 
-      // Menu ativo automático
-      document.querySelectorAll('.header-link').forEach(link => {
-        if (window.location.pathname.endsWith(link.getAttribute('href'))) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
+      menuClose.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+      });
+
+      window.addEventListener("click", (e) => {
+        if (
+          sidebar.classList.contains("open") &&
+          !sidebar.contains(e.target) &&
+          !menuToggle.contains(e.target)
+        ) {
+          sidebar.classList.remove("open");
         }
       });
 
-      // resumindo o resumo do resumo coisado home XD
-      function formatDate(dateStr) {
-        if (!dateStr) return "";
-        const options = { day: '2-digit', month: 'long', year: 'numeric' };
-        return new Date(dateStr).toLocaleDateString('pt-BR', options);
+      // Daltonismo
+      function changeDaltonismo(val) {
+        document.body.classList.remove("protanopia", "deuteranopia", "tritanopia");
+        if (val) document.body.classList.add(val);
       }
 
-      // EVENTOS poggers
+      const select1 = document.getElementById("daltonismo-select");
+      const select2 = document.getElementById("daltonismo-select-sidebar");
+
+      select1?.addEventListener("change", () => changeDaltonismo(select1.value));
+      select2?.addEventListener("change", () => changeDaltonismo(select2.value));
+
+      // Resumo
+      function formatDate(dateStr) {
+        if (!dateStr) return "";
+        const options = { day: "2-digit", month: "long", year: "numeric" };
+        return new Date(dateStr).toLocaleDateString("pt-BR", options);
+      }
+
       const eventos = JSON.parse(localStorage.getItem("eventos")) || [];
-      const evento = eventos.length ? eventos[eventos.length-1] : null;
+      const evento = eventos.at(-1);
       document.querySelector("#resumo-eventos .resumo-conteudo").innerHTML = evento
         ? `<strong>${evento.title}</strong><br><span style="color:#576fbd">${formatDate(evento.date)}</span><br>${evento.description}`
         : "<span style='color:#888'>Nenhum evento recente.</span>";
 
-      // ATIVIDADES aaaaaaaaa
       const atividades = JSON.parse(localStorage.getItem("tarefas")) || [];
-      const atividade = atividades.length ? atividades[atividades.length-1] : null;
+      const atividade = atividades.at(-1);
       document.querySelector("#resumo-atividades .resumo-conteudo").innerHTML = atividade
         ? `<strong>${atividade.titulo}</strong><br>${atividade.descricao || ""}`
         : "<span style='color:#888'>Nenhuma atividade recente.</span>";
 
-      // MENSAGENS nao
       const mensagens = JSON.parse(localStorage.getItem("mensagens")) || [];
-      const mensagem = mensagens.length ? mensagens[mensagens.length-1] : null;
+      const mensagem = mensagens.at(-1);
       document.querySelector("#resumo-mensagens .resumo-conteudo").innerHTML = mensagem
         ? `<strong>${mensagem.titulo || "Mensagem"}</strong><br>${mensagem.texto || mensagem.conteudo || ""}`
         : "<span style='color:#888'>Nenhuma mensagem recente.</span>";
 
-      // NOTAS fazer as estatisticas ainda, graficos e etc tlg ne paizao mete bala ai
       const notas = JSON.parse(localStorage.getItem("notas")) || [];
-      const nota = notas.length ? notas[notas.length-1] : null;
+      const nota = notas.at(-1);
       document.querySelector("#resumo-notas .resumo-conteudo").innerHTML = nota
         ? `<strong>${nota.titulo || "Nota"}</strong><br>Nota: <b>${nota.valor || nota.nota || ""}</b>`
         : "<span style='color:#888'>Nenhuma nota recente.</span>";
