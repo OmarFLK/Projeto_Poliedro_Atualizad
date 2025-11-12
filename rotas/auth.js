@@ -2,10 +2,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
 const Aluno = require('../models/alunos');
 const Professor = require('../models/professores');
-
 const JWT_SECRET = process.env.JWT_SECRET || 'chave_super_secreta';
 
 //Login Aluno (RA + senha)
