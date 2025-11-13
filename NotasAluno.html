@@ -1,194 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Notas do Aluno</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="front/Styles/Login.css" />
     <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-    <style>
-      :root {
-        --azul-principal: #1a4e9b;
-        --azul-escuro: #163f7a;
-        --fundo: #f5f6fa;
-      }
-      body {
-        background: var(--fundo);
-        font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-        margin: 0;
-      }
-      .container {
-        max-width: 1000px;
-        margin: 36px auto;
-        padding: 22px;
-      }
-      .notas-box {
-        background: #fff;
-        border-radius: 12px;
-        padding: 18px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-      }
-      .notas-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 14px;
-      }
-      .notas-title {
-        font-size: 1.35rem;
-        color: var(--azul-principal);
-        margin: 0;
-      }
-      .notas-sub {
-        color: #666;
-        font-size: 0.95rem;
-      }
-      .table-wrap {
-        overflow: auto;
-      }
-      table.notas-table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 720px;
-      }
-      table.notas-table thead th {
-        text-align: left;
-        padding: 12px 10px;
-        background: #f4f7fd;
-        color: var(--azul-escuro);
-        font-weight: 700;
-        border-bottom: 1px solid #e6ecff;
-      }
-      table.notas-table tbody td {
-        padding: 12px 10px;
-        border-bottom: 1px solid #f1f3fb;
-        color: #333;
-        vertical-align: middle;
-      }
-      .pos {
-        width: 56px;
-        font-weight: 700;
-        color: #1a2e6e;
-      }
-      .nota-badge {
-        display: inline-block;
-        padding: 6px 10px;
-        border-radius: 999px;
-        background: #e9f0ff;
-        color: var(--azul-escuro);
-        font-weight: 700;
-      }
-      .no-notes {
-        text-align: center;
-        color: #888;
-        padding: 28px 12px;
-      }
-
-      /* barra lateral */
-      .sidebar {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #163f7a;
-        overflow-x: hidden;
-        padding-top: 60px;
-        transition: 0.3s;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-      .sidebar.open {
-        width: 250px;
-      }
-      .sidebar-link {
-        padding: 12px 24px;
-        text-decoration: none;
-        font-size: 1.2rem;
-        color: white;
-        display: block;
-      }
-      .sidebar-link:hover,
-      .sidebar-link.active {
-        background-color: #6a9bd1;
-        color: white;
-      }
-      .menu-close {
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-      }
-
-      .menu-toggle {
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-        display: none;
-      }
-
-      .header-aluno {
-        background-color: #163f7a;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 20px;
-      }
-
-      .poliedro-logo-header {
-        height: 40px;
-        cursor: pointer;
-      }
-
-      .header-profile-img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 2px solid white;
-        cursor: pointer;
-      }
-
-      @media (max-width: 991px) {
-        .menu-toggle {
-          display: inline-block;
-        }
-        .header-nav {
-          display: none !important;
-        }
-      }
-
-      @media (min-width: 992px) {
-        .sidebar {
-          display: none !important;
-        }
-      }
-
-      #daltonismo-select,
-      .daltonismo-select-sidebar {
-        padding: 6px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-      }
-    </style>
+    <link rel="stylesheet" href="front/Styles/NotasAluno.css" />
   </head>
   <body>
     <header>
       <div class="header-aluno">
-        <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
-
-        <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
-          &#9776;
-        </button>
-
+        <img src="Assets/poliedro.png" class="poliedro-logo-header" alt="Logo"/>
+        <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">&#9776;</button>
         <nav class="header-nav">
           <a href="HomeAluno.html" class="header-link">Home</a>
           <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
@@ -196,173 +20,34 @@
           <a href="NotasAluno.html" class="header-link active">Notas</a>
           <a href="MensagensAluno.html" class="header-link">Mensagens</a>
           <a href="eventosAlunos.html" class="header-link">Eventos</a>
-          <select id="daltonismo-select">
-            <option value="">Normal</option>
-            <option value="protanopia">Protanopia</option>
-            <option value="deuteranopia">Deuteranopia</option>
-            <option value="tritanopia">Tritanopia</option>
-          </select>
+          <select id="daltonismo-select"><option value="">Normal</option><option value="protanopia">Protanopia</option><option value="deuteranopia">Deuteranopia</option><option value="tritanopia">Tritanopia</option></select>
         </nav>
-
-        <a href="PerfilAluno.html">
-          <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
-        </a>
+        <a href="PerfilAluno.html"><img src="Assets/LogoUsuario.png" class="header-profile-img" alt="Perfil"/></a>
       </div>
-
-      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-        <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
-          &times;
-        </button>
-        <a href="HomeAluno.html" class="sidebar-link">Home</a>
-        <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
-        <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
-        <a href="NotasAluno.html" class="sidebar-link active">Notas</a>
-        <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
-        <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
-
-        <select id="daltonismo-select-sidebar" class="daltonismo-select-sidebar">
-          <option value="">Normal</option>
-          <option value="protanopia">Protanopia</option>
-          <option value="deuteranopia">Deuteranopia</option>
-          <option value="tritanopia">Tritanopia</option>
-        </select>
-      </nav>
     </header>
 
-    <main class="container-lg">
-      <div class="notas-box" id="notasBox">
-        <div class="notas-header">
+    <main class="container">
+      <div class="notas-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
           <div>
-            <h1 class="notas-title">Quadro de Notas</h1>
-            <div class="notas-sub">
-              Visão geral das notas lançadas pelos professores (ordenada por nota).
-            </div>
+            <h1 style="margin:0;color:#1a4e9b;">Minhas Notas</h1>
+            <div style="color:#666;">Visualize suas notas por semestre — apenas você tem acesso.</div>
           </div>
         </div>
-        <div class="table-wrap" id="tableWrap"></div>
+
+        <div id="semestre1" class="semester-card"><h3>1º Semestre</h3><div id="tabelaSem1">Carregando...</div></div>
+        <div id="semestre2" class="semester-card"><h3>2º Semestre</h3><div id="tabelaSem2">Carregando...</div></div>
+
+        <div class="charts">
+          <div class="chart-card"><h4>Gráfico — 1º Semestre</h4><canvas id="chartSem1" height="140"></canvas></div>
+          <div class="chart-card"><h4>Gráfico — 2º Semestre</h4><canvas id="chartSem2" height="140"></canvas></div>
+        </div>
       </div>
     </main>
 
-    <footer>
-      <p class="footer-text" style="text-align: center">
-        &copy; Projeto desenvolvido por: [Nossos nomes]
-      </p>
-    </footer>
+    <footer><p style="text-align:center;">&copy; Projeto desenvolvido por: [Nossos nomes]</p></footer>
 
-    <!-- Scripts JS -->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // Daltonismo (modo acessibilidade)
-        function changeDaltonismo(selectElement) {
-          document.body.classList.remove("protanopia", "deuteranopia", "tritanopia");
-          const val = selectElement.value;
-          if (val) document.body.classList.add(val);
-        }
-
-        const daltonismoSelect = document.getElementById("daltonismo-select");
-        const daltonismoSelectSidebar = document.getElementById("daltonismo-select-sidebar");
-
-        daltonismoSelect?.addEventListener("change", () => changeDaltonismo(daltonismoSelect));
-        daltonismoSelectSidebar?.addEventListener("change", () => changeDaltonismo(daltonismoSelectSidebar));
-
-        // Sidebar
-        const menuToggle = document.getElementById("menu-toggle");
-        const sidebar = document.getElementById("sidebar");
-        const menuClose = document.getElementById("menu-close");
-
-        menuToggle.addEventListener("click", () => {
-          sidebar.classList.add("open");
-        });
-        menuClose.addEventListener("click", () => {
-          sidebar.classList.remove("open");
-        });
-        window.addEventListener("click", (e) => {
-          if (
-            sidebar.classList.contains("open") &&
-            !sidebar.contains(e.target) &&
-            !menuToggle.contains(e.target)
-          ) {
-            sidebar.classList.remove("open");
-          }
-        });
-
-        // Carregar notas
-        function carregarNotasAluno() {
-          const raw = JSON.parse(localStorage.getItem("notas")) || [];
-          const notas = raw.map((item) => ({
-            nome: (item.nome || "").trim(),
-            valor:
-              item.valor !== undefined && item.valor !== null ? Number(item.valor) : NaN,
-            materia: item.materia || "",
-            turma: item.turma || "",
-          }));
-
-          if (!notas.length) {
-            document.getElementById("tableWrap").innerHTML =
-              '<div class="no-notes">Nenhuma nota lançada ainda.</div>';
-            return;
-          }
-
-          notas.sort((a, b) => {
-            const va = isNaN(a.valor) ? -Infinity : a.valor;
-            const vb = isNaN(b.valor) ? -Infinity : b.valor;
-            if (vb !== va) return vb - va;
-            return a.nome.localeCompare(b.nome, "pt-BR");
-          });
-
-          let html = `<table class="notas-table" aria-label="Tabela de notas">
-              <thead>
-                <tr>
-                  <th class="pos">#</th>
-                  <th>Nome</th>
-                  <th>Turma</th>
-                  <th>Matéria</th>
-                  <th>Nota</th>
-                </tr>
-              </thead>
-              <tbody>`;
-
-          notas.forEach((n, i) => {
-            const notaDisplay = isNaN(n.valor)
-              ? "-"
-              : Number.isInteger(n.valor)
-              ? n.valor
-              : n.valor.toFixed(2);
-            html += `<tr>
-                <td class="pos">${i + 1}</td>
-                <td>${escapeHtml(n.nome)}</td>
-                <td>${escapeHtml(n.turma)}</td>
-                <td>${escapeHtml(n.materia)}</td>
-                <td><span class="nota-badge">${notaDisplay}</span></td>
-              </tr>`;
-          });
-
-          html += `</tbody></table>`;
-          document.getElementById("tableWrap").innerHTML = html;
-        }
-
-        function escapeHtml(str) {
-          return String(str || "").replace(/[&<>"]/g, (s) => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-          }[s]));
-        }
-
-        carregarNotasAluno();
-      });
-    </script>
-
-    <!-- VLibras -->
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper></div>
-    </div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-      new window.VLibras.Widget("https://vlibras.gov.br/app");
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="front/Scripts/notas.aluno.js"></script>
   </body>
 </html>
-

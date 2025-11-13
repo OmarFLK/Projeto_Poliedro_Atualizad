@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
-const Evento = require("../models/eventos");
+const Evento = require("../models/Eventos");
 
 // Configuração de upload
 const storage = multer.diskStorage({

@@ -1,857 +1,124 @@
-<!-- ...existing code... -->
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="front/Styles/Login.css" />
-    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-    <title>Notas do Professor</title>
-    <style>
-      :root {
-        --primary-blue: #1a4e9b;
-        --primary-blue-dark: #163f7a;
-        --primary-blue-light: #163f7a;
-        --input-border: #d6dbe8;
-        --text-color: #1f2d4a;
-      }
-      body {
-        background: #f5f6fa;
-        font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-        margin: 0;
-      }
-      .container-notas {
-        max-width: 1100px;
-        margin: 40px auto;
-        background: #fff;
-        padding: 32px;
-        border-radius: 16px;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-      }
-      h2 {
-        color: var(--primary-blue);
-        margin-bottom: 18px;
-      }
-      form {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 12px;
-        margin-bottom: 16px;
-      }
-      form input,
-      form select {
-        padding: 10px;
-        border: 1px solid var(--input-border);
-        border-radius: 8px;
-        font-size: 15px;
-      }
-      form button {
-        padding: 12px 16px;
-        background: var(--primary-blue);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 700;
-      }
-      form button:hover {
-        background: var(--primary-blue-dark);
-      }
-      .controls {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 18px;
-        flex-wrap: wrap;
-        align-items: center;
-      }
-      .charts {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-        margin-top: 20px;
-      }
-      .chart-card {
-        background: #fff;
-        padding: 12px;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      }
-      .chart-card h3 {
-        margin: 0 0 8px 0;
-        font-size: 15px;
-        color: var(--primary-blue-dark);
-      }
-      .ano-section {
-        margin-top: 18px;
-      }
-      .ano-title {
-        background: var(--primary-blue-light);
-        color: #fff;
-        padding: 12px;
-        border-radius: 8px 8px 0 0;
-        font-size: 18px;
-        font-weight: bold;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 0;
-        border-radius: 0 0 8px 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-      }
-      table th,
-      table td {
-        border: 1px solid #e8edf7;
-        padding: 8px;
-        text-align: center;
-      }
-      table th {
-        background: #f4f7fd;
-        color: var(--text-color);
-        font-weight: 700;
-      }
-      .stats {
-        margin-top: 16px;
-        padding: 12px;
-        background: #f9fafc;
-        border: 1px solid #e8edf7;
-        border-radius: 12px;
-        font-size: 15px;
-      }
-      /* É a parte de responsividade das tabelas, elas tão quebrando quando diminui e aumenta a janela do site
-       @media (max-width: 900px) {
-        .charts {
-          grid-template-columns: 1fr;
-        }
-        form {
-          grid-template-columns: 1fr 1fr;
-        }
-      } */
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notas do Professor</title>
+  <link rel="stylesheet" href="front/Styles/Login.css" />
+  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+  <link rel="stylesheet" href="front/Styles/NotasProfessor.css" />
+  
+</head>
+<body>
+  <header>
 
-            /* Top icons (ajusta como q empilha no mobile) */
-            .top-icons {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 8px;
-        flex-wrap: nowrap; /* mantem os ícones em uma fileira */
-      }
-
-      .top-icons a,
-      .top-icons button,
-      .top-icons img,
-      .top-icons i {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 36px;
-        min-height: 36px;
-        max-width: 48px;
-        max-height: 48px;
-        padding: 4px;
-        box-sizing: border-box;
-      }
-
-      .top-icons img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-      }
-
-      @media (max-width: 420px) {
-        .top-icons {
-          gap: 6px;
-        }
-        .top-icons a,
-        .top-icons button,
-        .top-icons img,
-        .top-icons i {
-          min-width: 32px;
-          min-height: 32px;
-          max-width: 40px;
-          max-height: 40px;
-        }
-      }
-
-      /* barra lateral */
-      .sidebar {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #163f7a;
-        overflow-x: hidden;
-        padding-top: 60px;
-        transition: 0.3s;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-      .sidebar.open {
-        width: 250px;
-      }
-      .sidebar-link {
-        padding: 12px 24px;
-        text-decoration: none;
-        font-size: 1.2rem;
-        color: white;
-        display: block;
-      }
-      .sidebar-link:hover,
-      .sidebar-link.active {
-        background-color: #6a9bd1;
-        color: white;
-      }
-      .menu-close {
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-      }
-
-      /* Botão hamburguer */
-      .menu-toggle {
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: #163f7a;
-        cursor: pointer;
-        display: none; /* só aparece no mobile */
-        margin-left: 15px;
-        align-self: center;
-      }
-
-      /* Nav header */
-      .header-aluno {
-        background-color: #163f7a;
-        display: flex;
-        align-items: flex;
-        justify-content: space-between;
-        padding: 10px 20px;
-        flex-wrap: nowrap;
-        gap: 10px;
-      }
-
-      .poliedro-logo-header {
-        height: 40px;
-        cursor: pointer;
-      }
-
-      .menu-toggle {
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-        display: none; /* só aparece no mobile */
-      }
-
-      .header-profile-img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 2px solid white;
-        cursor: pointer;
-      }
-
-      @media (max-width: 991px) {
-        .menu-toggle {
-          display: inline-block;
-        }
-
-        /* mantém logo, menu e perfil na mesma linha */
-        .header-aluno {
-          justify-content: space-between;
-        }
-      }
-      #daltonismo-select {
-        padding: 6px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-      }
-
-      .daltonismo-select-sidebar {
-        margin: 0 24px 12px 24px;
-        padding: 6px;
-        font-size: 1rem;
-        border-radius: 4px;
-        border: none;
-      }
-
-      /* Responsividade */
-      @media (min-width: 992px) {
-        .menu-toggle {
-          display: none;
-        }
-        .sidebar {
-          display: none !important;
-        }
-        .header-nav {
-          display: flex !important;
-        }
-      }
-
-      @media (max-width: 991px) {
-        .header-nav {
-          display: none !important;
-        }
-        .menu-toggle {
-          display: inline-block;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="header-aluno">
-        <img
-         src="Assets/poliedro.png"
-          alt="Logo Poliedro"
-          class="poliedro-logo-header"
-        />
-
-        <!-- Botão hamburguer para mobile -->
-        <button
-          id="menu-toggle"
-          aria-label="Abrir menu"
-          class="menu-toggle"
-          type="button"
-        >
-          &#9776;
-        </button>
-
-        <!-- Navegação tradicional (desktop) -->
-        <nav class="header-nav">
-          <a href="HomeProfessor.html" class="header-link">Home</a>
-          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-          <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
-          <a href="NotasProfessor.html" class="header-link active">Notas</a>
-          <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
-          <a href="eventosProfessor.html" class="header-link">Eventos</a>
-
-          <select id="daltonismo-select">
-            <option value="">Normal</option>
-            <option value="protanopia">Protanopia</option>
-            <option value="deuteranopia">Deuteranopia</option>
-            <option value="tritanopia">Tritanopia</option>
-          </select>
-        </nav>
-
-        <a href="PerfilProfessor.html">
-          <img
-            src="Assets/LogoUsuario.png"
-            alt="Meu cadastro"
-            class="header-profile-img"/>
-        </a>
-      </div>
-
-      <!-- Sidebar para mobile -->
-      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-        <button
-          id="menu-close"
-          aria-label="Fechar menu"
-          class="menu-close"
-          type="button">
-          &times;
-        </button>
-        <a href="HomeProfessor.html" class="sidebar-link">Home</a>
-        <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
-        <a href="AtividadesProfessor.html" class="sidebar-link">Atividades</a>
-        <a href="NotasProfessor.html" class="sidebar-link active">Notas</a>
-        <a href="MensagensProfessor.html" class="sidebar-link">Mensagens</a>
-        <a href="eventosProfessor.html" class="sidebar-link">Eventos</a>
-
-        <select
-          id="daltonismo-select-sidebar"
-          class="daltonismo-select-sidebar">
-          <option value="">Normal</option>
-          <option value="protanopia">Protanopia</option>
-          <option value="deuteranopia">Deuteranopia</option>
-          <option value="tritanopia">Tritanopia</option>
-        </select>
+    <div class="header-aluno">
+      <img src="Assets/poliedro.png" class="poliedro-logo-header" alt="Logo"/>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">&#9776;</button>
+      <nav class="header-nav">
+        <a href="HomeProfessor.html" class="header-link">Home</a>
+        <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+        <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
+        <a href="NotasProfessor.html" class="header-link active">Notas</a>
+        <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
+        <a href="eventosProfessor.html" class="header-link">Eventos</a>
+        <select id="daltonismo-select"><option value="">Normal</option><option value="protanopia">Protanopia</option><option value="deuteranopia">Deuteranopia</option><option value="tritanopia">Tritanopia</option></select>
       </nav>
-    </header>
-
-    <main class="container-notas">
-      <h2>Lançar Notas</h2>
-
-      <form id="notaForm">
-        <select id="ano" required>
-          <option value="">Selecione o Ano</option>
-          <option>1º Ano</option>
-          <option>2º Ano</option>
-          <option>3º Ano</option>
-        </select>
-
-        <select id="turma" required>
-          <option value="">Sub-sala</option>
-          <option>Sub 1</option>
-          <option>Sub 2</option>
-          <option>Sub 3</option>
-        </select>
-
-        <input type="text" id="aluno" placeholder="Nome do aluno" required />
-        <select id="semestre" required>
-          <option value="">Semestre</option>
-          <option>1º Semestre</option>
-          <option>2º Semestre</option>
-        </select>
-
-        <input
-          type="number"
-          id="prova1"
-          placeholder="Prova 1 (0-10)"
-          min="0"
-          max="10"
-          step="0.1"
-          required
-        />
-        <input
-          type="number"
-          id="prova2"
-          placeholder="Prova 2 (0-10)"
-          min="0"
-          max="10"
-          step="0.1"
-          required
-        />
-        <input
-          type="number"
-          id="atv1"
-          placeholder="Atividade 1 (0-10)"
-          min="0"
-          max="10"
-          step="0.1"
-          required
-        />
-        <input
-          type="number"
-          id="atv2"
-          placeholder="Atividade 2 (0-10)"
-          min="0"
-          max="10"
-          step="0.1"
-          required
-        />
-
-        <button type="submit">Adicionar</button>
-      </form>
-
-      <div class="controls">
-        <div>
-          <button id="excluirUltima">Excluir última entrada</button>
-          <button id="excluirTodas">Excluir todas</button>
-        </div>
-
-        <div
-          style="
-            margin-left: auto;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-          "
-        >
-          <label for="filtroAno">Filtrar ano:</label>
-          <select id="filtroAno">
-            <option value="">Todos</option>
-          </select>
-          <label for="filtroTurma">Filtrar sub-sala:</label>
-          <select id="filtroTurma">
-            <option value="">Todas</option>
-          </select>
-        </div>
-      </div>
-
-      <h2>Gráficos de Notas</h2>
-      <div class="charts">
-        <div class="chart-card">
-          <h3>Média por Sub-sala</h3>
-          <canvas id="chartSubTurma" height="200"></canvas>
-        </div>
-        <div class="chart-card">
-          <h3>Média do Ano</h3>
-          <canvas id="chartAno" height="200"></canvas>
-        </div>
-        <div class="chart-card" style="grid-column: 1 / -1">
-          <h3>Média por Aluno (ord. por nota)</h3>
-          <canvas id="chartAlunos" height="200"></canvas>
-        </div>
-      </div>
-
-      <h2 style="margin-top: 22px">Notas Lançadas (por ano)</h2>
-      <div id="anosContainer"></div>
-
-      <div class="stats" id="estatisticas"></div>
-    </main>
-
-    <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-    </footer>
-
-    <!-- VLibras plugin -->
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper></div>
+      <a href="PerfilProfessor.html"><img src="Assets/LogoUsuario.png" class="header-profile-img" alt="Perfil"/></a>
     </div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-      new window.VLibras.Widget("https://vlibras.gov.br/app");
-    </script>
+  </header>
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <main class="container-notas" style="max-width:1100px;margin:36px auto;">
+    <h2>Lançar Notas</h2>
 
-    <!-- Scripts JS -->
-    <script>
-      // Seleção Daltonismo
-      const daltonismoSelect = document.getElementById("daltonismo-select");
-      const daltonismoSelectSidebar = document.getElementById("daltonismo-select-sidebar");
+    
+    <form id="notaForm">
+      <select id="ano" required>
+        <option value="">Selecione o Ano</option>
+        <option>1º Ano</option>
+        <option>2º Ano</option>
+        <option>3º Ano</option>
+      </select>
 
-      function changeDaltonismo(selectElement) {
-        document.body.classList.remove("protanopia", "deuteranopia", "tritanopia");
-        const val = selectElement.value;
-        if (val) document.body.classList.add(val);
-      }
+      <select id="turma" required>
+        <option value="">Selecione a sub-sala</option>
+        <option>Sub 1</option>
+        <option>Sub 2</option>
+        <option>Sub 3</option>
+      </select>
 
-      if (daltonismoSelect) {
-        daltonismoSelect.addEventListener("change", () =>
-          changeDaltonismo(daltonismoSelect)
-        );
-      }
-      if (daltonismoSelectSidebar) {
-        daltonismoSelectSidebar.addEventListener("change", () =>
-          changeDaltonismo(daltonismoSelectSidebar)
-        );
-      }
+      <!-- select de aluno (populado via JS) -->
+      <select id="alunoSelect" required>
+        <option value="">Carregando alunos...</option>
+      </select>
 
-      // Sidebar toggle
-      const menuToggle = document.getElementById("menu-toggle");
-      const sidebar = document.getElementById("sidebar");
-      const menuClose = document.getElementById("menu-close");
+      <select id="semestre" required>
+        <option value="">Semestre</option>
+        <option>1º Semestre</option>
+        <option>2º Semestre</option>
+      </select>
 
-      menuToggle.addEventListener("click", () => {
-        sidebar.classList.add("open");
-        menuClose.focus();
-      });
+      <!-- select de matéria (pré-definido) -->
+      <select id="materia" required>
+        <option value="">Selecione a matéria</option>
+        <option>Português</option>
+        <option>Matemática</option>
+        <option>Biologia</option>
+        <option>Física</option>
+        <option>Química</option>
+        <option>Geografia</option>
+        <option>História</option>
+        <option>Filosofia</option>
+        <option>Sociologia</option>
+        <option>Artes</option>
+        <option>Educação Física</option>
+        <option>Inglês</option>
+      </select>
 
-      menuClose.addEventListener("click", () => {
-        sidebar.classList.remove("open");
-      });
+      <input type="number" id="prova1" placeholder="P1 (0-10)" min="0" max="10" step="0.1" required />
+      <input type="number" id="prova2" placeholder="P2 (0-10)" min="0" max="10" step="0.1" required />
+      <input type="number" id="t1" placeholder="T1 (trabalho) (0-10)" min="0" max="10" step="0.1" required />
+      <input type="number" id="t2" placeholder="T2 (trabalho) (0-10)" min="0" max="10" step="0.1" required />
 
-      // Fecha sidebar clicando fora dela
-      window.addEventListener("click", (e) => {
-        if (
-          sidebar.classList.contains("open") &&
-          !sidebar.contains(e.target) &&
-          !menuToggle.contains(e.target)
-        ) {
-          sidebar.classList.remove("open");
-        }
-      });
-    </script>
+      <button type="submit" id="btnSalvar">Salvar / Atualizar</button>
+    </form>
 
-    <script>
-      let notasDetalhadas =
-        JSON.parse(localStorage.getItem("notasDetalhadas")) || [];
-      let notasResumo = JSON.parse(localStorage.getItem("notas")) || [];
+    <div class="controls" style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div>
+        <button id="excluirUltima">Excluir última entrada</button>
+        <button id="excluirTodas">Excluir todas</button>
+      </div>
 
-      const form = document.getElementById("notaForm");
-      const anosContainer = document.getElementById("anosContainer");
-      const estatisticasDiv = document.getElementById("estatisticas");
-      const filtroAno = document.getElementById("filtroAno");
-      const filtroTurma = document.getElementById("filtroTurma");
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+        <label for="filtroAno">Filtrar ano:</label>
+        <select id="filtroAno"><option value="">Todos</option></select>
+        <label for="filtroTurma">Filtrar turma:</label>
+        <select id="filtroTurma"><option value="">Todas</option></select>
+      </div>
+    </div>
 
-      let chartSub = null,
-        chartYear = null,
-        chartStudents = null;
+    <h2>Visualizar notas por aluno</h2>
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px;">
+      <select id="visualizarAno"><option value="">Selecione ano</option></select>
+      <select id="visualizarAluno"><option value="">Selecione aluno</option></select>
+      <button id="btnVerAluno">Ver notas do aluno</button>
+    </div>
 
-      function calcularMedia(p1, p2, a1, a2) {
-        return (p1 * 2 + p2 * 2 + a1 * 1 + a2 * 1) / 6;
-      }
-      function salvarLocal() {
-        localStorage.setItem(
-          "notasDetalhadas",
-          JSON.stringify(notasDetalhadas)
-        );
-        localStorage.setItem("notas", JSON.stringify(notasResumo));
-      }
+    <div id="visualizacaoAluno">
+      <!-- área onde aparecem as notas do aluno (será preenchida pelo JS) -->
+    </div>
 
-      function escapeHtml(s) {
-        return String(s || "").replace(
-          /[&<>"]/g,
-          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])
-        );
-      }
+    <h2>Gráficos</h2>
+    <div class="charts" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+      <div class="chart-card"><h3>Média por Sub-sala</h3><canvas id="chartSubTurma" height="160"></canvas></div>
+      <div class="chart-card"><h3>Média do Ano</h3><canvas id="chartAno" height="160"></canvas></div>
+      <div style="grid-column: 1 / -1;" class="chart-card"><h3>Média por Aluno</h3><canvas id="chartAlunos" height="200"></canvas></div>
+    </div>
+  </main>
 
-      function atualizarFiltros() {
-        const anos = Array.from(
-          new Set(notasDetalhadas.map((n) => n.ano))
-        ).sort();
-        filtroAno.innerHTML =
-          '<option value="">Todos</option>' +
-          anos.map((a) => `<option>${escapeHtml(a)}</option>`).join("");
-        const turmas = Array.from(
-          new Set(notasDetalhadas.map((n) => n.turma))
-        ).sort();
-        filtroTurma.innerHTML =
-          '<option value="">Todas</option>' +
-          turmas.map((t) => `<option>${escapeHtml(t)}</option>`).join("");
-      }
+  <footer><p style="text-align:center;margin:18px 0;">&copy; Projeto desenvolvido por: [Nossos nomes]</p></footer>
 
-      function agruparPorAno(anoFilter) {
-        const agrupado = {};
-        notasDetalhadas.forEach((n) => {
-          if (!anoFilter || n.ano === anoFilter) {
-            if (!agrupado[n.ano]) agrupado[n.ano] = [];
-            agrupado[n.ano].push(n);
-          }
-        });
-        return agrupado;
-      }
-
-      function calcularSubTurmaAverages(anoFilter, turmaFilter) {
-        const filtered = notasDetalhadas.filter(
-          (n) =>
-            (!anoFilter || n.ano === anoFilter) &&
-            (!turmaFilter || n.turma === turmaFilter)
-        );
-        const map = {};
-        filtered.forEach((n) => {
-          if (!map[n.turma]) {
-            map[n.turma] = { sum: 0, count: 0 };
-          }
-          map[n.turma].sum += n.media ?? calcularMedia(n.p1, n.p2, n.a1, n.a2);
-          map[n.turma].count += 1;
-        });
-        return Object.keys(map).map((k) => ({
-          turma: k,
-          avg: map[k].sum / map[k].count,
-        }));
-      }
-
-      function calcularYearAverage(anoFilter) {
-        const filtered = notasDetalhadas.filter(
-          (n) => !anoFilter || n.ano === anoFilter
-        );
-        if (!filtered.length) return NaN;
-        const total = filtered.reduce(
-          (acc, n) => acc + (n.media ?? calcularMedia(n.p1, n.p2, n.a1, n.a2)),
-          0
-        );
-        return total / filtered.length;
-      }
-
-      function calcularStudentAverages(anoFilter, turmaFilter) {
-        const filtered = notasDetalhadas.filter(
-          (n) =>
-            (!anoFilter || n.ano === anoFilter) &&
-            (!turmaFilter || n.turma === turmaFilter)
-        );
-        const map = {};
-        filtered.forEach((n) => {
-          const nome = (n.aluno || "").trim();
-          if (!map[nome]) map[nome] = { sum: 0, count: 0 };
-          map[nome].sum += n.media ?? calcularMedia(n.p1, n.p2, n.a1, n.a2);
-          map[nome].count += 1;
-        });
-        return Object.keys(map).map((k) => ({
-          aluno: k,
-          avg: map[k].sum / map[k].count,
-        }));
-      }
-
-      function renderCharts() {
-        const anoSel = filtroAno.value || "";
-        const turmaSel = filtroTurma.value || "";
-        const subData = calcularSubTurmaAverages(anoSel, turmaSel);
-        const labelsSub = subData.map((s) => s.turma);
-        const dataSub = subData.map((s) => Number(s.avg.toFixed(2)));
-
-        const ctxSub = document
-          .getElementById("chartSubTurma")
-          .getContext("2d");
-        if (chartSub) chartSub.destroy();
-        chartSub = new Chart(ctxSub, {
-          type: "bar",
-          data: {
-            labels: labelsSub,
-            datasets: [
-              { label: "Média", data: dataSub, backgroundColor: "#4b7bd6" },
-            ],
-          },
-          options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true, max: 10 } },
-            plugins: { legend: { display: false } },
-          },
-        });
-        const yearAvg = calcularYearAverage(anoSel);
-        const ctxYear = document.getElementById("chartAno").getContext("2d");
-        if (chartYear) chartYear.destroy();
-        chartYear = new Chart(ctxYear, {
-          type: "bar",
-          data: {
-            labels: [anoSel || "Todos os anos"],
-            datasets: [
-              {
-                label: "Média do ano",
-                data: [isNaN(yearAvg) ? 0 : Number(yearAvg.toFixed(2))],
-                backgroundColor: "#6fcf97",
-              },
-            ],
-          },
-          options: {
-            indexAxis: "y",
-            responsive: true,
-            scales: { x: { beginAtZero: true, max: 10 } },
-            plugins: { legend: { display: false } },
-          },
-        });
-        const students = calcularStudentAverages(anoSel, turmaSel).filter(
-          (s) => s.aluno
-        );
-        students.sort(
-          (a, b) => b.avg - a.avg || a.aluno.localeCompare(b.aluno, "pt-BR")
-        );
-        const labelsStud = students.map((s) => s.aluno);
-        const dataStud = students.map((s) => Number(s.avg.toFixed(2)));
-        const ctxStud = document.getElementById("chartAlunos").getContext("2d");
-        if (chartStudents) chartStudents.destroy();
-        chartStudents = new Chart(ctxStud, {
-          type: "bar",
-          data: {
-            labels: labelsStud,
-            datasets: [
-              { label: "Média", data: dataStud, backgroundColor: "#f6c85f" },
-            ],
-          },
-          options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true, max: 10 } },
-            plugins: { legend: { display: false } },
-          },
-        });
-      }
-
-      function atualizarTabela() {
-        anosContainer.innerHTML = "";
-        const agrupado = {};
-        notasDetalhadas.forEach((n) => {
-          if (!agrupado[n.ano]) agrupado[n.ano] = [];
-          agrupado[n.ano].push(n);
-        });
-        let todasMedias = [];
-
-        for (let ano in agrupado) {
-          const div = document.createElement("div");
-          div.classList.add("ano-section");
-          div.innerHTML = `
-            <div class="ano-title">${escapeHtml(ano)}</div>
-            <table><thead><tr>
-              <th>Aluno</th><th>Turma</th><th>Semestre</th><th>P1</th><th>P2</th><th>A1</th><th>A2</th><th>Média Final</th>
-            </tr></thead>
-            <tbody>
-              ${agrupado[ano]
-                .map((n) => {
-                  const media =
-                    n.media ?? calcularMedia(n.p1, n.p2, n.a1, n.a2);
-                  todasMedias.push(media);
-                  return `<tr>
-                  <td>${escapeHtml(n.aluno)}</td>
-                  <td>${escapeHtml(n.turma)}</td>
-                  <td>${escapeHtml(n.semestre)}</td>
-                  <td>${n.p1}</td><td>${n.p2}</td><td>${n.a1}</td><td>${
-                    n.a2
-                  }</td>
-                  <td><b>${Number(media).toFixed(1)}</b></td>
-                </tr>`;
-                })
-                .join("")}
-            </tbody></table>
-          `;
-          anosContainer.appendChild(div);
-        }
-
-        if (todasMedias.length > 0) {
-          const mediaTurma = (
-            todasMedias.reduce((a, b) => a + b, 0) / todasMedias.length
-          ).toFixed(2);
-          const acima = todasMedias.filter((m) => m >= 6).length;
-          const abaixo = todasMedias.length - acima;
-          estatisticasDiv.innerHTML = `<h3>📊 Estatísticas Gerais</h3>
-            Média geral: <b>${mediaTurma}</b><br>Alunos acima (≥6): <b>${acima}</b><br>Alunos abaixo: <b>${abaixo}</b>`;
-        } else estatisticasDiv.innerHTML = "";
-      }
-
-      // events
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const ano = document.getElementById("ano").value;
-        const turma = document.getElementById("turma").value;
-        const aluno = document.getElementById("aluno").value.trim();
-        const semestre = document.getElementById("semestre").value;
-        const p1 = parseFloat(document.getElementById("prova1").value);
-        const p2 = parseFloat(document.getElementById("prova2").value);
-        const a1 = parseFloat(document.getElementById("atv1").value);
-        const a2 = parseFloat(document.getElementById("atv2").value);
-        const media = calcularMedia(p1, p2, a1, a2);
-
-        const detalhe = { ano, turma, aluno, semestre, p1, p2, a1, a2, media };
-        notasDetalhadas.push(detalhe);
-        notasResumo.push({
-          nome: aluno,
-          valor: Number(media.toFixed(2)),
-          materia: "",
-          turma,
-        });
-        salvarLocal();
-        form.reset();
-        atualizarFiltros();
-        atualizarTabela();
-        renderCharts();
-      });
-
-      document.getElementById("excluirUltima").addEventListener("click", () => {
-        if (!notasDetalhadas.length) return;
-        if (!confirm("Deseja excluir a última entrada?")) return;
-        notasDetalhadas.pop();
-        notasResumo.pop();
-        salvarLocal();
-        atualizarFiltros();
-        atualizarTabela();
-        renderCharts();
-      });
-
-      document.getElementById("excluirTodas").addEventListener("click", () => {
-        if (!notasDetalhadas.length) return;
-        if (!confirm("Tem certeza que deseja excluir TODAS as entradas?"))
-          return;
-        notasDetalhadas = [];
-        notasResumo = [];
-        salvarLocal();
-        atualizarFiltros();
-        atualizarTabela();
-        renderCharts();
-      });
-
-      filtroAno.addEventListener("change", () => {
-        renderCharts();
-      });
-      filtroTurma.addEventListener("change", () => {
-        renderCharts();
-      });
-
-      atualizarFiltros();
-      atualizarTabela();
-      renderCharts();
-    </script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="front/Scripts/notas.professor.js"></script>
+</body>
 </html>

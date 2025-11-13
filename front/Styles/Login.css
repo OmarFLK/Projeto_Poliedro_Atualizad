@@ -379,3 +379,18 @@ footer .footer-text {
     font-size: 0.94rem;
   }
 }
+html, body {
+    height: auto !important;
+    overflow-y: auto !important;
+}
+
+.container, .container-notas {
+    min-height: 100vh;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.semester-card, .notas-box {
+    overflow: visible !important;
+}
+

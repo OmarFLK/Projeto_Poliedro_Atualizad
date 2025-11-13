@@ -12,7 +12,11 @@ const Professor = require("./models/professores");
 const authRoutes = require("./rotas/auth");
 const atividadesRoutes = require("./rotas/atividades");
 const resolucoesRoutes = require("./rotas/resolucoes");
+const notasRoutes = require('./rotas/notas');
 const eventosRoutes = require("./rotas/eventos");
+const notasalunosRoutes = require('./rotas/notasalunos');
+
+
 
 const app = express();
 
@@ -40,13 +44,16 @@ mongoose
   .catch((err) => console.error("Erro ao conectar MongoDB:", err));
 
 // Rota base
-app.get("/", (req, res) => res.send("Servidor rodando normalmente 🚀"));
+app.get("/", (req, res) => res.send("Servidor rodando normalmente"));
 
 // Rotas principais
 app.use("/auth", authRoutes);
 app.use("/api/atividades", atividadesRoutes);
 app.use("/api/resolucoes", resolucoesRoutes);
-app.use("/api/eventos", eventosRoutes); // rota nova
+app.use('/api/notas', notasRoutes);
+app.use("/api/eventos", eventosRoutes);
+app.use('/api/alunos', notasalunosRoutes);
+
 
 // Middleware para rota inexistente
 app.use((req, res) => {

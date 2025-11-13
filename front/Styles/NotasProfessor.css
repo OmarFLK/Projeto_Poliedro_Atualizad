@@ -1,0 +1,234 @@
+/* CONTAINER PRINCIPAL */
+.container-notas {
+  max-width: 1150px;
+  margin: 36px auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+/* TÍTULOS */
+.container-notas h2 {
+  color: #1a4e9b;
+  margin-bottom: 14px;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+/* FORM */
+#notaForm {
+  background: #f7f9fc;
+  border: 1px solid #e0e5f2;
+  padding: 18px;
+  border-radius: 12px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+#notaForm select,
+#notaForm input {
+  padding: 10px;
+  border: 1px solid #cfd5e3;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* BOTÃO SALVAR */
+#btnSalvar {
+  background: #1a4e9b;
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#btnSalvar:hover {
+  background: #163f7a;
+}
+
+/* CONTROLES */
+.controls {
+  margin-top: 16px;
+  border-bottom: 1px solid #e5e8f0;
+  padding-bottom: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* BOTÕES */
+#excluirUltima,
+#excluirTodas {
+  background: #d4d8e4;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#excluirUltima:hover,
+#excluirTodas:hover {
+  background: #c2c7d4;
+}
+
+/* SELECT VIEW */
+#visualizarAno,
+#visualizarAluno,
+#btnVerAluno {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cfd5e3;
+}
+
+#btnVerAluno {
+  background: #1a4e9b;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+#btnVerAluno:hover {
+  background: #163f7a;
+}
+
+/* TABELAS DO ALUNO */
+#visualizacaoAluno {
+  margin-top: 25px;
+  background: #fafbff;
+  border: 1px solid #e0e4ef;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+#visualizacaoAluno table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#visualizacaoAluno thead {
+  background: #1a4e9b;
+  color: white;
+}
+
+#visualizacaoAluno th,
+#visualizacaoAluno td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+#visualizacaoAluno tbody tr:hover {
+  background: #f5f7ff;
+}
+
+#visualizacaoAluno h3 {
+  color: #1a2e6e;
+  margin-bottom: 8px;
+  margin-top: 20px;
+}
+
+/* CARDS GRÁFICOS */
+.chart-card {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+}
+
+.chart-card h3 {
+  color: #1a4e9b;
+  margin-bottom: 10px;
+}
+
+/* GRID DOS GRÁFICOS */
+.charts {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* SCROLL GLOBAL */
+html, body {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 850px) {
+  .charts {
+    grid-template-columns: 1fr;
+  }
+}
+/* CABEÇALHO DAS TABELAS DO ALUNO (PROFESSOR) */
+#visualizacaoAluno thead {
+  background: #1a4e9b !important;
+  color: #ffffff !important;
+}
+
+/* AJUSTE DAS TABELAS (FILHOS) */
+#visualizacaoAluno th {
+  background: #1a4e9b !important;
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+/* DEIXA AS CÉLULAS MAIS VISÍVEIS */
+#visualizacaoAluno td {
+  background: #ffffff;
+  color: #1a1a1a;
+}
+
+/* LINHA HOVER */
+#visualizacaoAluno tbody tr:hover {
+  background: #eef3ff !important;
+}
+
+/* TÍTULO DOS SEMESTRES */
+#visualizacaoAluno h3 {
+  color: #1a2e6e !important;
+  font-weight: 700;
+}
+
+/* PADRONIZA OS CARDS DE SEMESTRE */
+.semester-card {
+  background: #f7f9ff;
+  border: 1px solid #d5d9e8;
+  border-radius: 12px;
+}
+
+/* GRÁFICOS – MESMA COR DO ALUNO */
+.chart-card canvas {
+  background: transparent;
+}
+
+/* ALTERA A COR PADRÃO DOS GRÁFICOS DO CHART.JS */
+:root {
+  --chart-bar: #1a4e9b;
+}
+
+/* APENAS GARANTE QUE O CANVAS RECEBA A COR NOVA */
+.chart-card canvas * {
+  color: #1a4e9b !important;
+}
+
+/* ALINHAMENTO DOS CARDS DOS GRÁFICOS */
+.charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+/* RESPONSIVIDADE PARA EVITAR DESALINHAMENTO */
+@media (max-width: 850px) {
+  .charts {
+    grid-template-columns: 1fr;
+  }
+}
