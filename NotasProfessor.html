@@ -1,124 +1,101 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Notas do Professor</title>
-  <link rel="stylesheet" href="front/Styles/Login.css" />
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-  <link rel="stylesheet" href="front/Styles/NotasProfessor.css" />
-  
+
+  <link rel="stylesheet" href="front/Styles/Login.css">
+  <link rel="stylesheet" href="front/Styles/StyleAlunos.css">
+  <link rel="stylesheet" href="front/Styles/NotasProfessor.css">
 </head>
 <body>
-  <header>
 
-    <div class="header-aluno">
-      <img src="Assets/poliedro.png" class="poliedro-logo-header" alt="Logo"/>
-      <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">&#9776;</button>
-      <nav class="header-nav">
-        <a href="HomeProfessor.html" class="header-link">Home</a>
-        <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-        <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
-        <a href="NotasProfessor.html" class="header-link active">Notas</a>
-        <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
-        <a href="eventosProfessor.html" class="header-link">Eventos</a>
-        <select id="daltonismo-select"><option value="">Normal</option><option value="protanopia">Protanopia</option><option value="deuteranopia">Deuteranopia</option><option value="tritanopia">Tritanopia</option></select>
-      </nav>
-      <a href="PerfilProfessor.html"><img src="Assets/LogoUsuario.png" class="header-profile-img" alt="Perfil"/></a>
-    </div>
-  </header>
+<header>
+  <div class="header-aluno">
+    <img src="Assets/poliedro.png" class="poliedro-logo-header" alt="Logo">
+    <button id="menu-toggle" class="menu-toggle">&#9776;</button>
 
-  <main class="container-notas" style="max-width:1100px;margin:36px auto;">
-    <h2>Lançar Notas</h2>
+    <nav class="header-nav">
+      <a href="HomeProfessor.html" class="header-link">Home</a>
+      <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+      <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
+      <a href="NotasProfessor.html" class="header-link active">Notas</a>
+      <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
+      <a href="eventosProfessor.html" class="header-link">Eventos</a>
+    </nav>
 
-    
-    <form id="notaForm">
-      <select id="ano" required>
-        <option value="">Selecione o Ano</option>
-        <option>1º Ano</option>
-        <option>2º Ano</option>
-        <option>3º Ano</option>
-      </select>
+    <a href="PerfilProfessor.html">
+      <img src="Assets/LogoUsuario.png" class="header-profile-img" alt="Perfil">
+    </a>
+  </div>
+</header>
 
-      <select id="turma" required>
-        <option value="">Selecione a sub-sala</option>
-        <option>Sub 1</option>
-        <option>Sub 2</option>
-        <option>Sub 3</option>
-      </select>
+<main class="container-notas">
 
-      <!-- select de aluno (populado via JS) -->
-      <select id="alunoSelect" required>
-        <option value="">Carregando alunos...</option>
-      </select>
+  <h2>Editar Notas por Sala</h2>
 
-      <select id="semestre" required>
-        <option value="">Semestre</option>
-        <option>1º Semestre</option>
-        <option>2º Semestre</option>
-      </select>
+  <div class="filtros-sala">
 
-      <!-- select de matéria (pré-definido) -->
-      <select id="materia" required>
-        <option value="">Selecione a matéria</option>
-        <option>Português</option>
-        <option>Matemática</option>
-        <option>Biologia</option>
-        <option>Física</option>
-        <option>Química</option>
-        <option>Geografia</option>
-        <option>História</option>
-        <option>Filosofia</option>
-        <option>Sociologia</option>
-        <option>Artes</option>
-        <option>Educação Física</option>
-        <option>Inglês</option>
-      </select>
+  <!-- ANO -->
+  <select id="anoSelect" class="select-filtro">
+    <option value="">Selecione o Ano</option>
+    <option>1º Ano</option>
+    <option>2º Ano</option>
+    <option>3º Ano</option>
+  </select>
 
-      <input type="number" id="prova1" placeholder="P1 (0-10)" min="0" max="10" step="0.1" required />
-      <input type="number" id="prova2" placeholder="P2 (0-10)" min="0" max="10" step="0.1" required />
-      <input type="number" id="t1" placeholder="T1 (trabalho) (0-10)" min="0" max="10" step="0.1" required />
-      <input type="number" id="t2" placeholder="T2 (trabalho) (0-10)" min="0" max="10" step="0.1" required />
+  <!-- SUB-SALA -->
+  <select id="subSelect" class="select-filtro">
+    <option value="">Selecione a Sub-sala</option>
+    <option>Sub 1</option>
+    <option>Sub 2</option>
+    <option>Sub 3</option>
+  </select>
 
-      <button type="submit" id="btnSalvar">Salvar / Atualizar</button>
-    </form>
+  <!-- MATÉRIA (será substituída pelo JS quando o professor tiver sua matéria) -->
+  <select id="materiaSelect" class="select-filtro">
+    <option value="">Selecione a Matéria</option>
+  </select>
 
-    <div class="controls" style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-      <div>
-        <button id="excluirUltima">Excluir última entrada</button>
-        <button id="excluirTodas">Excluir todas</button>
-      </div>
+  <!-- SEMESTRE -->
+  <select id="semestreSelect" class="select-filtro">
+    <option value="">Selecione o Semestre</option>
+    <option>1º Semestre</option>
+    <option>2º Semestre</option>
+  </select>
 
-      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
-        <label for="filtroAno">Filtrar ano:</label>
-        <select id="filtroAno"><option value="">Todos</option></select>
-        <label for="filtroTurma">Filtrar turma:</label>
-        <select id="filtroTurma"><option value="">Todas</option></select>
-      </div>
+  <button id="btnBuscarSala" class="btn-acao btn-azul">Buscar</button>
+  <button id="btnSalvarLote" class="btn-acao btn-verde">Salvar em lote</button>
+
+</div>
+
+
+
+  <div id="tabelaSala"></div>
+
+  <h2 style="margin-top:28px;">Gráficos</h2>
+
+  <div class="chart-area">
+    <div class="chart-card">
+      <h3>Média por Sub-sala</h3>
+      <canvas id="chartSub"></canvas>
     </div>
 
-    <h2>Visualizar notas por aluno</h2>
-    <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px;">
-      <select id="visualizarAno"><option value="">Selecione ano</option></select>
-      <select id="visualizarAluno"><option value="">Selecione aluno</option></select>
-      <button id="btnVerAluno">Ver notas do aluno</button>
+    <div class="chart-card">
+      <h3>Média do Ano</h3>
+      <canvas id="chartAno"></canvas>
     </div>
+  </div>
 
-    <div id="visualizacaoAluno">
-      <!-- área onde aparecem as notas do aluno (será preenchida pelo JS) -->
-    </div>
+</main>
 
-    <h2>Gráficos</h2>
-    <div class="charts" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
-      <div class="chart-card"><h3>Média por Sub-sala</h3><canvas id="chartSubTurma" height="160"></canvas></div>
-      <div class="chart-card"><h3>Média do Ano</h3><canvas id="chartAno" height="160"></canvas></div>
-      <div style="grid-column: 1 / -1;" class="chart-card"><h3>Média por Aluno</h3><canvas id="chartAlunos" height="200"></canvas></div>
-    </div>
-  </main>
+<footer>
+  <p>&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+</footer>
 
-  <footer><p style="text-align:center;margin:18px 0;">&copy; Projeto desenvolvido por: [Nossos nomes]</p></footer>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="front/Scripts/notas.professor.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="front/Scripts/notas.professor.js"></script>
 </body>
 </html>

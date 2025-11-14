@@ -53,4 +53,28 @@ router.delete('/ultima', async (req, res) => {
   } catch (e) { console.error(e); res.status(500).json({ error: 'Erro ao apagar ultima' }); }
 });
 
+// GET notas por sala (ano + sub-sala + matéria + semestre)
+router.get('/sala', async (req, res) => {
+  try {
+    const { ano, subSala, materia, semestre } = req.query;
+
+    if (!ano || !subSala || !materia || !semestre) {
+      return res.status(400).json({ error: "Filtros incompletos" });
+    }
+
+    // NOTA: turma no banco está sendo usada como "Sub-sala"
+    const notas = await Nota.find({
+      ano,
+      materia,
+      semestre,
+      turma: subSala
+    });
+
+    res.json(notas);
+  } catch (error) {
+    console.error("Erro ao buscar notas da sala:", error);
+    res.status(500).json({ error: "Erro ao buscar notas da sala" });
+  }
+});
+
 module.exports = router;

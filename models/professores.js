@@ -5,7 +5,8 @@ const professorSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, trim: true },
   nome: { type: String, required: true, trim: true },
   senha: { type: String, required: true },
-  codigo: { type: String, trim: true } // se quiser um ID interno
+  codigo: { type: String, trim: true },
+  materia: { type: String, trim: true, default: '' }
 }, { timestamps: true });
 
 professorSchema.plugin(uniqueValidator);

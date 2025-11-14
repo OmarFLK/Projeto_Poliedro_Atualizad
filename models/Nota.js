@@ -7,7 +7,7 @@ const NotaSchema = new Schema({
   materia: { type: String, required: true },
   ano: { type: String, required: true },
   semestre: { type: String, required: true },
-  turma: { type: String },
+  turma: { type: String }, // aqui fica mesmo o Sub-sala
   p1: { type: Number },
   p2: { type: Number },
   t1: { type: Number },

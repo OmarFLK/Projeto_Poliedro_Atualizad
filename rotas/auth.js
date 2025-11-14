@@ -1,12 +1,14 @@
+// back/routes/auth.js
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Aluno = require('../models/alunos');
 const Professor = require('../models/professores');
+
 const JWT_SECRET = process.env.JWT_SECRET || 'chave_super_secreta';
 
-//Login Aluno (RA + senha)
+// LOGIN ALUNO
 router.post('/aluno/login', async (req, res) => {
   try {
     const { ra, senha } = req.body;
@@ -25,7 +27,6 @@ router.post('/aluno/login', async (req, res) => {
       { expiresIn: '8h' }
     );
 
-    //turma e subsala que antes estavam dando erro no console do navegador agora foram adicionados
     res.json({
       token,
       usuario: {
@@ -37,17 +38,19 @@ router.post('/aluno/login', async (req, res) => {
         subSala: aluno.subSala || ''
       }
     });
+
   } catch (error) {
-    console.error('Erro no login do aluno:', error);
-    res.status(500).json({ error: 'Erro no servidor', detalhe: error.message });
+    console.error(error);
+    res.status(500).json({ error: 'Erro no servidor' });
   }
 });
 
 
-//Login Professor (email + senha)
+// LOGIN PROFESSOR
 router.post('/professor/login', async (req, res) => {
   try {
     const { email, senha } = req.body;
+
     if (!email || !senha)
       return res.status(400).json({ error: 'Email e senha obrigatórios' });
 
@@ -59,23 +62,32 @@ router.post('/professor/login', async (req, res) => {
     if (!match)
       return res.status(401).json({ error: 'Email ou senha inválidos' });
 
+    // token envia a matéria também
     const token = jwt.sign(
-      { id: prof._id, tipo: 'professor', email: prof.email },
+      {
+        id: prof._id,
+        tipo: 'professor',
+        email: prof.email,
+        materia: prof.materia || ''
+      },
       JWT_SECRET,
       { expiresIn: '8h' }
     );
 
+    // front recebe matéria sempre, sem chance de perder
     res.json({
       token,
       usuario: {
         id: prof._id,
         nome: prof.nome,
-        email: prof.email
+        email: prof.email,
+        materia: prof.materia || ''
       }
     });
+
   } catch (error) {
-    console.error('Erro no login do professor:', error);
-    res.status(500).json({ error: 'Erro no servidor', detalhe: error.message });
+    console.error(error);
+    res.status(500).json({ error: 'Erro no servidor' });
   }
 });
 

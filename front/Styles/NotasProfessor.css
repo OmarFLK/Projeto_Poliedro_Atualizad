@@ -1,100 +1,195 @@
-/* CONTAINER PRINCIPAL */
+/*CONTAINER PRINCIPAL*/
 .container-notas {
   max-width: 1150px;
+  width: 100%;
   margin: 36px auto;
   background: #ffffff;
   padding: 30px;
   border-radius: 16px;
+  min-height: 350px;
   box-shadow: 0 8px 18px rgba(0,0,0,0.12);
 }
 
-/* TÍTULOS */
+
 .container-notas h2 {
   color: #1a4e9b;
-  margin-bottom: 14px;
-  font-size: 1.6rem;
+  margin-bottom: 16px;
+  font-size: 1.65rem;
   font-weight: 700;
 }
 
-/* FORM */
-#notaForm {
-  background: #f7f9fc;
-  border: 1px solid #e0e5f2;
-  padding: 18px;
-  border-radius: 12px;
-  display: grid;
+
+.filtros-sala {
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  margin-bottom: 16px;
 }
 
-#notaForm select,
-#notaForm input {
-  padding: 10px;
-  border: 1px solid #cfd5e3;
+.select-filtro {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #c6cfdd;
+  background: #f7f9ff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.select-filtro:hover {
+  background: #eef3ff;
+  border-color: #1a4e9b;
+}
+
+.select-filtro:focus {
+  border-color: #1a4e9b;
+  box-shadow: 0 0 0 2px rgba(26,78,155,0.25);
+  outline: none;
+}
+
+.btn-acao {
+  padding: 10px 18px;
   border-radius: 8px;
   font-size: 14px;
-}
-
-/* BOTÃO SALVAR */
-#btnSalvar {
-  background: #1a4e9b;
-  color: white;
   font-weight: 700;
-  border: none;
-  border-radius: 8px;
   cursor: pointer;
+  border: none;
+  transition: 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 
-#btnSalvar:hover {
+.btn-azul {
+  background: #1a4e9b;
+  color: #fff;
+}
+
+.btn-azul:hover {
   background: #163f7a;
+  transform: translateY(-2px);
 }
 
-/* CONTROLES */
-.controls {
-  margin-top: 16px;
-  border-bottom: 1px solid #e5e8f0;
-  padding-bottom: 12px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.btn-verde {
+  background: #0d8b47;
+  color: #fff;
 }
 
-/* BOTÕES */
-#excluirUltima,
-#excluirTodas {
-  background: #d4d8e4;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
+.btn-verde:hover {
+  background: #0a7039;
+  transform: translateY(-2px);
 }
 
-#excluirUltima:hover,
-#excluirTodas:hover {
-  background: #c2c7d4;
+
+.table-wrap {
+  margin-top: 14px;
+  overflow-x: auto;
 }
 
-/* SELECT VIEW */
-#visualizarAno,
-#visualizarAluno,
-#btnVerAluno {
-  padding: 10px;
+#tabelaEdicaoSala {
+  width: 100%;
+  border-spacing: 0 10px;
+  border-collapse: separate;
+  margin-top: 18px;
+}
+
+#tabelaEdicaoSala thead th {
+  background: #1a4e9b;
+  color: #fff;
+  padding: 14px 10px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px 10px 0 0;
+  text-align: center;
+}
+
+#tabelaEdicaoSala tbody tr {
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 10px;
+}
+
+#tabelaEdicaoSala tbody tr td {
+  padding: 12px 14px;
+  font-size: 15px;
+  text-align: center;
+}
+
+/* Inputs */
+#tabelaEdicaoSala input[type="number"] {
+  width: 90px;
+  padding: 8px;
   border-radius: 8px;
   border: 1px solid #cfd5e3;
+  background: #f7f9ff;
+  text-align: center;
+  font-size: 15px;
+  transition: 0.2s ease;
 }
 
-#btnVerAluno {
-  background: #1a4e9b;
-  color: white;
-  cursor: pointer;
+#tabelaEdicaoSala input[type="number"]:hover {
+  border-color: #1a4e9b;
+  background: #eef3ff;
+}
+
+#tabelaEdicaoSala input[type="number"]:focus {
+  background: #ffffff;
+  border-color: #1a4e9b;
+  box-shadow: 0 0 0 2px rgba(26,78,155,0.25);
+  outline: none;
+}
+
+/* Média */
+.media-cell {
   font-weight: 700;
+  color: #1a4e9b;
 }
 
-#btnVerAluno:hover {
-  background: #163f7a;
+/* Bordas arredondadas */
+#tabelaEdicaoSala tbody tr td:first-child {
+  border-radius: 10px 0 0 10px;
+}
+#tabelaEdicaoSala tbody tr td:last-child {
+  border-radius: 0 10px 10px 0;
 }
 
-/* TABELAS DO ALUNO */
+#tabelaEdicaoSala tbody tr:hover {
+  background: #f4f7ff;
+  transition: 0.2s;
+}
+
+/*GRÁFICOS*/
+.charts {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.chart-card {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+}
+
+.chart-card h3 {
+  color: #1a4e9b;
+  margin-bottom: 12px;
+}
+
+/* Cor dos gráficos Chart.js */
+:root {
+  --chart-bar-color: #2b6edb;
+}
+
+/* Responsivo */
+@media (max-width: 850px) {
+  .charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*TABELAS DO "Visualizar aluno"*/
 #visualizacaoAluno {
   margin-top: 25px;
   background: #fafbff;
@@ -124,111 +219,135 @@
 }
 
 #visualizacaoAluno tbody tr:hover {
-  background: #f5f7ff;
+  background: #eef3ff;
 }
 
 #visualizacaoAluno h3 {
   color: #1a2e6e;
-  margin-bottom: 8px;
-  margin-top: 20px;
-}
-
-/* CARDS GRÁFICOS */
-.chart-card {
-  background: #ffffff;
-  padding: 18px;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.10);
-}
-
-.chart-card h3 {
-  color: #1a4e9b;
+  font-weight: 700;
+  margin-top: 18px;
   margin-bottom: 10px;
 }
 
-/* GRID DOS GRÁFICOS */
-.charts {
-  margin-top: 25px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-/* SCROLL GLOBAL */
+/*SCROLL GLOBAL */
 html, body {
   height: 100%;
   overflow-y: auto;
 }
 
-/* RESPONSIVIDADE */
-@media (max-width: 850px) {
-  .charts {
-    grid-template-columns: 1fr;
-  }
-}
-/* CABEÇALHO DAS TABELAS DO ALUNO (PROFESSOR) */
-#visualizacaoAluno thead {
-  background: #1a4e9b !important;
-  color: #ffffff !important;
+/*EFEITO CASCATA (FICA MAIS FACIL)*/
+
+/* ====== WRAP DA TABELA ====== */
+.table-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
 }
 
-/* AJUSTE DAS TABELAS (FILHOS) */
-#visualizacaoAluno th {
-  background: #1a4e9b !important;
-  color: #ffffff !important;
-  font-weight: 700;
-}
-
-/* DEIXA AS CÉLULAS MAIS VISÍVEIS */
-#visualizacaoAluno td {
+/* ====== TABELA ====== */
+.tabela-notas {
+  width: 95%;
+  border-collapse: collapse;
   background: #ffffff;
-  color: #1a1a1a;
-}
-
-/* LINHA HOVER */
-#visualizacaoAluno tbody tr:hover {
-  background: #eef3ff !important;
-}
-
-/* TÍTULO DOS SEMESTRES */
-#visualizacaoAluno h3 {
-  color: #1a2e6e !important;
-  font-weight: 700;
-}
-
-/* PADRONIZA OS CARDS DE SEMESTRE */
-.semester-card {
-  background: #f7f9ff;
-  border: 1px solid #d5d9e8;
   border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  text-align: center;
 }
 
-/* GRÁFICOS – MESMA COR DO ALUNO */
-.chart-card canvas {
-  background: transparent;
+/* ====== CABEÇALHO ====== */
+.tabela-notas thead th {
+  background: #1a4e9b;
+  color: #fff;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-align: center;
 }
 
-/* ALTERA A COR PADRÃO DOS GRÁFICOS DO CHART.JS */
-:root {
-  --chart-bar: #1a4e9b;
+/* ====== LINHAS ====== */
+.tabela-notas tbody tr {
+  transition: 0.15s ease;
 }
 
-/* APENAS GARANTE QUE O CANVAS RECEBA A COR NOVA */
-.chart-card canvas * {
-  color: #1a4e9b !important;
+.tabela-notas tbody tr:hover {
+  background: #f1f5ff;
 }
 
-/* ALINHAMENTO DOS CARDS DOS GRÁFICOS */
-.charts {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-top: 20px;
+/* ====== CÉLULAS ====== */
+.tabela-notas tbody td {
+  padding: 12px;
+  font-size: 15px;
+  border-bottom: 1px solid #e5e8f0;
+  text-align: center;
 }
 
-/* RESPONSIVIDADE PARA EVITAR DESALINHAMENTO */
-@media (max-width: 850px) {
-  .charts {
-    grid-template-columns: 1fr;
+/* Nome do aluno alinhado à esquerda */
+.tabela-notas .cell-nome {
+  text-align: left;
+  padding-left: 18px;
+  font-weight: 600;
+}
+
+/* RA centralizado */
+.tabela-notas .cell-ra {
+  font-weight: 500;
+}
+
+/* ====== INPUTS DE NOTA ====== */
+.tabela-notas input[type="number"] {
+  width: 80px;
+  padding: 8px;
+  font-size: 15px;
+  border: 1px solid #cfd5e3;
+  border-radius: 6px;
+  background: #f8faff;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.tabela-notas input[type="number"]:hover {
+  border-color: #9bb3e0;
+  background: #eef3ff;
+}
+
+.tabela-notas input[type="number"]:focus {
+  border-color: #1a4e9b;
+  background: white;
+  box-shadow: 0 0 0 2px rgba(26, 78, 155, 0.25);
+  outline: none;
+}
+
+/* ====== COLUNA DA MÉDIA ====== */
+.tabela-notas td.media {
+  font-weight: 700;
+  font-size: 16px;
+  color: #1a4e9b;
+}
+
+/* ====== INFO TEXTO ====== */
+.nota-info {
+  width: 95%;
+  margin: 12px auto 0 auto;
+  font-size: 15px;
+  color: #333;
+  text-align: left;
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 780px) {
+  .tabela-notas {
+    width: 100%;
+  }
+
+  .tabela-notas input[type="number"] {
+    width: 60px;
+  }
+
+  .cell-nome {
+    padding-left: 6px;
   }
 }
+
