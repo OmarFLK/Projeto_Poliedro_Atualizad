@@ -15,6 +15,8 @@ const resolucoesRoutes = require("./rotas/resolucoes");
 const notasRoutes = require('./rotas/notas');
 const eventosRoutes = require("./rotas/eventos");
 const notasalunosRoutes = require('./rotas/notasalunos');
+const itinerarioRoutes = require("./rotas/itinerario");
+
 
 
 
@@ -53,6 +55,8 @@ app.use("/api/resolucoes", resolucoesRoutes);
 app.use('/api/notas', notasRoutes);
 app.use("/api/eventos", eventosRoutes);
 app.use('/api/alunos', notasalunosRoutes);
+app.use("/api/itinerario", itinerarioRoutes);
+
 
 
 // Middleware para rota inexistente

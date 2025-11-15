@@ -1,0 +1,93 @@
+/* container maior e centralizado */
+.container-itinerario-aluno {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 25px 35px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+}
+
+/* tabela estilo excel */
+.tabela-itinerario-aluno {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  table-layout: fixed; /* deixa tudo igual, estilo excel */
+  background: white;
+  font-size: 15px;
+}
+
+/* cabeçalho */
+.tabela-itinerario-aluno thead th {
+  background: #1a4e9b;
+  color: white;
+  padding: 14px;
+  text-align: center;
+  font-weight: 700;
+  border-bottom: 2px solid #153d75;
+}
+
+/* bordas verticais (excel look) */
+.tabela-itinerario-aluno td,
+.tabela-itinerario-aluno th {
+  border-right: 1px solid #d3d9e5;
+}
+
+/* remove a última borda lateral */
+.tabela-itinerario-aluno th:last-child,
+.tabela-itinerario-aluno td:last-child {
+  border-right: none;
+}
+
+/* linhas alternadas */
+.tabela-itinerario-aluno tbody tr:nth-child(odd) {
+  background: #f9fbff;
+}
+
+.tabela-itinerario-aluno tbody tr:nth-child(even) {
+  background: #eef3ff;
+}
+
+/* células */
+.tabela-itinerario-aluno td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #d8dfeb;
+}
+
+/* coluna horário */
+.tabela-itinerario-aluno td.horario-col {
+  font-weight: 700;
+  color: #163f7a;
+  width: 150px;
+}
+
+/* INTERVALO — destacado */
+.intervalo-aluno td {
+  background: #dce7ff !important;
+  font-weight: 800 !important;
+  color: #163f7a;
+  text-transform: uppercase;
+}
+
+/* arredondar cantos da tabela */
+.tabela-itinerario-aluno thead th:first-child {
+  border-top-left-radius: 12px;
+}
+.tabela-itinerario-aluno thead th:last-child {
+  border-top-right-radius: 12px;
+}
+.tabela-itinerario-aluno tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+.tabela-itinerario-aluno tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+
+/* scroll suave mesmo sem precisar (sensação de liberdade) */
+body {
+  padding-bottom: 150px;
+}

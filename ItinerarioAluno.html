@@ -1,460 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Itinerário do Aluno</title>
-    <link rel="stylesheet" href="front/Styles/Login.css" />
-    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Itinerário do Aluno</title>
 
-    <!-- Bootstrap -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
+  <link rel="stylesheet" href="front/Styles/Login.css">
+  <link rel="stylesheet" href="front/Styles/StyleAlunos.css">
+  <link rel="stylesheet" href="front/Styles/itinerarioAluno.css">
+</head>
 
-    <style>
-      /* Tabela */
-      table,
-      thead,
-      tbody,
-      tr,
-      th,
-      td {
-        border: 1px solid black;
-        table-layout: fixed;
-      }
-      table {
-        box-shadow: 0 4px 8px #163f7a;
-        border-radius: 8px;
-      }
-      th {
-        background-color: #6a9bd1;
-        color: white;
-      }
-      th,
-      td {
-        padding: 20px 10px;
-        min-height: 70px;
-        text-align: center;
-      }
-      div > p {
-        color: white;
-        font-size: 160%;
-      }
+<body>
 
-      /* Top icons (ajusta como q empilha no mobile) */
-      .top-icons {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 8px;
-        flex-wrap: nowrap; /* mantem os ícones em uma fileira */
-      }
+<header>
+  <div class="header-aluno">
+    <img src="Assets/poliedro.png" class="poliedro-logo-header">
 
-      .top-icons a,
-      .top-icons button,
-      .top-icons img,
-      .top-icons i {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 36px;
-        min-height: 36px;
-        max-width: 48px;
-        max-height: 48px;
-        padding: 4px;
-        box-sizing: border-box;
-      }
+    <nav class="header-nav">
+      <a href="HomeAluno.html" class="header-link">Home</a>
+      <a href="ItinerarioAluno.html" class="header-link active">Itinerário</a>
+      <a href="AtividadesAluno.html" class="header-link">Atividades</a>
+      <a href="NotasAluno.html" class="header-link">Notas</a>
+      <a href="MensagensAluno.html" class="header-link">Mensagens</a>
+      <a href="eventosAlunos.html" class="header-link">Eventos</a>
 
-      .top-icons img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-      }
+      <select id="daltonismo-select">
+        <option value="">Normal</option>
+        <option value="protanopia">Protanopia</option>
+        <option value="deuteranopia">Deuteranopia</option>
+        <option value="tritanopia">Tritanopia</option>
+      </select>
+    </nav>
 
-      @media (max-width: 420px) {
-        .top-icons {
-          gap: 6px;
-        }
-        .top-icons a,
-        .top-icons button,
-        .top-icons img,
-        .top-icons i {
-          min-width: 32px;
-          min-height: 32px;
-          max-width: 40px;
-          max-height: 40px;
-        }
-      }
+    <a href="PerfilAluno.html">
+      <img src="Assets/LogoUsuario.png" class="header-profile-img">
+    </a>
+  </div>
+</header>
 
-      /* barra lateral */
-      .sidebar {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #163f7a;
-        overflow-x: hidden;
-        padding-top: 60px;
-        transition: 0.3s;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-      .sidebar.open {
-        width: 250px;
-      }
-      .sidebar-link {
-        padding: 12px 24px;
-        text-decoration: none;
-        font-size: 1.2rem;
-        color: white;
-        display: block;
-      }
-      .sidebar-link:hover,
-      .sidebar-link.active {
-        background-color: #6a9bd1;
-        color: white;
-      }
-      .menu-close {
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-      }
 
-      /* Botão hamburguer */
-      .menu-toggle {
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: #163f7a;
-        cursor: pointer;
-        display: none; /* só aparece no mobile */
-        margin-left: 15px;
-        align-self: center;
-      }
+<main class="container-itinerario-aluno">
+    <h2>Meu Itinerário</h2>
+    <p id="turmaInfo" class="subtitulo"></p>
 
-      /* Nav header */
-      .header-aluno {
-        background-color: #163f7a;
-        display: flex;
-        align-items: flex;
-        justify-content: space-between;
-        padding: 10px 20px;
-        flex-wrap: nowrap;
-        gap: 10px;
-      }
-
-      .poliedro-logo-header {
-        height: 40px;
-        cursor: pointer;
-      }
-
-      .menu-toggle {
-        font-size: 2rem;
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-        display: none; /* só aparece no mobile */
-      }
-
-      .header-profile-img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 2px solid white;
-        cursor: pointer;
-      }
-
-      @media (max-width: 991px) {
-        .menu-toggle {
-          display: inline-block;
-        }
-
-        /* mantém logo, menu e perfil na mesma linha */
-        .header-aluno {
-          justify-content: space-between;
-        }
-      }
-      #daltonismo-select {
-        padding: 6px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-      }
-
-      .daltonismo-select-sidebar {
-        margin: 0 24px 12px 24px;
-        padding: 6px;
-        font-size: 1rem;
-        border-radius: 4px;
-        border: none;
-      }
-
-      /* Responsividade */
-      @media (min-width: 992px) {
-        .menu-toggle {
-          display: none;
-        }
-        .sidebar {
-          display: none !important;
-        }
-        .header-nav {
-          display: flex !important;
-        }
-      }
-
-      @media (max-width: 991px) {
-        .header-nav {
-          display: none !important;
-        }
-        .menu-toggle {
-          display: inline-block;
-        }
-      }
-
-      footer {
-        padding: 15px;
-        background-color: #163f7a;
-        color: white;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Bootstrap e JS -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
-
-    <header>
-      <div class="header-aluno">
-        <img
-         src="Assets/poliedro.png"
-          alt="Logo Poliedro"
-          class="poliedro-logo-header"
-        />
-
-        <!-- Botão hamburguer para mobile -->
-        <button
-          id="menu-toggle"
-          aria-label="Abrir menu"
-          class="menu-toggle"
-          type="button"
-        >
-          &#9776;
-        </button>
-
-        <!-- Navegação tradicional (desktop) -->
-        <nav class="header-nav">
-          <a href="HomeAluno.html" class="header-link">Home</a>
-          <a href="ItinerarioAluno.html" class="header-link active"
-            >Itinerário</a
-          >
-          <a href="AtividadesAluno.html" class="header-link">Atividades</a>
-          <a href="NotasAluno.html" class="header-link">Notas</a>
-          <a href="MensagensAluno.html" class="header-link">Mensagens</a>
-          <a href="eventosAlunos.html" class="header-link">Eventos</a>
-
-          <select id="daltonismo-select">
-            <option value="">Normal</option>
-            <option value="protanopia">Protanopia</option>
-            <option value="deuteranopia">Deuteranopia</option>
-            <option value="tritanopia">Tritanopia</option>
-          </select>
-        </nav>
-
-        <a href="PerfilAluno.html">
-          <img
-            src="Assets/LogoUsuario.png"
-            alt="Meu cadastro"
-            class="header-profile-img"
-          />
-        </a>
-      </div>
-
-      <!-- Sidebar para mobile -->
-      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-        <button
-          id="menu-close"
-          aria-label="Fechar menu"
-          class="menu-close"
-          type="button"
-        >
-          &times;
-        </button>
-        <a href="HomeAluno.html" class="sidebar-link">Home</a>
-        <a href="ItinerarioAluno.html" class="sidebar-link active"
-          >Itinerário</a
-        >
-        <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
-        <a href="NotasAluno.html" class="sidebar-link">Notas</a>
-        <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
-        <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
-
-        <select
-          id="daltonismo-select-sidebar"
-          class="daltonismo-select-sidebar"
-        >
-          <option value="">Normal</option>
-          <option value="protanopia">Protanopia</option>
-          <option value="deuteranopia">Deuteranopia</option>
-          <option value="tritanopia">Tritanopia</option>
-        </select>
-      </nav>
-    </header> 
-
-    <!-- Conteúdo principal -->
-    <main class="container-lg mt-4">
-      <div class="row">
-        <p>Branco</p>
-      </div>
-      <div class="row">
-        <table>
-          <thead>
-            <tr>
-              <th>Horários</th>
-              <th>Segunda</th>
-              <th>Terça</th>
-              <th>Quarta</th>
-              <th>Quinta</th>
-              <th>Sexta</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>7:30 ~ 8:20</th>
-              <td>Matemática</td>
-              <td>Português</td>
-              <td>Inglês</td>
-              <td>Educação física</td>
-              <td>Química</td>
-            </tr>
-            <tr>
-              <th>8:30 ~ 9:20</th>
-              <td>Biologia</td>
-              <td>Física</td>
-              <td>Matemática</td>
-              <td>Educação física</td>
-              <td>Espanhol</td>
-            </tr>
-            <tr>
-              <th>9:30 ~ 10:00</th>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th>10:00 ~ 10:50</th>
-              <td>Português</td>
-              <td>Química</td>
-              <td>História</td>
-              <td>Geografia</td>
-              <td>Física</td>
-            </tr>
-            <tr>
-              <th>11:00 ~ 11:50</th>
-              <td>Biologia</td>
-              <td>Matemática</td>
-              <td>História</td>
-              <td>Geografia</td>
-              <td>Espanhol</td>
-            </tr>
-            <tr>
-              <th>12:00 ~ 12:50</th>
-              <td>Inglês</td>
-              <td>Português</td>
-              <td>Matemática</td>
-              <td>Sociologia</td>
-              <td>Filosofia</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-
-    <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-    </footer>
-
-    <!-- VLibras plugin -->
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper></div>
+    <div class="tabela-wrapper">
+        <table id="tabelaAluno" class="tabela-itinerario-aluno"></table>
     </div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-      new window.VLibras.Widget("https://vlibras.gov.br/app");
-    </script>
+</main>
 
-    <!-- Scripts JS -->
-    <script>
-      // Seleção Daltonismo
-      const daltonismoSelect = document.getElementById("daltonismo-select");
-      const daltonismoSelectSidebar = document.getElementById(
-        "daltonismo-select-sidebar"
-      );
 
-      function changeDaltonismo(selectElement) {
-        document.body.classList.remove(
-          "protanopia",
-          "deuteranopia",
-          "tritanopia"
-        );
-        const val = selectElement.value;
-        if (val) document.body.classList.add(val);
-      }
+<footer>
+  <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+</footer>
 
-      if (daltonismoSelect) {
-        daltonismoSelect.addEventListener("change", () =>
-          changeDaltonismo(daltonismoSelect)
-        );
-      }
-      if (daltonismoSelectSidebar) {
-        daltonismoSelectSidebar.addEventListener("change", () =>
-          changeDaltonismo(daltonismoSelectSidebar)
-        );
-      }
 
-      // Sidebar toggle
-      const menuToggle = document.getElementById("menu-toggle");
-      const sidebar = document.getElementById("sidebar");
-      const menuClose = document.getElementById("menu-close");
-
-      menuToggle.addEventListener("click", () => {
-        sidebar.classList.add("open");
-        menuClose.focus();
-      });
-
-      menuClose.addEventListener("click", () => {
-        sidebar.classList.remove("open");
-      });
-
-      // Fecha sidebar clicando fora dela e fora do botão hamburguer
-      window.addEventListener("click", (e) => {
-        if (
-          sidebar.classList.contains("open") &&
-          !sidebar.contains(e.target) &&
-          !menuToggle.contains(e.target)
-        ) {
-          sidebar.classList.remove("open");
-        }
-      });
-    </script>
-  </body>
+<script src="front/Scripts/itinerario.aluno.js"></script>
+</body>
 </html>

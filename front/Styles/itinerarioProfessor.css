@@ -1,0 +1,213 @@
+/* ===== HEADER ===== */
+header .header-aluno {
+  background: #163f7a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 22px;
+  height: 64px;
+}
+
+header .poliedro-logo-header {
+  height: 40px;
+}
+
+header .header-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+header .header-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+
+header .header-link.active {
+  background: #fff;
+  color: #163f7a;
+}
+
+header .header-profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+
+/* ===== CONTAINER ===== */
+.container-itinerario {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.10);
+}
+
+.container-itinerario h2 {
+  color: #1a4e9b;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+
+/* ===== FILTROS ===== */
+.filtros-itinerario {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.select-filtro {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #c6cfdd;
+  background: #f7f9ff;
+  cursor: pointer;
+}
+
+.btn-acao {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-azul {
+  background: #1a4e9b;
+  color: white;
+}
+
+.btn-verde {
+  background: #0d8b47;
+  color: white;
+}
+
+
+/* ===== TABELA ===== */
+.table-itinerario {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.table-itinerario th {
+  background: #1a4e9b;
+  color: #fff;
+  padding: 14px;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+}
+
+.table-itinerario td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e8f0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+/* Inputs do horário */
+.table-itinerario input {
+  width: 70px;
+  padding: 6px;
+  border: 1px solid #ccd2e0;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 15px;
+}
+
+
+/* Selects corrigidos */
+.table-itinerario select {
+  width: 100%;
+  min-width: 130px;
+  max-width: 200px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccd2e0;
+  font-size: 15px;
+  background: white;
+  white-space: nowrap;
+}
+
+
+/* ===== INTERVALOS ===== */
+.intervalo td {
+  background: #eef3ff;
+  font-weight: 700;
+  color: #1a4e9b;
+}
+
+.intervalo select {
+  background: #dbe6ff !important;
+  font-weight: 700;
+  color: #1a4e9b;
+}
+
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 950px) {
+  .table-itinerario select {
+    max-width: 260px;
+    min-width: 140px;
+    font-size: 14px;
+  }
+
+  .table-itinerario th {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .table-itinerario td {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 700px) {
+  .table-itinerario select {
+    max-width: 100%;
+  }
+
+  .table-itinerario input {
+    width: 65px;
+  }
+}
+
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 15px;
+  background: #163f7a;
+  text-align: center;
+  color: white;
+}
+
+footer .footer-text {
+  font-size: 11px;
+  margin: 0;
+}
+/* wrapper para permitir scroll horizontal no mobile */
+.tabela-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ajusta scroll no mobile */
+@media (max-width: 900px) {
+  .table-itinerario {
+    min-width: 850px; /* garante espaço para todas as colunas */
+  }
+}
