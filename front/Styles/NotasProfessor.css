@@ -1,4 +1,88 @@
-/*CONTAINER PRINCIPAL*/
+header .header-aluno {
+  background-color: #163f7a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  gap: 10px;
+  height: 64px; /* mesmo tamanho do Home */
+  box-sizing: border-box;
+}
+
+/* logo */
+header .poliedro-logo-header {
+  height: 40px;
+  cursor: pointer;
+  margin-right: 0;
+}
+
+/* nav (desktop) */
+header .header-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px; /* mesmo espaçamento do Home */
+}
+
+/* links */
+header .header-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 6px;
+  transition: background 0.18s ease;
+}
+
+header .header-link:hover:not(.active) {
+  background: rgba(255,255,255,0.12);
+}
+
+header .header-link.active {
+  background: #fff;
+  color: #163f7a;
+}
+
+/* seletor daltonismo (mesmo estilo do Home) */
+#daltonismo-select {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* foto de perfil */
+header .header-profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
+}
+
+/* remove totalmente menu/side usados em outras páginas */
+header .menu-toggle,
+#menu-toggle,
+.sidebar,
+#sidebar {
+  display: none !important;
+}
+
+
+
+footer {
+  padding: 15px;
+  background-color: #163f7a;
+  color: #ffffff;
+  text-align: center;
+}
+
+footer .footer-text {
+  margin: 0;
+  font-size: 8px;
+  font-weight: 500;
+}
 .container-notas {
   max-width: 1150px;
   width: 100%;
@@ -10,13 +94,13 @@
   box-shadow: 0 8px 18px rgba(0,0,0,0.12);
 }
 
-
 .container-notas h2 {
   color: #1a4e9b;
   margin-bottom: 16px;
   font-size: 1.65rem;
   font-weight: 700;
 }
+
 
 
 .filtros-sala {
@@ -80,164 +164,7 @@
 }
 
 
-.table-wrap {
-  margin-top: 14px;
-  overflow-x: auto;
-}
 
-#tabelaEdicaoSala {
-  width: 100%;
-  border-spacing: 0 10px;
-  border-collapse: separate;
-  margin-top: 18px;
-}
-
-#tabelaEdicaoSala thead th {
-  background: #1a4e9b;
-  color: #fff;
-  padding: 14px 10px;
-  font-size: 15px;
-  font-weight: 600;
-  border-radius: 10px 10px 0 0;
-  text-align: center;
-}
-
-#tabelaEdicaoSala tbody tr {
-  background: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  border-radius: 10px;
-}
-
-#tabelaEdicaoSala tbody tr td {
-  padding: 12px 14px;
-  font-size: 15px;
-  text-align: center;
-}
-
-/* Inputs */
-#tabelaEdicaoSala input[type="number"] {
-  width: 90px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #cfd5e3;
-  background: #f7f9ff;
-  text-align: center;
-  font-size: 15px;
-  transition: 0.2s ease;
-}
-
-#tabelaEdicaoSala input[type="number"]:hover {
-  border-color: #1a4e9b;
-  background: #eef3ff;
-}
-
-#tabelaEdicaoSala input[type="number"]:focus {
-  background: #ffffff;
-  border-color: #1a4e9b;
-  box-shadow: 0 0 0 2px rgba(26,78,155,0.25);
-  outline: none;
-}
-
-/* Média */
-.media-cell {
-  font-weight: 700;
-  color: #1a4e9b;
-}
-
-/* Bordas arredondadas */
-#tabelaEdicaoSala tbody tr td:first-child {
-  border-radius: 10px 0 0 10px;
-}
-#tabelaEdicaoSala tbody tr td:last-child {
-  border-radius: 0 10px 10px 0;
-}
-
-#tabelaEdicaoSala tbody tr:hover {
-  background: #f4f7ff;
-  transition: 0.2s;
-}
-
-/*GRÁFICOS*/
-.charts {
-  margin-top: 32px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-.chart-card {
-  background: #ffffff;
-  padding: 18px;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.10);
-}
-
-.chart-card h3 {
-  color: #1a4e9b;
-  margin-bottom: 12px;
-}
-
-/* Cor dos gráficos Chart.js */
-:root {
-  --chart-bar-color: #2b6edb;
-}
-
-/* Responsivo */
-@media (max-width: 850px) {
-  .charts {
-    grid-template-columns: 1fr;
-  }
-}
-
-/*TABELAS DO "Visualizar aluno"*/
-#visualizacaoAluno {
-  margin-top: 25px;
-  background: #fafbff;
-  border: 1px solid #e0e4ef;
-  padding: 20px;
-  border-radius: 12px;
-}
-
-#visualizacaoAluno table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-#visualizacaoAluno thead {
-  background: #1a4e9b;
-  color: white;
-}
-
-#visualizacaoAluno th,
-#visualizacaoAluno td {
-  padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #e8e8e8;
-}
-
-#visualizacaoAluno tbody tr:hover {
-  background: #eef3ff;
-}
-
-#visualizacaoAluno h3 {
-  color: #1a2e6e;
-  font-weight: 700;
-  margin-top: 18px;
-  margin-bottom: 10px;
-}
-
-/*SCROLL GLOBAL */
-html, body {
-  height: 100%;
-  overflow-y: auto;
-}
-
-/*EFEITO CASCATA (FICA MAIS FACIL)*/
-
-/* ====== WRAP DA TABELA ====== */
 .table-wrap {
   width: 100%;
   display: flex;
@@ -245,7 +172,6 @@ html, body {
   margin-top: 18px;
 }
 
-/* ====== TABELA ====== */
 .tabela-notas {
   width: 95%;
   border-collapse: collapse;
@@ -256,18 +182,14 @@ html, body {
   text-align: center;
 }
 
-/* ====== CABEÇALHO ====== */
 .tabela-notas thead th {
   background: #1a4e9b;
   color: #fff;
   padding: 14px;
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.3px;
-  text-align: center;
 }
 
-/* ====== LINHAS ====== */
 .tabela-notas tbody tr {
   transition: 0.15s ease;
 }
@@ -276,27 +198,12 @@ html, body {
   background: #f1f5ff;
 }
 
-/* ====== CÉLULAS ====== */
 .tabela-notas tbody td {
   padding: 12px;
   font-size: 15px;
   border-bottom: 1px solid #e5e8f0;
-  text-align: center;
 }
 
-/* Nome do aluno alinhado à esquerda */
-.tabela-notas .cell-nome {
-  text-align: left;
-  padding-left: 18px;
-  font-weight: 600;
-}
-
-/* RA centralizado */
-.tabela-notas .cell-ra {
-  font-weight: 500;
-}
-
-/* ====== INPUTS DE NOTA ====== */
 .tabela-notas input[type="number"] {
   width: 80px;
   padding: 8px;
@@ -316,28 +223,60 @@ html, body {
 .tabela-notas input[type="number"]:focus {
   border-color: #1a4e9b;
   background: white;
-  box-shadow: 0 0 0 2px rgba(26, 78, 155, 0.25);
+  box-shadow: 0 0 0 2px rgba(26,78,155,0.25);
   outline: none;
 }
 
-/* ====== COLUNA DA MÉDIA ====== */
 .tabela-notas td.media {
   font-weight: 700;
   font-size: 16px;
   color: #1a4e9b;
 }
 
-/* ====== INFO TEXTO ====== */
-.nota-info {
-  width: 95%;
-  margin: 12px auto 0 auto;
-  font-size: 15px;
-  color: #333;
-  text-align: left;
+
+
+.chart-area {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 28px;
 }
 
-/* ====== RESPONSIVIDADE ====== */
-@media (max-width: 780px) {
+.chart-card {
+  width: 45%;
+  height: 300px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-card h3 {
+  color: #1a4e9b;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.chart-card canvas {
+  width: 100% !important;
+  height: 210px !important;
+}
+
+
+
+@media (max-width: 850px) {
+  .chart-area {
+    flex-direction: column;
+  }
+
+  .chart-card {
+    width: 100%;
+    height: 260px;
+  }
+
   .tabela-notas {
     width: 100%;
   }
@@ -345,9 +284,4 @@ html, body {
   .tabela-notas input[type="number"] {
     width: 60px;
   }
-
-  .cell-nome {
-    padding-left: 6px;
-  }
 }
-

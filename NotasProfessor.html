@@ -5,24 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Notas do Professor</title>
 
+  <!-- CSS globais do projeto -->
   <link rel="stylesheet" href="front/Styles/Login.css">
   <link rel="stylesheet" href="front/Styles/StyleAlunos.css">
+
+  <!-- CSS específico da página -->
   <link rel="stylesheet" href="front/Styles/NotasProfessor.css">
+
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
 </head>
 <body>
 
 <header>
   <div class="header-aluno">
-    <img src="Assets/poliedro.png" class="poliedro-logo-header" alt="Logo">
-    <button id="menu-toggle" class="menu-toggle">&#9776;</button>
 
+    <img src="Assets/poliedro.png" class="poliedro-logo-header" alt="Logo">
+
+    
     <nav class="header-nav">
       <a href="HomeProfessor.html" class="header-link">Home</a>
       <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
       <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
       <a href="NotasProfessor.html" class="header-link active">Notas</a>
       <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
-      <a href="eventosProfessor.html" class="header-link">Eventos</a>
+      <a href="EventosProfessores.html" class="header-link">Eventos</a>
+
+      <!-- seletor de daltonismo continua funcionando -->
+      <select id="daltonismo-select">
+        <option value="">Normal</option>
+        <option value="protanopia">Protanopia</option>
+        <option value="deuteranopia">Deuteranopia</option>
+        <option value="tritanopia">Tritanopia</option>
+      </select>
     </nav>
 
     <a href="PerfilProfessor.html">
@@ -31,50 +49,45 @@
   </div>
 </header>
 
+<!-- CONTEÚDO PRINCIPAL -->
 <main class="container-notas">
 
   <h2>Editar Notas por Sala</h2>
 
   <div class="filtros-sala">
 
-  <!-- ANO -->
-  <select id="anoSelect" class="select-filtro">
-    <option value="">Selecione o Ano</option>
-    <option>1º Ano</option>
-    <option>2º Ano</option>
-    <option>3º Ano</option>
-  </select>
+    <select id="anoSelect" class="select-filtro">
+      <option value="">Ano</option>
+      <option>1º Ano</option>
+      <option>2º Ano</option>
+      <option>3º Ano</option>
+    </select>
 
-  <!-- SUB-SALA -->
-  <select id="subSelect" class="select-filtro">
-    <option value="">Selecione a Sub-sala</option>
-    <option>Sub 1</option>
-    <option>Sub 2</option>
-    <option>Sub 3</option>
-  </select>
+    <select id="subSelect" class="select-filtro">
+      <option value="">Sub-sala</option>
+      <option>Sub 1</option>
+      <option>Sub 2</option>
+      <option>Sub 3</option>
+    </select>
 
-  <!-- MATÉRIA (será substituída pelo JS quando o professor tiver sua matéria) -->
-  <select id="materiaSelect" class="select-filtro">
-    <option value="">Selecione a Matéria</option>
-  </select>
+    <select id="materiaSelect" class="select-filtro">
+      <option value="">Matemática</option>
+    </select>
 
-  <!-- SEMESTRE -->
-  <select id="semestreSelect" class="select-filtro">
-    <option value="">Selecione o Semestre</option>
-    <option>1º Semestre</option>
-    <option>2º Semestre</option>
-  </select>
+    <select id="semestreSelect" class="select-filtro">
+      <option value="">Selecione o Semestre</option>
+      <option>1º Semestre</option>
+      <option>2º Semestre</option>
+    </select>
 
-  <button id="btnBuscarSala" class="btn-acao btn-azul">Buscar</button>
-  <button id="btnSalvarLote" class="btn-acao btn-verde">Salvar em lote</button>
+    <button id="btnBuscarSala" class="btn-acao btn-azul">Buscar</button>
+    <button id="btnSalvarLote" class="btn-acao btn-verde">Salvar em lote</button>
 
-</div>
-
-
+  </div>
 
   <div id="tabelaSala"></div>
 
-  <h2 style="margin-top:28px;">Gráficos</h2>
+  <h2 class="mt-4">Gráficos</h2>
 
   <div class="chart-area">
     <div class="chart-card">
@@ -94,6 +107,7 @@
   <p>&copy; Projeto desenvolvido por: [Nossos nomes]</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="front/Scripts/notas.professor.js"></script>
 

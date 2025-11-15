@@ -21,18 +21,59 @@ router.get('/aluno/:alunoId', async (req, res) => {
   } catch (e) { console.error(e); res.status(500).json({ error: 'Erro ao buscar notas do aluno' }); }
 });
 
-// POST criar ou atualizar nota
+// POST criar ou atualizar nota (atualiza somente campos informados)
 router.post('/', async (req, res) => {
   try {
-    const { alunoId, alunoNome, materia, ano, semestre, turma, p1, p2, t1, t2, media } = req.body;
+    const {
+      alunoId,
+      alunoNome,
+      materia,
+      ano,
+      semestre,
+      turma,
+      p1,
+      p2,
+      t1,
+      t2,
+      media
+    } = req.body;
+
     if (!alunoId || !materia || !ano || !semestre) {
       return res.status(400).json({ error: 'Campos obrigatórios faltando' });
     }
-    const filtro = { alunoId, materia, ano, semestre };
-    const dados = { alunoId, alunoNome, materia, ano, semestre, turma, p1, p2, t1, t2, media, createdAt: new Date() };
-    const nota = await Nota.findOneAndUpdate(filtro, dados, { upsert: true, new: true, setDefaultsOnInsert: true });
+
+    // filtro agora inclui turma (sub-sala)
+    const filtro = { alunoId, materia, ano, semestre, turma };
+
+    // construir objeto de update apenas com campos definidos (evitar sobrescrever com 0)
+    const setObj = {};
+    if (typeof alunoNome !== 'undefined') setObj.alunoNome = alunoNome;
+    if (typeof turma !== 'undefined') setObj.turma = turma;
+    if (typeof p1 !== 'undefined') setObj.p1 = p1;
+    if (typeof p2 !== 'undefined') setObj.p2 = p2;
+    if (typeof t1 !== 'undefined') setObj.t1 = t1;
+    if (typeof t2 !== 'undefined') setObj.t2 = t2;
+    if (typeof media !== 'undefined') setObj.media = media;
+
+    // se nenhum campo numérico foi enviado, não atualiza (evita upsert vazio)
+    if (Object.keys(setObj).length === 0) {
+      // tenta retornar nota existente
+      const existente = await Nota.findOne(filtro);
+      if (existente) return res.json(existente);
+      return res.status(400).json({ error: 'Nenhum campo para atualizar' });
+    }
+
+    const update = {
+      $set: setObj,
+      $setOnInsert: { createdAt: new Date() }
+    };
+
+    const nota = await Nota.findOneAndUpdate(filtro, update, { upsert: true, new: true, setDefaultsOnInsert: true });
     res.status(201).json(nota);
-  } catch (e) { console.error(e); res.status(500).json({ error: 'Erro ao salvar nota' }); }
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Erro ao salvar nota' });
+  }
 });
 
 // DELETE todas (dev only)
@@ -62,7 +103,7 @@ router.get('/sala', async (req, res) => {
       return res.status(400).json({ error: "Filtros incompletos" });
     }
 
-    // NOTA: turma no banco está sendo usada como "Sub-sala"
+    // turma no banco está sendo usada como "Sub-sala"
     const notas = await Nota.find({
       ano,
       materia,
@@ -70,6 +111,7 @@ router.get('/sala', async (req, res) => {
       turma: subSala
     });
 
+    // retornar array (cliente monta mapa por alunoId)
     res.json(notas);
   } catch (error) {
     console.error("Erro ao buscar notas da sala:", error);

@@ -379,17 +379,6 @@
     });
   </script>
 
-    <script>
-      const daltonismoSelect = document.getElementById("daltonismo-select");
-      daltonismoSelect.addEventListener("change", () => {
-        document.body.classList.remove(
-          "protanopia",
-          "deuteranopia",
-          "tritanopia"
-        );
-        const val = daltonismoSelect.value;
-        if (val) document.body.classList.add(val);
-      });
-    </script>
+   
   </body>
 </html>
