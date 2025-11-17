@@ -1,11 +1,194 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil do Professor</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil do Professor</title>
+
+  <link rel="stylesheet" href="front/Styles/Login.css" />
+  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+  <link rel="stylesheet" href="front/Styles/PerfilProfessor.css" />
 </head>
+
 <body>
-    
+  <header>
+    <div class="header-aluno">
+      <img src="Assets/poliedro.png" class="poliedro-logo-header" />
+
+      <nav class="header-nav">
+        <a href="HomeProfessor.html" class="header-link">Home</a>
+        <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+        <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
+        <a href="NotasProfessor.html" class="header-link">Notas</a>
+        <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
+        <a href="EventosProfessores.html" class="header-link">Eventos</a>
+
+        <select id="daltonismo-select">
+          <option value="">Normal</option>
+          <option value="protanopia">Protanopia</option>
+          <option value="deuteranopia">Deuteranopia</option>
+          <option value="tritanopia">Tritanopia</option>
+        </select>
+      </nav>
+
+      <a href="PerfilProfessor.html">
+        <img src="Assets/LogoUsuario.png" class="header-profile-img" />
+      </a>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <div class="profile-grid">
+      <!-- CARD ESQUERDO — PERFIL -->
+      <div class="card card-perfil">
+        <h2 class="titulo-perfil">Meu Perfil</h2>
+
+        <div class="perfil-top">
+          <div class="avatar-area">
+            <img src="Assets/LogoUsuario.png" id="avatar-preview" class="avatar-img" />
+            <label class="btn-avatar" for="avatar-upload">Alterar foto</label>
+            <input type="file" id="avatar-upload" accept="image/*" style="display: none" />
+          </div>
+
+          <div class="perfil-info">
+            <label class="field-label">Nome</label>
+            <div class="field-read" id="campoNome"></div>
+
+            <label class="field-label">Email</label>
+            <div class="field-read" id="campoEmail"></div>
+
+            <label class="field-label">Matéria</label>
+            <div class="field-read" id="campoMateria"></div>
+          </div>
+        </div>
+
+        <div class="senha-bloco">
+          <div class="subtitle">Alterar senha</div>
+          <input type="password" id="novaSenha" class="input input-senha" placeholder="Nova senha" />
+          <input type="password" id="confirmarSenha" class="input input-senha"
+            placeholder="Confirmar nova senha" />
+        </div>
+
+        <div class="perfil-actions">
+          <button class="btn btn-neutral" id="btnCancelarPerfil">Cancelar</button>
+          <button class="btn btn-primary" id="btnSalvarPerfil">Salvar alterações</button>
+        </div>
+      </div>
+
+      <!-- CARD DIREITO — FORMULÁRIOS -->
+      <div class="card card-form">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="tab-aluno">Criar novo aluno</button>
+          <button class="tab-btn" data-tab="tab-professor">Criar novo professor</button>
+        </div>
+
+        <!-- FORMULARIO ALUNO -->
+        <div class="tab-pane active" id="tab-aluno">
+          <form id="formAluno">
+            <div class="form-grid">
+
+              <input class="input" id="alunoNome" placeholder="Nome" />
+              <input class="input" id="alunoSobrenome" placeholder="Sobrenome" />
+
+              <input class="input" id="alunoEmail" placeholder="Email (opcional)" />
+
+              <div style="grid-column: 1 / 3; font-size: 0.9rem; color: #555;">
+                <strong>RA será gerado automaticamente</strong>
+              </div>
+
+              <input type="password" class="input" id="alunoSenha" placeholder="Senha" />
+              <input type="password" class="input" id="alunoSenhaConfirm" placeholder="Confirmar senha" />
+
+              <select class="input" id="alunoAno">
+                <option>Selecione o Ano</option>
+                <option>1º Ano</option>
+                <option>2º Ano</option>
+                <option>3º Ano</option>
+              </select>
+
+              <select class="input" id="alunoSubSala">
+                <option>Selecione a Sub-sala</option>
+                <option>Sub 1</option>
+                <option>Sub 2</option>
+                <option>Sub 3</option>
+              </select>
+            </div>
+
+            <div class="form-actions">
+              <button type="reset" class="btn btn-neutral">Limpar</button>
+              <button type="submit" class="btn btn-primary">Criar aluno</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- FORMULARIO PROFESSOR -->
+        <div class="tab-pane" id="tab-professor">
+          <form id="formProfessor">
+            <div class="form-grid">
+              <input class="input" id="profNome" placeholder="Nome completo" />
+              <input class="input" id="profEmail" placeholder="Email" />
+
+              <input type="password" class="input" id="profSenha" placeholder="Senha" />
+              <input type="password" class="input" id="profSenhaConfirm" placeholder="Confirmar senha" />
+
+              <select class="input" id="profMateria">
+                <option>Selecione a matéria</option>
+                <option>Matemática</option>
+                <option>Português</option>
+                <option>Física</option>
+                <option>Química</option>
+                <option>Biologia</option>
+                <option>História</option>
+                <option>Geografia</option>
+                <option>Inglês</option>
+                <option>Artes</option>
+                <option>Filosofia</option>
+                <option>Sociologia</option>
+                <option>Educação Física</option>
+              </select>
+            </div>
+
+            <div class="form-actions">
+              <button type="reset" class="btn btn-neutral">Limpar</button>
+              <button type="submit" class="btn btn-primary">Criar professor</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+  </footer>
+
+  <!-- SCRIPT DAS ABAS (ADICIONADO AGORA!) -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabs = document.querySelectorAll(".tab-btn");
+      const panes = document.querySelectorAll(".tab-pane");
+
+      tabs.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const tab = btn.dataset.tab;
+
+          tabs.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          panes.forEach(p => {
+            p.classList.remove("active");
+            if (p.id === tab) p.classList.add("active");
+          });
+        });
+      });
+    });
+  </script>
+
+  <script src="front/Scripts/PerfilProfessor.js"></script>
+  <script src="front/Scripts/header.js"></script>
+
 </body>
+
 </html>

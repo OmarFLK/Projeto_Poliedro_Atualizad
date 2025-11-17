@@ -37,14 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
       "<p style='text-align:center;color:#888;'>Carregando eventos...</p>";
 
     try {
-      // Pega a turma do aluno logado (salva no localStorage no login)
-      const alunoLogado = JSON.parse(localStorage.getItem("usuario"));
+      const alunoLogado = JSON.parse(localStorage.getItem("usuarioAluno"));
       const turmaAluno = alunoLogado?.turma || "";
 
-      // Busca os eventos filtrados pelo back-end
       const res = await fetch(
-        `${baseUrl}/api/eventos?turma=${encodeURIComponent(turmaAluno)}`
+        `${baseUrl}/api/eventos?turma=${encodeURIComponent(turmaAluno)}`,
+        {
+          credentials: "include"
+        }
       );
+
       const eventos = await res.json();
 
       if (!Array.isArray(eventos) || eventos.length === 0) {

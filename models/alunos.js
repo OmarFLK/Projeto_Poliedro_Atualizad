@@ -6,8 +6,10 @@ const alunoSchema = new mongoose.Schema({
   nome: { type: String, required: true, trim: true },
   senha: { type: String, required: true },
   email: { type: String, trim: true, default: '' },
-  turma:  { type: String, required: true },    
-  subSala:{ type: String, required: true },    
+  turma: { type: String, required: true },
+  subSala: { type: String, required: true },
+  avatar: { type: String, default: "" }
+
 }, { timestamps: true });
 
 alunoSchema.plugin(uniqueValidator);

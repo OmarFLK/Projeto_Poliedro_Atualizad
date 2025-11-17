@@ -1,4 +1,3 @@
-// rotas/resolucoes.js
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
@@ -19,7 +18,25 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// listar resoluções por atividade (professor)
+// ajustes iguais aos da atividade
+function formatTurma(t) {
+  if (!t) return '';
+  t = t.toString().trim().replace(/\s+/g, ' ');
+  if (t.includes('1')) return '1º Ano';
+  if (t.includes('2')) return '2º Ano';
+  if (t.includes('3')) return '3º Ano';
+  return t;
+}
+
+function formatSubSala(s) {
+  if (!s) return '';
+  s = s.toString().trim().replace(/\s+/g, ' ');
+  s = s.replace(/sub\s*/i, '');
+  return `Sub ${s}`;
+}
+
+
+// LISTAR RESOLUÇÕES DE UMA ATIVIDADE (PROFESSOR)
 router.get("/:atividadeId", async (req, res) => {
   try {
     const { atividadeId } = req.params;
@@ -31,7 +48,7 @@ router.get("/:atividadeId", async (req, res) => {
   }
 });
 
-// listar resoluções de um aluno (aba direita do aluno)
+// LISTAR RESOLUÇÕES DO ALUNO
 router.get("/aluno/:alunoId", async (req, res) => {
   try {
     const { alunoId } = req.params;
@@ -45,7 +62,7 @@ router.get("/aluno/:alunoId", async (req, res) => {
   }
 });
 
-// enviar ou reenviar resolução
+// ENVIAR OU REENVIAR
 router.post("/", upload.single("arquivo"), async (req, res) => {
   try {
     const { atividadeId, alunoId, nomeAluno, raAluno, observacao, turma, subSala } = req.body;
@@ -61,12 +78,11 @@ router.post("/", upload.single("arquivo"), async (req, res) => {
       alunoId,
       nomeAluno,
       raAluno,
-      // mantém turma/subSala atuais ou anteriores
-      turma: (turma || (existente && existente.turma) || "").trim(),
-      subSala: (subSala || (existente && existente.subSala) || "").trim(),
+      turma: formatTurma(turma),
+      subSala: formatSubSala(subSala),
       observacao: observacao || "",
       arquivoPath: req.file ? `/uploads/resolucoes/${req.file.filename}` : (existente ? existente.arquivoPath : ""),
-      arquivoNome: req.file ? (req.file.originalname || "") : (existente ? existente.arquivoNome : ""),
+      arquivoNome: req.file ? (req.file.originalname || "") : (existente ? existente.arquivoNome : "")
     };
 
     let resolucao;
@@ -82,12 +98,13 @@ router.post("/", upload.single("arquivo"), async (req, res) => {
 
     res.status(201).json(resolucao);
   } catch (e) {
-    console.error("Erro ao salvar resolução:", e);
+    console.error("Erro ao enviar resolução", e);
     res.status(500).json({ error: "Erro ao enviar resolução" });
   }
 });
 
-// excluir resolução
+
+// EXCLUIR
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -102,8 +119,8 @@ router.delete("/:id", async (req, res) => {
     await Resolucao.findByIdAndDelete(id);
     res.json({ message: "Resolução excluída com sucesso." });
   } catch (e) {
-    console.error("Erro ao excluir resolução:", e);
-    res.status(500).json({ error: "Erro ao excluir resolução." });
+    console.error("Erro ao excluir resolução", e);
+    res.status(500).json({ error: "Erro ao excluir resolução" });
   }
 });
 

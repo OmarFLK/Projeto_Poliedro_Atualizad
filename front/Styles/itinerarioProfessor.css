@@ -211,3 +211,28 @@ footer .footer-text {
     min-width: 850px; /* garante espaço para todas as colunas */
   }
 }
+/* Remove o ícone do input type="time" */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Ajusta o input para parecer mais limpo */
+input[type="time"] {
+  padding-right: 0;
+  font-size: 15px;
+}
+/* Remove COMPLETAMENTE o botão/ícone do input time */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
+/* Remove o estilo interno que reserva espaço para o indicador */
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-clear-button {
+  display: none !important;
+}
+
+input[type="time"] {
+  padding-right: 6px !important; /* deixa mais compacto e sem espaço sobrando */
+}

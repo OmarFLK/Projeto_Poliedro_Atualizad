@@ -1,6 +1,5 @@
-// front/Scripts/notas.professor.js
 document.addEventListener('DOMContentLoaded', () => {
-  const baseUrl = window.location.origin.replace(/:\d+$/, ':3000');
+  const baseUrl = "http://localhost:3000";
 
   const anoSelect = document.getElementById('anoSelect');
   const subSelect = document.getElementById('subSelect');
@@ -18,21 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
   let graficoSub = null;
   let graficoAno = null;
 
-  // carregar matéria do professor
+
+  // CARREGAR MATÉRIA DO PROFESSOR
   function carregarMateria() {
     try {
-      const u = JSON.parse(localStorage.getItem('usuario'));
+      const u = JSON.parse(localStorage.getItem("usuarioProfessor") || "null");
       if (u?.materia) {
         profMateria = u.materia;
         return;
       }
     } catch (e) {}
-    profMateria = '';
+    profMateria = "";
   }
 
   carregarMateria();
 
-  // travar select da matéria
+  // trava o select de matéria
   function travarMateria() {
     if (profMateria) {
       materiaSelect.innerHTML = `<option value="${profMateria}">${profMateria}</option>`;
@@ -45,28 +45,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
   travarMateria();
 
-  // carregar todos os alunos
+
+  // CARREGAR TODOS OS ALUNOS
   async function carregarAlunos() {
     try {
-      const res = await fetch(`${baseUrl}/api/alunos`);
+      const res = await fetch(`${baseUrl}/api/alunos`, {
+        credentials: "include"
+      });
+      if (!res.ok) throw new Error("Falha ao carregar");
+
       alunos = await res.json();
       popularFiltros();
     } catch (err) {
+      console.warn("[Notas] Falha ao carregar /api/alunos");
       alunos = [];
       popularFiltros();
     }
   }
 
-  // popular ano e sub-sala
+
+  // POPULAR SELECTS DE ANO E SUB-SALA
   function popularFiltros() {
     const anos = [...new Set(alunos.map(a => a.turma).filter(Boolean))].sort();
-    anoSelect.innerHTML = `<option value="">Ano</option>` + anos.map(a => `<option>${a}</option>`).join('');
+    anoSelect.innerHTML =
+      `<option value="">Ano</option>` +
+      anos.map(a => `<option>${a}</option>`).join("");
 
     const subs = [...new Set(alunos.map(a => a.subSala).filter(Boolean))].sort();
-    subSelect.innerHTML = `<option value="">Sub-sala</option>` + subs.map(s => `<option>${s}</option>`).join('');
+    subSelect.innerHTML =
+      `<option value="">Sub-sala</option>` +
+      subs.map(s => `<option>${s}</option>`).join("");
   }
 
-  // filtrar lista de alunos pelo ano + sub-sala
+
+  // FILTRAR ALUNOS
   function filtrar() {
     const ano = anoSelect.value;
     const sub = subSelect.value;
@@ -78,7 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // calcular média ponderada
+
+  // CALCULAR MÉDIA AUTOMÁTICA
   function calcularMedia(p1, p2, t1, t2) {
     const algum = Number.isFinite(p1) || Number.isFinite(p2) || Number.isFinite(t1) || Number.isFinite(t2);
     if (!algum) return NaN;
@@ -91,41 +104,41 @@ document.addEventListener('DOMContentLoaded', () => {
     return (a * 2 + b * 2 + c + d) / 6;
   }
 
-  // desenhar tabela de notas
+
+  // DESENHAR TABELA DE NOTAS
   function renderTabela(lista) {
     if (!lista.length) {
-      tabelaSala.innerHTML = '<p>Nenhum aluno encontrado.</p>';
+      tabelaSala.innerHTML = "<p>Nenhum aluno encontrado.</p>";
       return;
     }
 
-    const linhas = lista.map(a => {
-      const nota = notasExistentesMap[a._id];
-      const p1v = nota?.p1 ?? '';
-      const p2v = nota?.p2 ?? '';
-      const t1v = nota?.t1 ?? '';
-      const t2v = nota?.t2 ?? '';
+    const linhas = lista
+      .map(a => {
+        const nota = notasExistentesMap[a._id];
+        const p1v = nota?.p1 ?? "";
+        const p2v = nota?.p2 ?? "";
+        const t1v = nota?.t1 ?? "";
+        const t2v = nota?.t2 ?? "";
 
-      const med = calcularMedia(
-        p1v === '' ? undefined : Number(p1v),
-        p2v === '' ? undefined : Number(p2v),
-        t1v === '' ? undefined : Number(t1v),
-        t2v === '' ? undefined : Number(t2v)
-      );
+        const med = calcularMedia(
+          p1v === "" ? undefined : Number(p1v),
+          p2v === "" ? undefined : Number(p2v),
+          t1v === "" ? undefined : Number(t1v),
+          t2v === "" ? undefined : Number(t2v)
+        );
 
-      const medText = Number.isNaN(med) ? '-' : med.toFixed(2);
-
-      return `
-      <tr data-id="${a._id}">
-        <td>${a.nome}</td>
-        <td>${a.ra}</td>
-        <td><input class="p1" type="number" min="0" max="10" step="0.1" value="${p1v}"></td>
-        <td><input class="p2" type="number" min="0" max="10" step="0.1" value="${p2v}"></td>
-        <td><input class="t1" type="number" min="0" max="10" step="0.1" value="${t1v}"></td>
-        <td><input class="t2" type="number" min="0" max="10" step="0.1" value="${t2v}"></td>
-        <td class="media">${medText}</td>
-      </tr>
-    `;
-    }).join('');
+        return `
+        <tr data-id="${a._id}">
+          <td>${a.nome}</td>
+          <td>${a.ra}</td>
+          <td><input class="p1" type="number" min="0" max="10" step="0.1" value="${p1v}"></td>
+          <td><input class="p2" type="number" min="0" max="10" step="0.1" value="${p2v}"></td>
+          <td><input class="t1" type="number" min="0" max="10" step="0.1" value="${t1v}"></td>
+          <td><input class="t2" type="number" min="0" max="10" step="0.1" value="${t2v}"></td>
+          <td class="media">${Number.isNaN(med) ? "-" : med.toFixed(2)}</td>
+        </tr>`;
+      })
+      .join("");
 
     tabelaSala.innerHTML = `
       <div class="table-wrap">
@@ -134,54 +147,65 @@ document.addEventListener('DOMContentLoaded', () => {
             <tr>
               <th>Aluno</th>
               <th>RA</th>
-              <th>P1 (2)</th>
-              <th>P2 (2)</th>
-              <th>T1 (1)</th>
-              <th>T2 (1)</th>
-              <th>Média Ponderada</th>
+              <th>P1</th>
+              <th>P2</th>
+              <th>T1</th>
+              <th>T2</th>
+              <th>Média</th>
             </tr>
           </thead>
           <tbody>${linhas}</tbody>
         </table>
-      </div>
-      <p class="nota-info">Editar notas e clicar em "Salvar em lote".</p>
-    `;
+      </div>`;
 
-    tabelaSala.querySelectorAll('input').forEach(inp =>
-      inp.addEventListener('input', atualizarMedias)
+    tabelaSala.querySelectorAll("input").forEach(inp =>
+      inp.addEventListener("input", atualizarMedias)
     );
   }
 
-  // atualizar médias em cada linha
+
+  // ATUALIZAR MÉDIAS DA TABELA
   function atualizarMedias() {
-    tabelaSala.querySelectorAll('tbody tr').forEach(tr => {
+    tabelaSala.querySelectorAll("tbody tr").forEach(tr => {
       const id = tr.dataset.id;
-      const existente = notasExistentesMap[id] || {};
+      const ex = notasExistentesMap[id] || {};
 
-      const p1Raw = tr.querySelector('.p1').value;
-      const p2Raw = tr.querySelector('.p2').value;
-      const t1Raw = tr.querySelector('.t1').value;
-      const t2Raw = tr.querySelector('.t2').value;
+      const p1Raw = tr.querySelector(".p1").value;
+      const p2Raw = tr.querySelector(".p2").value;
+      const t1Raw = tr.querySelector(".t1").value;
+      const t2Raw = tr.querySelector(".t2").value;
 
-      const p1 = p1Raw === '' ? existente.p1 : Number(p1Raw);
-      const p2 = p2Raw === '' ? existente.p2 : Number(p2Raw);
-      const t1 = t1Raw === '' ? existente.t1 : Number(t1Raw);
-      const t2 = t2Raw === '' ? existente.t2 : Number(t2Raw);
+      const p1 = p1Raw === "" ? ex.p1 : Number(p1Raw);
+      const p2 = p2Raw === "" ? ex.p2 : Number(p2Raw);
+      const t1 = t1Raw === "" ? ex.t1 : Number(t1Raw);
+      const t2 = t2Raw === "" ? ex.t2 : Number(t2Raw);
 
       const med = calcularMedia(p1, p2, t1, t2);
-      tr.querySelector('.media').textContent = Number.isNaN(med) ? '-' : med.toFixed(2);
+
+      tr.querySelector(".media").textContent = Number.isNaN(med)
+        ? "-"
+        : med.toFixed(2);
     });
   }
 
-  // buscar notas salvas do backend
+
+  // BUSCAR NOTAS SALVAS
   async function buscarNotasSala(ano, subSala, semestre) {
     notasExistentesMap = {};
+
     try {
-      const url = `${baseUrl}/api/notas/sala?ano=${encodeURIComponent(ano)}&subSala=${encodeURIComponent(subSala)}&materia=${encodeURIComponent(profMateria)}&semestre=${encodeURIComponent(semestre)}`;
-      const res = await fetch(url);
+      const url =
+        `${baseUrl}/api/notasalunos/sala?ano=${encodeURIComponent(ano)}&subSala=${encodeURIComponent(subSala)}&materia=${encodeURIComponent(profMateria)}&semestre=${encodeURIComponent(semestre)}`;
+
+      const res = await fetch(url, {
+        credentials: "include"
+      });
+
       if (!res.ok) return {};
+
       const notas = await res.json();
-      notas.forEach(n => notasExistentesMap[n.alunoId] = n);
+      notas.forEach(n => (notasExistentesMap[n.alunoId] = n));
+
       return notasExistentesMap;
     } catch (e) {
       notasExistentesMap = {};
@@ -189,15 +213,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // salvar notas em lote
+
+  // SALVAR EM LOTE
   async function salvarEmLote() {
     const ano = anoSelect.value;
     const semestre = semestreSelect.value;
     const subSala = subSelect.value;
 
-    if (!ano || !semestre || !subSala) return alert('Selecione ano, sub-sala e semestre.');
+    if (!ano || !semestre || !subSala)
+      return alert("Selecione ano, sub-sala e semestre.");
 
-    const linhas = [...tabelaSala.querySelectorAll('tbody tr')];
+    const linhas = [...tabelaSala.querySelectorAll("tbody tr")];
     let enviados = 0;
 
     await buscarNotasSala(ano, subSala, semestre);
@@ -207,14 +233,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const aluno = alunos.find(a => a._id === id);
       if (!aluno) continue;
 
-      const p1Raw = tr.querySelector('.p1').value;
-      const p2Raw = tr.querySelector('.p2').value;
-      const t1Raw = tr.querySelector('.t1').value;
-      const t2Raw = tr.querySelector('.t2').value;
+      const p1Raw = tr.querySelector(".p1").value;
+      const p2Raw = tr.querySelector(".p2").value;
+      const t1Raw = tr.querySelector(".t1").value;
+      const t2Raw = tr.querySelector(".t2").value;
 
-      const existe = notasExistentesMap[id];
+      const existente = notasExistentesMap[id] || {};
 
-      if (!p1Raw && !p2Raw && !t1Raw && !t2Raw && !existe) continue;
+      if (!p1Raw && !p2Raw && !t1Raw && !t2Raw && !existente) continue;
 
       const body = {
         alunoId: id,
@@ -225,12 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
         semestre
       };
 
-      if (p1Raw !== '') body.p1 = Number(p1Raw);
-      if (p2Raw !== '') body.p2 = Number(p2Raw);
-      if (t1Raw !== '') body.t1 = Number(t1Raw);
-      if (t2Raw !== '') body.t2 = Number(t2Raw);
-
-      const existente = notasExistentesMap[id] || {};
+      if (p1Raw !== "") body.p1 = Number(p1Raw);
+      if (p2Raw !== "") body.p2 = Number(p2Raw);
+      if (t1Raw !== "") body.t1 = Number(t1Raw);
+      if (t2Raw !== "") body.t2 = Number(t2Raw);
 
       const p1 = body.p1 ?? existente.p1;
       const p2 = body.p2 ?? existente.p2;
@@ -241,9 +265,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!Number.isNaN(med)) body.media = Number(med.toFixed(2));
 
       try {
-        const res = await fetch(`${baseUrl}/api/notas`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const res = await fetch(`${baseUrl}/api/notasalunos`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify(body)
         });
 
@@ -253,112 +278,107 @@ document.addEventListener('DOMContentLoaded', () => {
           enviados++;
         }
       } catch (err) {
-        console.error('Erro ao salvar nota', err);
+        console.error("[Notas] Erro ao salvar nota", err);
       }
     }
 
     alert(`Salvo (${enviados})`);
-
-    const lista = filtrar();
-    await buscarNotasSala(anoSelect.value, subSelect.value, semestreSelect.value);
-    renderTabela(lista);
-    gerarGraficosAutomatica(anoSelect.value, subSelect.value, semestreSelect.value);
+    await buscarNotasSala(ano, subSala, semestre);
+    renderTabela(filtrar());
+    gerarGraficosAutomatica();
   }
 
-  // gerar dados para os gráficos
-  function gerarGraficos(listaAlunos) {
+
+  // GRÁFICOS
+  function gerarGraficos(lista) {
     const mapaSub = {};
     const mapaAno = {};
 
-    listaAlunos.forEach(a => {
+    lista.forEach(a => {
       if (!mapaSub[a.subSala]) mapaSub[a.subSala] = { soma: 0, count: 0 };
       if (!mapaAno[a.turma]) mapaAno[a.turma] = { soma: 0, count: 0 };
     });
 
-    listaAlunos.forEach(a => {
-      const nota = notasExistentesMap[a._id];
-      if (!nota) return;
+    lista.forEach(a => {
+      const n = notasExistentesMap[a._id];
+      if (!n) return;
 
-      const p1 = nota.p1;
-      const p2 = nota.p2;
-      const t1 = nota.t1;
-      const t2 = nota.t2;
+      const med = calcularMedia(n.p1, n.p2, n.t1, n.t2);
 
-      const med = calcularMedia(p1, p2, t1, t2);
       if (!Number.isNaN(med)) {
         mapaSub[a.subSala].soma += med;
         mapaSub[a.subSala].count++;
-
         mapaAno[a.turma].soma += med;
         mapaAno[a.turma].count++;
       }
     });
 
-    const labelsSub = Object.keys(mapaSub).sort();
-    const dataSub = labelsSub.map(k => mapaSub[k].count ? +(mapaSub[k].soma / mapaSub[k].count).toFixed(2) : 0);
+    const labelsSub = Object.keys(mapaSub);
+    const dataSub = labelsSub.map(
+      s => mapaSub[s].count ? +(mapaSub[s].soma / mapaSub[s].count).toFixed(2) : 0
+    );
 
-    const labelsAno = Object.keys(mapaAno).sort();
-    const dataAno = labelsAno.map(k => mapaAno[k].count ? +(mapaAno[k].soma / mapaAno[k].count).toFixed(2) : 0);
+    const labelsAno = Object.keys(mapaAno);
+    const dataAno = labelsAno.map(
+      s => mapaAno[s].count ? +(mapaAno[s].soma / mapaAno[s].count).toFixed(2) : 0
+    );
 
-    desenharGraficoBar('chartSub', labelsSub, dataSub, 'Média por Sub-sala');
-    desenharGraficoBar('chartAno', labelsAno, dataAno, 'Média por Ano');
+    desenharGrafico("chartSub", labelsSub, dataSub, "Média por Sub-sala");
+    desenharGrafico("chartAno", labelsAno, dataAno, "Média por Ano");
   }
 
-  // desenhar gráfico de barras
-  function desenharGraficoBar(canvasId, labels, data, titulo) {
-    const ctx = document.getElementById(canvasId);
+
+  function desenharGrafico(id, labels, data, title) {
+    const ctx = document.getElementById(id);
     if (!ctx) return;
 
-    if (canvasId === 'chartSub' && graficoSub) graficoSub.destroy();
-    if (canvasId === 'chartAno' && graficoAno) graficoAno.destroy();
+    if (id === "chartSub" && graficoSub) graficoSub.destroy();
+    if (id === "chartAno" && graficoAno) graficoAno.destroy();
 
-    const config = {
-      type: 'bar',
+    const chart = new Chart(ctx, {
+      type: "bar",
       data: {
         labels,
-        datasets: [{
-          label: titulo,
-          data,
-          backgroundColor: '#4285F4',
-          borderColor: '#4285F4',
-          borderWidth: 1
-        }]
+        datasets: [
+          {
+            data,
+            backgroundColor: "#4285F4"
+          }
+        ]
       },
       options: {
+        plugins: { legend: { display: false }, title: { display: true, text: title } },
         responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false }, title: { display: true, text: titulo } },
-        scales: { y: { beginAtZero: false } }
+        maintainAspectRatio: false
       }
-    };
+    });
 
-    const chartInstance = new Chart(ctx.getContext('2d'), config);
-
-    if (canvasId === 'chartSub') graficoSub = chartInstance;
-    if (canvasId === 'chartAno') graficoAno = chartInstance;
+    if (id === "chartSub") graficoSub = chart;
+    if (id === "chartAno") graficoAno = chart;
   }
 
-  // gerar gráficos automaticamente
-  function gerarGraficosAutomatica(ano, subSala, semestre) {
-    const lista = filtrar();
-    gerarGraficos(lista);
+
+  function gerarGraficosAutomatica() {
+    gerarGraficos(filtrar());
   }
 
-  // clique do botão Buscar
-  btnBuscarSala.addEventListener('click', async () => {
+
+  // BOTÃO BUSCAR
+  btnBuscarSala.addEventListener("click", async () => {
     const ano = anoSelect.value;
     const sub = subSelect.value;
     const semestre = semestreSelect.value;
 
-    if (!ano || !sub || !semestre) return alert('Selecione ano, sub-sala e semestre.');
+    if (!ano || !sub || !semestre)
+      return alert("Selecione ano, sub-sala e semestre.");
 
     await buscarNotasSala(ano, sub, semestre);
     renderTabela(filtrar());
-    gerarGraficosAutomatica(ano, sub, semestre);
+    gerarGraficosAutomatica();
   });
 
-  btnSalvarLote.addEventListener('click', salvarEmLote);
+  btnSalvarLote.addEventListener("click", salvarEmLote);
 
-  // carregar alunos ao abrir página
-  (async () => { await carregarAlunos(); })();
+  // CARREGAR ALUNOS AO INICIAR
+  carregarAlunos();
 });

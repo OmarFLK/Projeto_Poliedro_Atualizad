@@ -12,7 +12,7 @@ function normalizar(str) {
     .trim();
 }
 
-// GET itinerário por ano e subSala
+/*GET — Buscar itinerário por ano e subSala*/
 router.get("/:ano/:subSala", async (req, res) => {
   try {
     console.log("[ITINERARIO] GET ->", req.params);
@@ -20,7 +20,6 @@ router.get("/:ano/:subSala", async (req, res) => {
     const anoReq = normalizar(req.params.ano);
     const subReq = normalizar(req.params.subSala);
 
-    // busca todos e encontra manualmente (mais confiável)
     const todos = await Itinerario.find({});
     const encontrado = todos.find(item =>
       normalizar(item.ano) === anoReq &&
@@ -38,6 +37,49 @@ router.get("/:ano/:subSala", async (req, res) => {
   } catch (err) {
     console.error("[ITINERARIO] ERRO:", err);
     return res.status(500).json({ error: "Erro interno ao buscar itinerário" });
+  }
+});
+
+/* POST — Salvar itinerário (CRIAR ou EDITAR)*/
+router.post("/salvar", async (req, res) => {
+  try {
+    const { ano, subSala, horarios } = req.body;
+
+    if (!ano || !subSala || !horarios) {
+      return res.status(400).json({ error: "Dados incompletos para salvar" });
+    }
+
+    const anoNorm = normalizar(ano);
+    const subNorm = normalizar(subSala);
+
+    // buscar existente
+    const todos = await Itinerario.find({});
+    let existente = todos.find(item =>
+      normalizar(item.ano) === anoNorm &&
+      normalizar(item.subSala) === subNorm
+    );
+
+    if (existente) {
+      // Atualizar
+      existente.horarios = horarios;
+      await existente.save();
+      return res.json({ ok: true, mensagem: "Itinerário atualizado" });
+    }
+
+    // Criar novo
+    const novo = new Itinerario({
+      ano,
+      subSala,
+      horarios
+    });
+
+    await novo.save();
+
+    return res.json({ ok: true, mensagem: "Itinerário criado" });
+
+  } catch (err) {
+    console.error("[ITINERARIO] ERRO AO SALVAR:", err);
+    return res.status(500).json({ error: "Erro interno ao salvar itinerário" });
   }
 });
 

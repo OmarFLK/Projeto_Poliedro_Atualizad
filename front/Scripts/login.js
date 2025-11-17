@@ -5,29 +5,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginBtn = document.getElementById('btnLogin');
   const chkAccept = document.getElementById('aceitarTermos');
 
-  //alterna o tipo de login
   function tipoLogin() {
     return btnProfessor.classList.contains('active') ? 'professor' : 'aluno';
   }
 
-  //ativa/desativa botão com base no checkbox
   if (chkAccept) {
     chkAccept.addEventListener('change', () => {
       loginBtn.disabled = !chkAccept.checked;
     });
   }
 
-  //alterna entre Aluno e Professor
   btnAluno.addEventListener('click', () => {
     btnAluno.classList.add('active');
     btnProfessor.classList.remove('active');
   });
+
   btnProfessor.addEventListener('click', () => {
     btnProfessor.classList.add('active');
     btnAluno.classList.remove('active');
   });
 
-  //Login (aluno ou professor)
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -55,7 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        credentials: "include"
       });
 
       const data = await res.json();
@@ -65,14 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      //salva token e usuário (com turma e subSala se for aluno)
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('usuario', JSON.stringify(data.usuario));
 
+      // salva separado
+      if (tipo === 'aluno') {
+        localStorage.removeItem('usuarioProfessor');
+        localStorage.setItem('usuarioAluno', JSON.stringify(data.usuario));
+        window.location.href = 'HomeAluno.html';
+      } else {
+        localStorage.removeItem('usuarioAluno');
+        localStorage.setItem('usuarioProfessor', JSON.stringify(data.usuario));
+        window.location.href = 'HomeProfessor.html';
+      }
 
-      //redireciona
-      if (tipo === 'aluno') window.location.href = 'HomeAluno.html';
-      else window.location.href = 'HomeProfessor.html';
     } catch (err) {
       console.error(err);
       alert('Erro de conexão com o servidor.');

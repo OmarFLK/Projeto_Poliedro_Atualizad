@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const aluno = JSON.parse(localStorage.getItem("usuario"));
+  const aluno = JSON.parse(localStorage.getItem("usuarioAluno"));
 
   if (!aluno || !aluno.id) {
     document.getElementById("tabelaSem1").innerHTML =
@@ -16,7 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function carregarNotas() {
     try {
-      const res = await fetch(`${baseUrl}/api/notas/aluno/${aluno.id}`);
+      // CORREÇÃO AQUI ↓↓↓
+      const res = await fetch(`${baseUrl}/api/notasalunos/aluno/${aluno.id}`);
+
       const notas = await res.json();
 
       if (!Array.isArray(notas) || notas.length === 0) {

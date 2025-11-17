@@ -4,11 +4,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const listaEventos = document.getElementById("lista-eventos");
   const btnLimpar = document.getElementById("limpar-evento");
 
-  // carregar eventos
   async function carregarEventos() {
     listaEventos.innerHTML = "<p>Carregando eventos...</p>";
+
     try {
-      const res = await fetch(`${baseUrl}/api/eventos`);
+      const res = await fetch(`${baseUrl}/api/eventos`, {
+        credentials: "include"
+      });
+
       const eventos = await res.json();
 
       if (!Array.isArray(eventos) || eventos.length === 0) {
@@ -17,9 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       listaEventos.innerHTML = "";
+
       eventos.forEach((e) => {
         const card = document.createElement("div");
         card.className = "event-card";
+
         card.innerHTML = `
           <h3>${e.titulo}</h3>
           <p><b>Data:</b> ${new Date(e.data).toLocaleDateString("pt-BR")}</p>
@@ -35,25 +40,32 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           <button class="btn-excluir" data-id="${e._id}">Excluir</button>
         `;
+
         listaEventos.appendChild(card);
       });
 
       document.querySelectorAll(".btn-excluir").forEach((btn) => {
         btn.addEventListener("click", async function () {
-          if (confirm("Deseja excluir este evento?")) {
-            const id = this.dataset.id;
-            await fetch(`${baseUrl}/api/eventos/${id}`, { method: "DELETE" });
-            carregarEventos();
-          }
+          if (!confirm("Deseja excluir este evento?")) return;
+
+          const id = this.dataset.id;
+
+          await fetch(`${baseUrl}/api/eventos/${id}`, {
+            method: "DELETE",
+            credentials: "include"
+          });
+
+          carregarEventos();
         });
       });
+
     } catch (err) {
       console.error("Erro ao carregar eventos:", err);
       listaEventos.innerHTML = "<p>Erro ao carregar eventos.</p>";
     }
   }
 
-  // enviar evento
+  // ENVIAR EVENTO
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -71,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch(`${baseUrl}/api/eventos`, {
         method: "POST",
         body: fd,
+        credentials: "include"
       });
 
       if (res.ok) {
@@ -86,7 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // limpar formulário
   btnLimpar.addEventListener("click", () => form.reset());
 
   carregarEventos();

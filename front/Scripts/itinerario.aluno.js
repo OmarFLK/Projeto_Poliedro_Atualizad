@@ -1,7 +1,7 @@
 // API
 const API = "http://localhost:3000/api/itinerario";
 
-// elementos do HTML
+// elementos
 const tabela = document.getElementById("tabelaAluno");
 const turmaInfo = document.getElementById("turmaInfo");
 
@@ -18,7 +18,7 @@ const horariosPadrao = [
   { inicio: "12:40", fim: "13:30" }
 ];
 
-// monta tabela HTML
+// monta tabela
 function montarTabela(lista) {
   if (!tabela) {
     console.error("ERRO: elemento #tabelaAluno NÃO encontrado!");
@@ -69,10 +69,13 @@ function montarTabela(lista) {
 
 // carregar itinerário
 async function carregarItinerario() {
-  const aluno = JSON.parse(localStorage.getItem("usuario"));
+  let aluno = null;
+
+  try {
+    aluno = JSON.parse(localStorage.getItem("usuarioAluno") || "null");
+  } catch {}
 
   if (!aluno) {
-    console.error("Nenhum aluno encontrado no localStorage");
     montarTabela(horariosPadrao);
     return;
   }
@@ -80,13 +83,13 @@ async function carregarItinerario() {
   turmaInfo.textContent = `${aluno.turma} — ${aluno.subSala}`;
 
   try {
-    const resp = await fetch(`${API}/${aluno.turma}/${aluno.subSala}`);
+    const resp = await fetch(`${API}/${aluno.turma}/${aluno.subSala}`, {
+      credentials: "include"
+    });
+
     const data = await resp.json();
 
-    console.log("API retornou:", data);
-
     if (!data || !Array.isArray(data.horarios)) {
-      console.warn("Sem itinerário → usando padrão.");
       montarTabela(horariosPadrao);
       return;
     }

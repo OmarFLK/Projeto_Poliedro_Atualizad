@@ -1,104 +1,106 @@
 // front/Scripts/atividades.Professor.js
 document.addEventListener("DOMContentLoaded", () => {
+  const baseUrl = "http://localhost:3000";
+
   const form = document.getElementById("form-tarefa");
   const lista = document.getElementById("lista-tarefas");
   const resolucoesPainel = document.getElementById("lista-resolucoes");
-  const baseUrl = window.location.origin.replace(/:\d+$/, ":3000");
+  const turmaEl = document.getElementById("turma");
+  const subSalaEl = document.getElementById("subSala");
+  const materiaEl = document.getElementById("materia");
+  const arquivoEl = document.getElementById("arquivo");
+  const tituloEl = document.getElementById("titulo");
+  const descricaoEl = document.getElementById("descricao");
 
   if (!form || !lista || !resolucoesPainel) {
-    console.error("Elementos principais não encontrados.");
+    console.error("[AtividadesProf] Elementos principais não encontrados.");
     return;
   }
 
-  // Envio de nova atividade
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const turma = document.getElementById("turma").value;
-    const subSala = document.getElementById("subSala").value;
-    const materia = document.getElementById("materia").value;
-    const titulo = document.getElementById("titulo").value;
-    const descricao = document.getElementById("descricao").value;
-    const arquivo = document.getElementById("arquivo").files[0];
-
-    if (!turma || !subSala || !materia || !titulo) {
-      alert("Preencha todos os campos obrigatórios.");
-      return;
+  function lerUsuarioStorage() {
+    const keys = ["usuarioProfessor", "usuarioAluno", "usuario"];
+    for (const k of keys) {
+      try {
+        const raw = localStorage.getItem(k);
+        if (!raw) continue;
+        const obj = JSON.parse(raw);
+        if (obj && typeof obj === "object") return obj;
+      } catch {}
     }
+    return null;
+  }
 
-    const fd = new FormData();
-    fd.append("turma", turma);
-    fd.append("subSala", subSala);
-    fd.append("materia", materia);
-    fd.append("titulo", titulo);
-    fd.append("descricao", descricao);
-    if (arquivo) fd.append("arquivo", arquivo);
+  let usuario = lerUsuarioStorage();
+  console.log("[AtividadesProf] usuario localStorage:", usuario);
 
-    try {
-      const res = await fetch(`${baseUrl}/api/atividades`, {
-        method: "POST",
-        body: fd,
-      });
+  if (usuario && usuario.materia && materiaEl) {
+    const target = String(usuario.materia).trim();
+    let matched = false;
 
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("Atividade postada com sucesso.");
-        form.reset();
-        carregarTarefas();
-      } else {
-        alert("Erro: " + (data.error || "Não foi possível criar a atividade."));
+    Array.from(materiaEl.options).forEach(opt => {
+      if (!matched && opt.value && opt.value.toLowerCase() === target.toLowerCase()) {
+        materiaEl.value = opt.value;
+        matched = true;
       }
-    } catch (err) {
-      console.error("Erro ao enviar atividade:", err);
-      alert("Erro de conexão com o servidor.");
-    }
-  });
+    });
 
-  // Carregar atividades
+    if (!matched) {
+      const op = document.createElement("option");
+      op.value = usuario.materia;
+      op.textContent = usuario.materia;
+      op.selected = true;
+      materiaEl.insertBefore(op, materiaEl.firstChild);
+    }
+
+    materiaEl.disabled = true;
+  }
+
   async function carregarTarefas() {
     lista.innerHTML = "<p>Carregando atividades...</p>";
 
     try {
-      const res = await fetch(`${baseUrl}/api/atividades`);
+      const params = new URLSearchParams();
+      if (turmaEl.value) params.set("turma", turmaEl.value);
+      if (subSalaEl.value) params.set("subSala", subSalaEl.value);
+      if (materiaEl.value) params.set("materia", materiaEl.value);
+
+      const res = await fetch(`${baseUrl}/api/atividades?${params.toString()}`, {
+        credentials: "include"
+      });
+
       const atividades = await res.json();
 
       if (!Array.isArray(atividades) || atividades.length === 0) {
         lista.innerHTML = "<p>Nenhuma atividade postada ainda.</p>";
-        resolucoesPainel.innerHTML =
-          "<p>Selecione uma atividade para visualizar as resoluções.</p>";
+        resolucoesPainel.innerHTML = "<p>Selecione uma atividade para visualizar as resoluções.</p>";
         return;
       }
 
       lista.innerHTML = "";
 
       for (const a of atividades) {
+        let count = 0;
+
+        try {
+          const resCount = await fetch(`${baseUrl}/api/resolucoes/${a._id}`, {
+            credentials: "include"
+          });
+          const resol = await resCount.json();
+          count = Array.isArray(resol) ? resol.length : 0;
+        } catch {}
+
         const artigo = document.createElement("article");
         artigo.className = "tarefa";
 
-        // contador de resoluções
-        let count = 0;
-        try {
-          const resCount = await fetch(`${baseUrl}/api/resolucoes/${a._id}`);
-          const resolucoes = await resCount.json();
-          count = Array.isArray(resolucoes) ? resolucoes.length : 0;
-        } catch (err) {
-          console.warn("Erro ao contar resoluções:", err);
-        }
-
         artigo.innerHTML = `
           <div class="tarefa-info">
-            <b>Turma:</b> ${a.turma} &nbsp; 
-            <b>Sub-sala:</b> ${a.subSala} &nbsp; 
+            <b>Turma:</b> ${a.turma}
+            <b>Sub-sala:</b> ${a.subSala}
             <b>Matéria:</b> ${a.materia}
           </div>
           <h3>${a.titulo}</h3>
           <p>${a.descricao || ""}</p>
-          ${
-            a.arquivoPath
-              ? `<div><a href="${a.arquivoPath}" target="_blank" rel="noopener">📎 ${a.arquivoNome || "Arquivo"}</a></div>`
-              : ""
-          }
+          ${a.arquivoPath ? `<a href="${a.arquivoPath}" target="_blank">📎 ${a.arquivoNome}</a>` : ""}
           <div class="botoes-atividade">
             <button class="btn-resolucoes" data-id="${a._id}">
               Visualizar resoluções (${count})
@@ -110,98 +112,107 @@ document.addEventListener("DOMContentLoaded", () => {
         lista.appendChild(artigo);
       }
 
-      // Botões de exclusão
       document.querySelectorAll(".btn-excluir").forEach((btn) => {
         btn.addEventListener("click", async function () {
-          const id = this.dataset.id;
           if (confirm("Deseja excluir esta atividade?")) {
-            await excluirTarefa(id);
+            await excluirTarefa(this.dataset.id);
           }
         });
       });
 
-      // Botões de visualização de resoluções
       document.querySelectorAll(".btn-resolucoes").forEach((btn) => {
-        btn.addEventListener("click", async function () {
-          const id = this.dataset.id;
-          await carregarResolucoes(id);
-        });
+        btn.addEventListener("click", () => carregarResolucoes(btn.dataset.id));
       });
+
     } catch (err) {
-      console.error("Erro ao carregar atividades:", err);
+      console.error(err);
       lista.innerHTML = "<p>Erro ao carregar atividades.</p>";
     }
   }
 
-  // Excluir atividade
   async function excluirTarefa(id) {
     try {
       const res = await fetch(`${baseUrl}/api/atividades/${id}`, {
         method: "DELETE",
+        credentials: "include"
       });
 
       if (res.ok) {
-        alert("Atividade excluída com sucesso.");
+        alert("Atividade excluída!");
         carregarTarefas();
       } else {
-        alert("Erro ao excluir a atividade.");
+        alert("Erro ao excluir atividade.");
       }
+
     } catch (err) {
-      console.error("Erro ao excluir atividade:", err);
-      alert("Falha ao excluir atividade.");
+      alert("Erro ao excluir.");
     }
   }
 
-  // Carregar resoluções (ajuste: agora mostra turma e sub-sala do aluno)
   async function carregarResolucoes(atividadeId) {
     resolucoesPainel.innerHTML = "<p>Carregando resoluções...</p>";
 
     try {
-      const res = await fetch(`${baseUrl}/api/resolucoes/${atividadeId}`);
+      const res = await fetch(`${baseUrl}/api/resolucoes/${atividadeId}`, {
+        credentials: "include"
+      });
+
       const resolucoes = await res.json();
 
       if (!Array.isArray(resolucoes) || resolucoes.length === 0) {
-        resolucoesPainel.innerHTML =
-          "<p>Nenhuma resolução enviada para esta atividade.</p>";
+        resolucoesPainel.innerHTML = "<p>Nenhuma resolução enviada.</p>";
         return;
       }
 
       resolucoesPainel.innerHTML = "";
+
       resolucoes.forEach((r) => {
         const card = document.createElement("div");
         card.className = "resolucao-card";
 
-        // agora pega direto turma/subSala do próprio documento de resolução
-        const nome = r.nomeAluno || "Aluno desconhecido";
-        const ra = r.raAluno || "Sem RA";
-        const turma = r.turma || "—";
-        const subSala = r.subSala || "—";
-
         card.innerHTML = `
-          <h4>Aluno: ${nome}</h4>
-          <p><b>RA:</b> ${ra}</p>
-          <p><b>Turma:</b> ${turma} | <b>Sub-sala:</b> ${subSala}</p>
-          ${r.observacao ? `<p><b>Observação:</b> ${r.observacao}</p>` : ""}
-          ${
-            r.link
-              ? `<p><a href="${r.link}" target="_blank">Link enviado</a></p>`
-              : ""
-          }
-          ${
-            r.arquivoPath
-              ? `<p><a href="${r.arquivoPath}" target="_blank" rel="noopener">📎 ${r.arquivoNome}</a></p>`
-              : ""
-          }
+          <h4>Aluno: ${r.nomeAluno}</h4>
+          <p><b>RA:</b> ${r.raAluno}</p>
+          <p><b>Turma:</b> ${r.turma} | <b>Sub:</b> ${r.subSala}</p>
+          ${r.observacao ? `<p><b>Obs:</b> ${r.observacao}</p>` : ""}
+          ${r.arquivoPath ? `<a href="${r.arquivoPath}" target="_blank">📎 ${r.arquivoNome}</a>` : ""}
         `;
 
         resolucoesPainel.appendChild(card);
       });
+
     } catch (err) {
-      console.error("Erro ao carregar resoluções:", err);
-      resolucoesPainel.innerHTML =
-        "<p>Erro ao carregar resoluções desta atividade.</p>";
+      resolucoesPainel.innerHTML = "<p>Erro ao carregar resoluções.</p>";
     }
   }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const fd = new FormData();
+    fd.append("turma", turmaEl.value);
+    fd.append("subSala", subSalaEl.value);
+    fd.append("materia", materiaEl.value);
+    fd.append("titulo", tituloEl.value.trim());
+    fd.append("descricao", descricaoEl.value.trim());
+    if (arquivoEl.files[0]) fd.append("arquivo", arquivoEl.files[0]);
+
+    const res = await fetch(`${baseUrl}/api/atividades`, {
+      method: "POST",
+      body: fd,
+      credentials: "include"
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Atividade postada!");
+      form.reset();
+      carregarTarefas();
+    } else {
+      alert(data.error || "Erro ao postar.");
+    }
+  });
 
   carregarTarefas();
 });

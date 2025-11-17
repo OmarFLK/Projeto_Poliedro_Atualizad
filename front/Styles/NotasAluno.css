@@ -74,15 +74,9 @@
   font-size: 1.1rem;
 }
 
-/* SCROLL GLOBAL DA PÁGINA */
-body {
-  overflow-y: auto;
-  height: 100%;
-}
-
-html {
-  height: 100%;
-  overflow-y: auto;
+/* FIX PARA GARANTIR ESPAÇO DO FOOTER */
+.notas-page-padding {
+  padding-bottom: 90px;
 }
 
 /* RESPONSIVIDADE */

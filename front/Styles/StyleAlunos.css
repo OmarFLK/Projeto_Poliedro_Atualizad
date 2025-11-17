@@ -186,4 +186,86 @@ html, body {
 .semester-card, .notas-box {
     overflow: visible !important;
 }
+.header-profile-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  object-fit: cover;
+}
+
+/* Sobrescrevendo conflitos com efeito cascata */
+/* === HEADER GLOBAL PADRONIZADO === */
+
+.header-aluno {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--primary-blue-light);
+  color: #fff;
+  height: 64px;
+  padding: 0 40px;
+  box-sizing: border-box;
+  flex-wrap: nowrap;
+}
+
+.header-nav {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  flex: 1;
+}
+
+.header-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 6px;
+  background: transparent;
+  transition: 0.2s;
+}
+
+.header-link.active {
+  background: #fff;
+  color: var(--primary-blue-light);
+}
+
+.header-link:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* === AVATAR PADRÃO GLOBAL === */
+.header-profile-img {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff !important;
+  margin-left: 40px;
+}
+
+/* ==================== MOBILE ==================== */
+@media (max-width: 700px) {
+  .header-aluno {
+    padding: 0 16px;
+    height: 64px;
+  }
+
+  .header-nav {
+    gap: 12px;
+  }
+
+  .header-link {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .header-profile-img {
+    width: 42px !important;
+    height: 42px !important;
+    margin-left: 20px;
+  }
+}
 
