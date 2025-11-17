@@ -8,7 +8,11 @@ const alunoSchema = new mongoose.Schema({
   email: { type: String, trim: true, default: '' },
   turma: { type: String, required: true },
   subSala: { type: String, required: true },
-  avatar: { type: String, default: "" }
+  avatar: { type: String, default: "" },
+
+  // campos para recuperação de senha
+  resetCode: { type: String, default: null },
+  resetExpires: { type: Date, default: null }
 
 }, { timestamps: true });
 

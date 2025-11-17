@@ -1,85 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recuperar Senha</title>
-    <link rel="stylesheet" href="front/Styles/LoginRecover.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="logo">
-        <img src="Assets/poliedro.png" alt="Poliedro Logo" />
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperar Senha</title>
 
+  <link rel="stylesheet" href="front/Styles/LoginRecover.css" />
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="logo">
+      <img src="Assets/poliedro.png" alt="logo">
+    </div>
+
+    <!-- ETAPA 1 - ENVIAR EMAIL -->
+    <div id="etapaEmail" class="step active">
       <h2>Recuperar Senha</h2>
-      <p>Digite seu <strong>e-mail</strong> para receber o código de recuperação.</p>
+      <p>Digite seu <strong>e-mail cadastrado</strong>.</p>
 
-      <form id="recoverForm">
-        <label for="identificador">E-mail</label>
-        <input
-          type="text"
-          id="identificador"
-          name="identificador"
-          required
-          placeholder="usuario@exemplo.com"
-        />
+      <form id="formEmail">
+        <label for="emailRec">E-mail</label>
+        <input type="email" id="emailRec" placeholder="usuario@exemplo.com" required />
 
         <button type="submit">Enviar código</button>
       </form>
 
-      <div class="message" id="mensagemEnvio"></div>
+      <div id="msgEmail" class="msg"></div>
 
-      <a href="login.html">Voltar para login</a>
+      <a href="Login.html">Voltar ao login</a>
     </div>
 
-    <div class="footer">
-      © Projeto desenvolvido por: [Nossos nomes]
+
+    <!-- ETAPA 2 - DIGITAR CÓDIGO -->
+    <div id="etapaCodigo" class="step hidden">
+      <h2>Verificação</h2>
+      <p>Digite o código enviado para seu e-mail.</p>
+
+      <!-- CARTÃO DO CÓDIGO GERADO -->
+      <div id="blocoCodigo" class="codigo-card hidden">
+        <h3>Seu código de recuperação:</h3>
+
+        <div class="codigo-box">
+          <span id="textoCodigo">----</span>
+        </div>
+
+        <button type="button" id="btnCopiarCodigo" class="copy-btn">
+          Copiar código
+        </button>
+      </div>
+
+      <form id="formCodigo">
+        <label for="codigoRec">Código</label>
+        <input type="text" id="codigoRec" maxlength="6" placeholder="••••••" required />
+
+        <button type="submit">Validar código</button>
+      </form>
+
+      <div id="msgCodigo" class="msg"></div>
+
+      <button class="link-btn" id="btnReenviar">Reenviar código</button>
+      <a href="Login.html">Cancelar</a>
     </div>
 
-    <script>
-      const form = document.getElementById("recoverForm");
-      const mensagem = document.getElementById("mensagemEnvio");
 
-      form.addEventListener("submit", async function (e) {
-        e.preventDefault();
-        const identificador = document.getElementById("identificador").value.trim();
+    <!-- ETAPA 3 - NOVA SENHA -->
+    <div id="etapaSenha" class="step hidden">
+      <h2>Nova Senha</h2>
 
-        if (identificador === "") {
-          mensagem.style.color = "red";
-          mensagem.textContent = "Por favor, preencha o campo.";
-          return;
-        }
+      <form id="formSenha">
+        <label for="senha1">Nova senha</label>
+        <input type="password" id="senha1" required />
 
-        try {
-          // === Simulação de envio ===
-          mensagem.style.color = "green";
-          mensagem.textContent = `Um código de recuperação foi enviado para ${identificador}. Verifique seu e-mail.`;
+        <label for="senha2">Confirmar senha</label>
+        <input type="password" id="senha2" required />
 
-          // === Envio real (backend) ===
-          /*
-          const resposta = await fetch("http://seu-servidor.com/api/enviar-codigo", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ identificador }),
-          });
+        <button type="submit">Salvar nova senha</button>
+      </form>
 
-          const resultado = await resposta.json();
+      <div id="msgSenha" class="msg"></div>
 
-          if (resultado.sucesso) {
-            mensagem.style.color = "green";
-            mensagem.textContent = "E-mail de recuperação enviado com sucesso!";
-          } else {
-            mensagem.style.color = "red";
-            mensagem.textContent = "Erro ao enviar o e-mail. Tente novamente.";
-          }
-          */
-        } catch (erro) {
-          mensagem.style.color = "red";
-          mensagem.textContent = "Ocorreu um erro ao enviar o e-mail.";
-          console.error(erro);
-        }
-      });
-    </script>
-  </body>
+      <a href="Login.html">Voltar ao login</a>
+    </div>
+
+  </div>
+
+  <script src="front/Scripts/LoginRecover.js"></script>
+</body>
 </html>
