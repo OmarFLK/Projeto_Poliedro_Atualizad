@@ -46,7 +46,9 @@
           <input type="text" id="hora" placeholder="Horário (opcional)" />
           <input type="text" id="local" placeholder="Local (opcional)" />
           <textarea id="description" placeholder="Descrição do evento" required></textarea>
+
           <input type="file" id="arquivo" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" />
+
           <select id="turma" required>
             <option value="">Selecione a turma</option>
             <option value="1º Ano">1º Ano</option>
@@ -54,8 +56,12 @@
             <option value="3º Ano">3º Ano</option>
             <option value="todas">Todas as turmas</option>
           </select>
-          <input type="text" id="professor" placeholder="Nome do professor" required />
+
+          
+          <input type="text" id="professor" placeholder="Professor" readonly />
+
           <button type="submit">Postar Evento</button>
+          <button type="button" id="limpar-evento" class="btn-neutral">Limpar</button>
         </form>
       </section>
 

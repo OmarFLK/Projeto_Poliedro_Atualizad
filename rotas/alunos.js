@@ -16,8 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-
-// GET — listar todos os alunos
+/* LISTAR TODOS OS ALUNOS */
 router.get('/', async (req, res) => {
   try {
     const alunos = await Aluno.find().lean();
@@ -27,8 +26,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-
-// GET — gera RA automático
+/*GERAR NOVO RA */
 router.get('/novo-ra', async (req, res) => {
   try {
     const ultimo = await Aluno.findOne().sort({ ra: -1 }).lean();
@@ -42,8 +40,7 @@ router.get('/novo-ra', async (req, res) => {
   }
 });
 
-
-// POST — criar aluno
+/* CRIAR ALUNO */
 router.post('/', async (req, res) => {
   try {
     const { nome, email, senha, turma, subSala } = req.body;
@@ -74,8 +71,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-
-// PUT — atualizar avatar e/ou senha
+/* ATUALIZAR ALUNO */
 router.put('/:id', upload.single('avatar'), async (req, res) => {
   try {
     const id = req.params.id;
@@ -110,5 +106,38 @@ router.put('/:id', upload.single('avatar'), async (req, res) => {
   }
 });
 
+/* EXCLUIR ALUNO */
+router.delete('/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const aluno = await Aluno.findById(id);
+    if (!aluno) return res.status(404).json({ error: 'Aluno não encontrado' });
+
+    await Aluno.findByIdAndDelete(id);
+
+    return res.json({ ok: true, message: 'Aluno excluído' });
+
+  } catch (err) {
+    return res.status(500).json({ error: 'Erro ao excluir aluno' });
+  }
+});
+
+
+router.get('/:id', async (req, res) => {
+  try {
+    const aluno = await Aluno.findById(req.params.id)
+      .select("nome email avatar turma subSala ra")
+      .lean();
+
+    if (!aluno)
+      return res.status(404).json({ error: "Aluno não encontrado" });
+
+    return res.json(aluno);
+
+  } catch (err) {
+    return res.status(500).json({ error: "Erro ao buscar aluno" });
+  }
+});
 
 module.exports = router;

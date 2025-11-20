@@ -6,11 +6,9 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// garante que /uploads existe
 const uploadDir = path.join(process.cwd(), 'uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
-// configura armazenamento
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) =>
@@ -19,7 +17,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-//  CRIAR PROFESSOR  (com avatar opcional)
+/*LISTAR PROFESSORES */
+router.get('/', async (req, res) => {
+  try {
+    const profs = await Professor.find({}, "nome email materia avatar").lean();
+    return res.json(profs);
+  } catch (err) {
+    return res.status(500).json({ error: "Erro ao buscar professores" });
+  }
+});
+
+/*CRIAR PROFESSOR */
 router.post('/', upload.single('avatar'), async (req, res) => {
   try {
     const { nome, email, senha, materia } = req.body;
@@ -36,7 +44,6 @@ router.post('/', upload.single('avatar'), async (req, res) => {
       materia: materia || ''
     });
 
-    // CORREÇÃO — agora salva a foto corretamente
     if (req.file) {
       novo.avatar = `/uploads/${req.file.filename}`;
     }
@@ -46,15 +53,11 @@ router.post('/', upload.single('avatar'), async (req, res) => {
     return res.status(201).json({ ok: true, professor: novo });
 
   } catch (err) {
-    console.error(err);
     return res.status(500).json({ error: 'Erro ao criar professor' });
   }
 });
 
-
-
-//ATUALIZAR PERFIL (avatar e/ou senha)
-
+/*ATUALIZAR PROFESSOR */
 router.put('/:id', upload.single('avatar'), async (req, res) => {
   try {
     const id = req.params.id;
@@ -63,19 +66,16 @@ router.put('/:id', upload.single('avatar'), async (req, res) => {
     const prof = await Professor.findById(id);
     if (!prof) return res.status(404).json({ error: 'Professor não encontrado' });
 
-    // Atualiza senha se enviada
     if (senha && senha.length >= 6) {
       prof.senha = await bcrypt.hash(senha, 10);
     }
 
-    // CORREÇÃO — agora salva a foto corretamente
     if (req.file) {
       prof.avatar = `/uploads/${req.file.filename}`;
     }
 
     await prof.save();
 
-    // devolve os dados atualizados
     const usuario = {
       id: prof._id,
       nome: prof.nome,
@@ -87,10 +87,42 @@ router.put('/:id', upload.single('avatar'), async (req, res) => {
     return res.json({ ok: true, usuario });
 
   } catch (err) {
-    console.error(err);
     return res.status(500).json({ error: 'Erro ao atualizar professor' });
   }
 });
 
+/*EXCLUIR PROFESSOR */
+router.delete('/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const prof = await Professor.findById(id);
+    if (!prof) return res.status(404).json({ error: 'Professor não encontrado' });
+
+    await Professor.findByIdAndDelete(id);
+
+    return res.json({ ok: true, message: 'Professor excluído' });
+
+  } catch (err) {
+    return res.status(500).json({ error: 'Erro ao excluir professor' });
+  }
+});
+
+/* NOVA ROTA: BUSCAR PROFESSOR POR ID= */
+router.get('/:id', async (req, res) => {
+  try {
+    const prof = await Professor.findById(req.params.id)
+      .select("nome email materia avatar")
+      .lean();
+
+    if (!prof)
+      return res.status(404).json({ error: "Professor não encontrado" });
+
+    return res.json(prof);
+
+  } catch (err) {
+    return res.status(500).json({ error: "Erro ao buscar professor" });
+  }
+});
 
 module.exports = router;

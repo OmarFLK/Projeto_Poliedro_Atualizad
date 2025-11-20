@@ -1,7 +1,8 @@
+/*LAYOUT GERAL*/
 .page-wrap {
   max-width: 1250px;
   margin: 40px auto;
-  padding: 0 18px 60px;
+  padding: 0 20px 80px;
 }
 
 .profile-grid {
@@ -10,17 +11,14 @@
   gap: 35px;
 }
 
-/* ==== CARDS GRANDES E IGUAIS ==== */
+/*CARDS */
 .card {
   background: #fff;
   border-radius: 14px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.09);
   padding: 28px;
-  min-height: 620px;
-
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
 }
 
 .card-perfil,
@@ -28,17 +26,16 @@
   min-height: 620px;
 }
 
-/* TÍTULO */
+/*PERFIL*/
 .titulo-perfil {
   font-size: 1.8rem;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   color: #1a4e9b;
 }
 
-/* PERFIL */
 .perfil-top {
   display: flex;
-  gap: 22px;
+  gap: 24px;
 }
 
 .avatar-area {
@@ -59,15 +56,13 @@
   margin-top: 12px;
   width: 120px;
   padding: 8px 0;
-  text-align: center;
-
+  border-radius: 8px;
+  border: 1px solid #1a4e9b;
   background: #e8eefc;
   color: #1a4e9b;
-  border: 1px solid #1a4e9b;
-  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
+  transition: 0.2s;
 }
 
 .btn-avatar:hover {
@@ -76,16 +71,24 @@
 }
 
 .field-label {
-  font-size: 0.82rem;
-  color: #667;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  color: #666;
 }
 
 .field-read {
+  padding: 12px;
   background: #f4f6fb;
   border-radius: 8px;
-  padding: 12px;
   margin-bottom: 10px;
   font-size: 1rem;
+}
+
+.senha-bloco .subtitle {
+  margin-top: 22px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #1a4e9b;
 }
 
 .input-senha {
@@ -94,10 +97,10 @@
 }
 
 .perfil-actions {
+  margin-top: auto;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: auto;
 }
 
 .btn {
@@ -108,36 +111,37 @@
   font-weight: 600;
 }
 
+.btn-neutral {
+  background: #eaeaea;
+  color: #333;
+}
+
 .btn-primary {
   background: #1a4e9b;
   color: #fff;
 }
 
-.btn-neutral {
-  background: #ececec;
-  color: #333;
-}
-
+/*FORMULÁRIOS */
 .tabs {
   display: flex;
-  gap: 8px;
-  margin-bottom: 22px;
-  border-bottom: 1px solid #e3e7f0;
-  padding-bottom: 8px;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e1e6f0;
+  padding-bottom: 10px;
 }
 
 .tab-btn {
-  padding: 8px 12px;
+  padding: 8px 14px;
+  border: 1px solid #d6dbea;
   border-radius: 8px;
-  border: 1px solid #d2d8e3;
   background: #fff;
-  color: #163f7a;
-  cursor: pointer;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .tab-btn.active {
   background: #1a4e9b;
+  border-color: #1a4e9b;
   color: #fff;
 }
 
@@ -159,23 +163,149 @@
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #d4d9e2;
-  font-size: 0.95rem;
-}
-
-.ra-box {
-  display: flex;
-  gap: 8px;
 }
 
 .form-actions {
+  margin-top: 22px;
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 22px;
 }
 
-.input,
-select {
-  max-width: 100%;
-  box-sizing: border-box;
+/* LISTAGEM DUPLA (ALUNOS + PROFESSORES) */
+.list-two-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 35px;
 }
+
+.card-list {
+  min-height: 400px;
+}
+
+.list-title {
+  font-size: 1.4rem;
+  margin-bottom: 14px;
+  color: #1a4e9b;
+}
+
+/* FILTROS */
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.filters select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #d4d9e2;
+  background: #fff;
+  font-size: 0.95rem;
+}
+
+/* scroll interno */
+.list-scroll {
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.list-inner {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.list-inner li {
+  background: #f5f7ff;
+  border: 1px solid #d7dcee;
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.item-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid #dfe8fb;
+}
+
+.item-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #0f3a78;
+}
+
+.item-meta {
+  font-size: 0.9rem;
+  color: #567;
+}
+
+/* BOTÃO EXCLUIR */
+.btn-trash {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: transparent;
+  color: #d64545;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-trash:hover {
+  background: rgba(214,69,69,0.10);
+}
+
+.btn-trash svg {
+  width: 18px;
+  height: 18px;
+  fill: #d64545;
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .list-two-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .item-avatar {
+    width: 44px;
+    height: 44px;
+  }
+}
+.btn-avatar {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: #0d47a1;
+  cursor: pointer;
+  text-align: center;
+}
+

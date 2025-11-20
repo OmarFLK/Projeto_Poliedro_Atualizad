@@ -210,11 +210,13 @@ html, body {
 }
 
 .header-nav {
-  display: flex;
-  gap: 32px;
-  align-items: center;
-  flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex: 1;
+    justify-content: center;
 }
+
 
 .header-link {
   color: #fff;

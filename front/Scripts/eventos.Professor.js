@@ -4,6 +4,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const listaEventos = document.getElementById("lista-eventos");
   const btnLimpar = document.getElementById("limpar-evento");
 
+  /*PREENCHE PROFESSOR AUTOMÁTICO */
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem("usuarioProfessor") || "null");
+  } catch {
+    user = null;
+  }
+
+  if (user && user.nome) {
+    document.getElementById("professor").value = user.nome;
+  }
+
   async function carregarEventos() {
     listaEventos.innerHTML = "<p>Carregando eventos...</p>";
 
@@ -77,7 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
     fd.append("descricao", form.description.value);
     fd.append("turma", form.turma.value);
     fd.append("professor", form.professor.value);
-    if (form.arquivo.files[0]) fd.append("arquivo", form.arquivo.files[0]);
+
+    if (form.arquivo.files[0]) {
+      fd.append("arquivo", form.arquivo.files[0]);
+    }
 
     try {
       const res = await fetch(`${baseUrl}/api/eventos`, {
@@ -89,6 +104,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (res.ok) {
         alert("Evento postado com sucesso!");
         form.reset();
+
+        // repõe o nome automaticamente após limpar
+        document.getElementById("professor").value = user.nome;
+
         carregarEventos();
       } else {
         alert("Erro ao postar evento.");
@@ -99,7 +118,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  btnLimpar.addEventListener("click", () => form.reset());
+  if (btnLimpar) {
+    btnLimpar.addEventListener("click", () => {
+      form.reset();
+      document.getElementById("professor").value = user.nome;
+    });
+  }
 
   carregarEventos();
 });

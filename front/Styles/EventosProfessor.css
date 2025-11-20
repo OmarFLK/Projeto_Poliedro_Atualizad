@@ -164,3 +164,29 @@ html, body {
 main {
   overflow: visible !important;
 }
+/* ======== IMPEDIR QUE A DESCRIÇÃO ESTIQUE O CARD ======== */
+.event-card p {
+  white-space: normal;       /* permite quebrar linhas normalmente */
+  word-wrap: break-word;     /* quebra palavras muito grandes */
+  overflow-wrap: break-word; /* quebra palavras gigantes também */
+}
+
+
+/* ======== LIMITE DE ALTURA DO CARD + SCROLL VERTICAL ======== */
+.event-card {
+  max-height: 260px;         /* altura máxima do card */
+  overflow-y: auto;          /* scroll somente vertical */
+  overflow-x: hidden;        /* impede scroll horizontal */
+  padding-right: 10px;       /* espaço pro scroll não tampar texto */
+  scrollbar-width: thin;     /* scroll mais fino (Firefox) */
+}
+
+/* ===== Scroll bonito no Chrome */
+.event-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.event-card::-webkit-scrollbar-thumb {
+  background: #c5c5c5;
+  border-radius: 8px;
+}

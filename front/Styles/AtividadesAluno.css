@@ -1,154 +1,158 @@
-/* Estrutura principal */
+:root {
+  --azul-principal: #1a4e9b;
+  --azul-secundario: #163f7a;
+  --azul-claro: #f7f9ff;
+  --fundo: #f5f7fb;
+  --texto: #1a2e6e;
+  --muted: #6b7894;
+  --radius: 12px;
+  --shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* LAYOUT GERAL */
 .painel-atividades {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
-  align-items: stretch;
   gap: 24px;
   max-width: 1200px;
-  margin: 30px auto;
+  margin: 32px auto;
   padding: 20px;
   min-height: 80vh;
+  box-sizing: border-box;
 }
 
-/* Coluna esquerda */
+/* COLUNA ESQUERDA */
 .col-esquerda {
+  background: #fff;
+  padding: 22px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  padding: 20px;
 }
 
 #lista-atividades {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
-/* Card de atividade */
+/* CARD DE ATIVIDADE */
 .tarefa {
   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius);
   padding: 18px;
-}
-
-.tarefa-info {
-  font-size: 0.95rem;
-  color: #555;
+  box-shadow: var(--shadow);
+  border: 1px solid #e0e6f1;
 }
 
 .tarefa h3 {
-  color: var(--azul-escuro, #163f7a);
-  margin: 8px 0;
+  color: var(--azul-secundario);
+  margin: 4px 0 8px;
+  font-size: 1.15rem;
 }
 
-.tarefa a {
-  color: var(--azul-principal, #1a4e9b);
+.tarefa-info {
+  color: #555;
+  font-size: 14px;
+}
+
+/* LINKS */
+.tarefa a,
+.resolucao-card a {
+  color: var(--azul-principal);
   text-decoration: none;
   font-size: 14px;
 }
 
-.tarefa a:hover {
+.tarefa a:hover,
+.resolucao-card a:hover {
   text-decoration: underline;
 }
 
-/* Área de envio */
+/* ÁREA DE ENVIO */
 .upload-area {
-  margin-top: 10px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .obs-input {
-  resize: none;
   width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 8px;
+  height: 70px;
+  border-radius: 8px;
+  border: 1px solid #d7dcee;
+  padding: 10px;
+  resize: none;
+  background: #fbfdff;
   font-size: 14px;
-  height: 60px;
 }
 
 .file-input {
-  border: none;
   font-size: 14px;
 }
 
 .btn-resolver {
-  background: var(--azul-principal, #1a4e9b);
+  background: var(--azul-principal);
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 8px;
   font-size: 0.9rem;
-  align-self: flex-start;
-  transition: transform 0.1s ease, background-color 0.2s ease;
+  cursor: pointer;
+  transition: 0.12s ease;
 }
 
 .btn-resolver:hover {
-  background: var(--azul-escuro, #163f7a);
+  background: var(--azul-secundario);
   transform: translateY(-1px);
 }
 
-/* Coluna da direita */
+/* COLUNA DIREITA */
 .col-direita {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  padding: 20px;
-  overflow-y: auto;
+  padding: 22px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   max-height: 80vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
 .col-direita h2 {
-  color: var(--azul-escuro, #163f7a);
-  margin-bottom: 16px;
+  color: var(--azul-secundario);
   text-align: center;
+  margin-bottom: 18px;
 }
 
-/* Card das resoluções */
+/* CARD DAS RESOLUÇÕES */
 .resolucao-card {
   background: #f9fbff;
   border: 1px solid #dce3f0;
-  border-radius: 10px;
-  padding: 14px 16px;
-  margin-bottom: 14px;
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .resolucao-card p {
-  margin: 4px 0;
   color: #555;
-}
-
-.resolucao-card a {
-  color: var(--azul-principal, #1a4e9b);
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.resolucao-card a:hover {
-  text-decoration: underline;
+  margin: 4px 0;
 }
 
 .btn-excluir {
   background: #e74c3c;
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
   font-size: 13px;
-  display: block;
   margin-top: 10px;
-  align-self: flex-start;
-  transition: transform 0.1s ease, background-color 0.2s ease;
+  transition: 0.12s ease;
 }
 
 .btn-excluir:hover {
@@ -156,7 +160,7 @@
   transform: translateY(-1px);
 }
 
-/* Responsividade */
+/* RESPONSIVO */
 @media (max-width: 900px) {
   .painel-atividades {
     grid-template-columns: 1fr;
