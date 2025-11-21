@@ -269,3 +269,46 @@ footer {
     text-align: center;
     padding: 15px;
 }
+/* ====== FIX DO SCROLL (SÓ A SIDEBAR ROLA) ====== */
+
+/* Impede que a página inteira role */
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* A página vira uma divisão fixada: esquerda rolável, direita fixa */
+.page-wrap {
+    height: calc(100vh - 64px - 56px); /* header + footer */
+    overflow: hidden;
+}
+
+/* Sidebar rola sozinha */
+.sidebar {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Chat ocupa sempre 100% da altura e NÃO rola externamente */
+.chat-main {
+    overflow: hidden;
+    height: calc(100vh - 64px - 56px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Área das mensagens tem scroll interno */
+.chat-mensagens {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 160px; /* espaço para o input */
+}
+
+/* Footer sempre fixo no fim do chat */
+.chat-footer {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 20;
+}

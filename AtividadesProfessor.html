@@ -1,106 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Atividades Professor</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atividades Professor</title>
 
-    <link rel="stylesheet" href="front/Styles/Login.css" />
-    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-    <link rel="stylesheet" href="front/Styles/AtividadesProfessor.css" />
-  </head>
+  <link rel="stylesheet" href="front/Styles/Login.css" />
+  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+  <link rel="stylesheet" href="front/Styles/AtividadesProfessor.css" />
+</head>
 
-  <body>
-    <header>
-      <div class="header-aluno">
-        <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+<body>
 
-        <nav class="header-nav">
-          <a href="HomeProfessor.html" class="header-link">Home</a>
-          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-          <a href="AtividadesProfessor.html" class="header-link active">Atividades</a>
-          <a href="NotasProfessor.html" class="header-link">Notas</a>
-          <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
-          <a href="EventosProfessores.html" class="header-link">Eventos</a>
+<header>
+  <div class="header-aluno">
+    <img src="Assets/poliedro.png" class="poliedro-logo-header" />
 
-          <select id="daltonismo-select">
-            <option value="">Normal</option>
-            <option value="protanopia">Protanopia</option>
-            <option value="deuteranopia">Deuteranopia</option>
-            <option value="tritanopia">Tritanopia</option>
-          </select>
-        </nav>
+    <nav class="header-nav">
+      <a href="HomeProfessor.html" class="header-link">Home</a>
+      <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+      <a href="AtividadesProfessor.html" class="header-link active">Atividades</a>
+      <a href="NotasProfessor.html" class="header-link">Notas</a>
+      <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
+      <a href="EventosProfessores.html" class="header-link">Eventos</a>
 
-        <a href="PerfilProfessor.html">
-          <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
-        </a>
-      </div>
-    </header>
+      <select id="daltonismo-select">
+        <option value="">Normal</option>
+        <option value="protanopia">Protanopia</option>
+        <option value="deuteranopia">Deuteranopia</option>
+        <option value="tritanopia">Tritanopia</option>
+      </select>
+    </nav>
 
-    <main class="painel-atividades">
-      <section class="col-esquerda">
-        <h1>Atividades do Professor</h1>
-        <form id="form-tarefa">
-          <select id="turma" required>
-            <option value="">Selecione o ano</option>
-            <option value="1º Ano">1º Ano</option>
-            <option value="2º Ano">2º Ano</option>
-            <option value="3º Ano">3º Ano</option>
-          </select>
+    <a href="PerfilProfessor.html">
+      <img src="Assets/LogoUsuario.png" class="header-profile-img" />
+    </a>
+  </div>
+</header>
 
-          <select id="subSala" required>
-            <option value="">Selecione a sub-sala</option>
-            <option value="Sub 1">Sub 1</option>
-            <option value="Sub 2">Sub 2</option>
-            <option value="Sub 3">Sub 3</option>
-          </select>
+<main class="atividades-grid">
 
-          <select id="materia" required>
-            <option value="">Selecione a matéria</option>
-            <option value="Português">Português</option>
-            <option value="Matemática">Matemática</option>
-            <option value="Biologia">Biologia</option>
-            <option value="Física">Física</option>
-            <option value="Química">Química</option>
-            <option value="Geografia">Geografia</option>
-            <option value="História">História</option>
-            <option value="Filosofia">Filosofia</option>
-            <option value="Sociologia">Sociologia</option>
-            <option value="Artes">Artes</option>
-            <option value="Educação Física">Educação Física</option>
-            <option value="Inglês">Inglês</option>
-          </select>
+  <!-- COLUNA DA ESQUERDA: FORMULÁRIO -->
+  <section class="card formulario">
+    <h1>Atividades do Professor</h1>
 
-          <input type="text" id="titulo" placeholder="Título da tarefa" required />
-          <textarea id="descricao" placeholder="Descrição da tarefa" rows="3"></textarea>
-          <input type="file" id="arquivo" />
-          <button type="submit">Postar Tarefa</button>
-        </form>
+    <form id="form-tarefa">
+      <select id="turma" required>
+        <option value="">Selecione o ano</option>
+        <option value="1º Ano">1º Ano</option>
+        <option value="2º Ano">2º Ano</option>
+        <option value="3º Ano">3º Ano</option>
+      </select>
 
-        <section id="lista-tarefas"></section>
-      </section>
+      <select id="subSala" required>
+        <option value="">Selecione a sub-sala</option>
+        <option value="Sub 1">Sub 1</option>
+        <option value="Sub 2">Sub 2</option>
+        <option value="Sub 3">Sub 3</option>
+      </select>
 
-      <aside class="col-direita" id="painel-resolucoes">
-        <h2>Resoluções Enviadas</h2>
-        <div id="lista-resolucoes">
-          <p>Selecione uma atividade para visualizar as resoluções.</p>
-        </div>
-      </aside>
-    </main>
+      <select id="materia" required>
+        <option value="">Selecione a matéria</option>
+        <option value="Português">Português</option>
+        <option value="Matemática">Matemática</option>
+        <option value="Biologia">Biologia</option>
+        <option value="Física">Física</option>
+        <option value="Química">Química</option>
+        <option value="Geografia">Geografia</option>
+        <option value="História">História</option>
+        <option value="Filosofia">Filosofia</option>
+        <option value="Sociologia">Sociologia</option>
+        <option value="Artes">Artes</option>
+        <option value="Educação Física">Educação Física</option>
+        <option value="Inglês">Inglês</option>
+      </select>
 
-    <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-    </footer>
+      <input type="text" id="titulo" placeholder="Título da tarefa" required />
+      <textarea id="descricao" placeholder="Descrição da tarefa" rows="3"></textarea>
+      <input type="file" id="arquivo" />
 
-    <!-- VLibras (opcional) -->
-    <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper></div></div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script> if (window.VLibras) new window.VLibras.Widget("https://vlibras.gov.br/app"); </script>
+      <button type="submit">Postar Tarefa</button>
+    </form>
+  </section>
 
-    <!-- header.js — carrega avatar global -->
-    <script src="front/Scripts/header.js"></script>
+  <!-- COLUNA DA DIREITA: LISTA DE ATIVIDADES -->
+  <section class="card atividades-card">
+    <h2>Atividades Criadas</h2>
+    <div id="lista-tarefas"></div>
+  </section>
 
-    <!-- script principal (substitua o antigo) -->
-    <script src="front/Scripts/atividades.Professor.js"></script>
-  </body>
+  <!-- CARD INFERIOR: RESOLUÇÕES (LARGURA TOTAL DO GRID) -->
+  <section class="card resolucoes-card" id="painel-resolucoes">
+    <h2>Resoluções Enviadas</h2>
+    <div id="lista-resolucoes">
+      <p>Selecione uma atividade para visualizar as resoluções.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+</footer>
+
+<script src="front/Scripts/header.js"></script>
+<script src="front/Scripts/atividades.Professor.js"></script>
+
+</body>
 </html>

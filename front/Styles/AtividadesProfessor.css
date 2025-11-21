@@ -1,32 +1,29 @@
-/* Estrutura principal */
-.painel-atividades {
+.atividades-grid {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  align-items: stretch;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "formulario atividades"
+    "resolucoes resolucoes";
   gap: 24px;
   max-width: 1200px;
   margin: 30px auto;
   padding: 20px;
-  min-height: 80vh;
 }
 
-/* Coluna da esquerda */
-.col-esquerda {
+/* Card base */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 20px;
+}
+
+/* FORMULÁRIO (coluna esquerda) */
+.formulario {
+  grid-area: formulario;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  padding: 20px;
-}
-
-/* Formulário */
-#form-tarefa {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  gap: 16px;
 }
 
 #form-tarefa select,
@@ -40,139 +37,79 @@
 }
 
 #form-tarefa button {
-  background: var(--azul-principal, #1a4e9b);
+  background: #1a4e9b;
   color: #fff;
   border: none;
+  padding: 12px 16px;
   border-radius: 8px;
-  padding: 10px 16px;
-  cursor: pointer;
   font-weight: 600;
+  cursor: pointer;
 }
 
 #form-tarefa button:hover {
-  background: var(--azul-escuro, #163f7a);
+  background: #163f7a;
 }
 
-/* Card da atividade */
+/* LISTA DE ATIVIDADES (coluna direita) */
+.atividades-card {
+  grid-area: atividades;
+}
+
 .tarefa {
-  background: #fff;
+  background: #f7f9ff;
+  border: 1px solid #dce3f0;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  padding: 18px;
-  margin-bottom: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.tarefa-info {
-  font-size: 0.95rem;
-  color: #555;
+  padding: 16px;
+  margin-bottom: 12px;
 }
 
 .tarefa h3 {
-  color: var(--azul-escuro, #163f7a);
-  margin: 8px 0;
+  margin: 5px 0;
+  color: #163f7a;
 }
 
-.tarefa a {
-  color: var(--azul-principal, #1a4e9b);
-  text-decoration: none;
-  word-break: break-all;
-}
-
-.tarefa a:hover {
-  text-decoration: underline;
-}
-
-/* Botões */
-.btn-resolucoes,
-.btn-excluir {
-  border: none;
-  border-radius: 6px;
-  padding: 8px 12px;
+.btn-resolucoes {
+  background: #1a4e9b;
   color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
   cursor: pointer;
-  font-size: 0.9rem;
-  width: fit-content;
-  font-weight: 600;
-  transition: transform 0.1s ease, background-color 0.2s ease;
 }
 
 .btn-excluir {
   background: #e74c3c;
-  align-self: flex-start;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
 }
 
 .btn-excluir:hover {
   background: #c0392b;
-  transform: translateY(-1px);
 }
 
-.btn-resolucoes {
-  background: var(--azul-principal, #1a4e9b);
+/* RESOLUÇÕES — CARD INFERIOR LARGO */
+.resolucoes-card {
+  grid-area: resolucoes;
 }
 
-.btn-resolucoes:hover {
-  background: var(--azul-escuro, #163f7a);
-  transform: translateY(-1px);
-}
-
-/* Painel da direita */
-.col-direita {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-y: auto;
-  max-height: 80vh;
-}
-
-.col-direita h2 {
-  color: var(--azul-escuro, #163f7a);
-  margin-bottom: 16px;
-  text-align: center;
-}
-
-/* Cards de resolução */
 .resolucao-card {
-  background: #f9fbff;
+  background: #f5f8ff;
   border: 1px solid #dce3f0;
   border-radius: 10px;
-  padding: 14px 16px;
+  padding: 14px;
   margin-bottom: 14px;
-  width: 100%;
 }
 
-.resolucao-card h4 {
-  margin: 0 0 6px;
-  color: #333;
-}
-
-.resolucao-card p {
-  margin: 4px 0;
-  color: #555;
-}
-
-.resolucao-card a {
-  color: var(--azul-principal, #1a4e9b);
-  text-decoration: none;
-}
-
-.resolucao-card a:hover {
-  text-decoration: underline;
-}
-
-/* Responsividade */
+/* Responsivo */
 @media (max-width: 900px) {
-  .painel-atividades {
+  .atividades-grid {
     grid-template-columns: 1fr;
-  }
-
-  .col-direita {
-    max-height: none;
+    grid-template-areas:
+      "formulario"
+      "atividades"
+      "resolucoes";
   }
 }
