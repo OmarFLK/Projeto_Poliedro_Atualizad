@@ -69,7 +69,7 @@
         position: fixed;
         top: 0;
         left: 0;
-        background-color: #163f7a;
+        background-color: #1a4e9b;
         overflow-x: hidden;
         padding-top: 60px;
         transition: 0.3s;
@@ -194,13 +194,6 @@
           display: inline-block;
         }
       }
-
-      footer {
-        padding: 15px;
-        background-color: #163f7a;
-        color: white;
-        text-align: center;
-      }
     </style>
   </head>
 
@@ -303,33 +296,6 @@
 
     <!-- Scripts JS -->
     <script>
-      // Seleção Daltonismo
-      const daltonismoSelect = document.getElementById("daltonismo-select");
-      const daltonismoSelectSidebar = document.getElementById(
-        "daltonismo-select-sidebar"
-      );
-
-      function changeDaltonismo(selectElement) {
-        document.body.classList.remove(
-          "protanopia",
-          "deuteranopia",
-          "tritanopia"
-        );
-        const val = selectElement.value;
-        if (val) document.body.classList.add(val);
-      }
-
-      if (daltonismoSelect) {
-        daltonismoSelect.addEventListener("change", () =>
-          changeDaltonismo(daltonismoSelect)
-        );
-      }
-      if (daltonismoSelectSidebar) {
-        daltonismoSelectSidebar.addEventListener("change", () =>
-          changeDaltonismo(daltonismoSelectSidebar)
-        );
-      }
-
       // Sidebar toggle
       const menuToggle = document.getElementById("menu-toggle");
       const sidebar = document.getElementById("sidebar");
