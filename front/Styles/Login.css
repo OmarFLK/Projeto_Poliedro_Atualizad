@@ -6,6 +6,7 @@
   --texto: #263043;
   --accent: #2f80ed;
   --footer-height: 56px;
+  --site-footer-height: var(--footer-height);
 }
 
 /* base */
@@ -28,7 +29,7 @@ body {
 
 /* pageContent spacing so footer doesn't overlap content */
 #pageContent {
-  padding-bottom: calc(var(--footer-height) + 12px);
+  padding-bottom: calc(var(--site-footer-height) + 12px);
 }
 
 /* center area */
@@ -193,13 +194,13 @@ input[type="password"] {
   filter: grayscale(0.03);
 }
 
-/* footer fixed */
+/* footer fixed (global) */
 footer {
-  position: fixed;
+  position: static;
   left: 0;
   right: 0;
   bottom: 0;
-  height: var(--footer-height);
+  height: var(--site-footer-height);
   background: var(--azul-escuro);
   color: #fff;
   padding: 0 12px;
@@ -379,18 +380,19 @@ footer .footer-text {
     font-size: 0.94rem;
   }
 }
+
+/* Overwrites that ensure scroll works with fixed footer */
 html, body {
-    height: auto !important;
-    overflow-y: auto !important;
+  height: auto !important;
+  overflow-y: auto !important;
 }
 
 .container, .container-notas {
-    min-height: 100vh;
-    height: auto !important;
-    overflow: visible !important;
+  min-height: 100vh;
+  height: auto !important;
+  overflow: visible !important;
 }
 
 .semester-card, .notas-box {
-    overflow: visible !important;
+  overflow: visible !important;
 }
-

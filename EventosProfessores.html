@@ -1,326 +1,548 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/EventosProfessor.css" />
+    <title>Eventos do Professor</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="front/Styles/Login.css" />
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-  <link rel="stylesheet" href="front/Styles/EventosProfessor.css" />
-  <title>Eventos do Professor</title>
-
-  <style>
-    /* Top icons (ajusta como q empilha no mobile) */
-    .top-icons {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      flex-wrap: nowrap;
-      /* mantem os ícones em uma fileira */
-    }
-
-    .top-icons a,
-    .top-icons button,
-    .top-icons img,
-    .top-icons i {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      min-height: 36px;
-      max-width: 48px;
-      max-height: 48px;
-      padding: 4px;
-      box-sizing: border-box;
-    }
-
-    .top-icons img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-
-    @media (max-width: 420px) {
-      .top-icons {
-        gap: 6px;
+    <style>
+      :root {
+        --header-h: 64px;
+        --footer-h: 56px;
+        --blue: #163f7a;
+      }
+      /* Reset / base */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #f4f6f9;
+        overflow-x: hidden;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        box-sizing: border-box;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
       }
 
+      /* Top icons (ajusta como q empilha no mobile) */
+      .top-icons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: nowrap;
+      }
       .top-icons a,
       .top-icons button,
       .top-icons img,
       .top-icons i {
-        min-width: 32px;
-        min-height: 32px;
-        max-width: 40px;
-        max-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 36px;
+        min-height: 36px;
+        max-width: 48px;
+        max-height: 48px;
+        padding: 4px;
       }
-    }
-
-    /* barra lateral */
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #1a4e9b;
-      overflow-x: hidden;
-      padding-top: 60px;
-      transition: 0.3s;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .sidebar.open {
-      width: 250px;
-    }
-
-    .sidebar-link {
-      padding: 12px 24px;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: white;
-      display: block;
-    }
-
-    .sidebar-link:hover,
-    .sidebar-link.active {
-      background-color: #6a9bd1;
-      color: white;
-    }
-
-    .menu-close {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Botão hamburguer */
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: #163f7a;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-      margin-left: 15px;
-      align-self: center;
-    }
-
-    /* Nav header */
-    .header-aluno {
-      background-color: #163f7a;
-      display: flex;
-      align-items: flex;
-      justify-content: space-between;
-      padding: 10px 20px;
-      flex-wrap: nowrap;
-      gap: 10px;
-    }
-
-    .poliedro-logo-header {
-      height: 40px;
-      cursor: pointer;
-    }
-
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-    }
-
-    .header-profile-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid white;
-      cursor: pointer;
-    }
-
-    @media (max-width: 991px) {
-      .menu-toggle {
-        display: inline-block;
+      .top-icons img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+      @media (max-width: 420px) {
+        .top-icons {
+          gap: 6px;
+        }
+        .top-icons a,
+        .top-icons button,
+        .top-icons img,
+        .top-icons i {
+          min-width: 32px;
+          min-height: 32px;
+          max-width: 40px;
+          max-height: 40px;
+        }
       }
 
-      /* mantém logo, menu e perfil na mesma linha */
-      .header-aluno {
-        justify-content: space-between;
-      }
-    }
-
-    #daltonismo-select {
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    .daltonismo-select-sidebar {
-      margin: 0 24px 12px 24px;
-      padding: 6px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: none;
-    }
-
-    /* Responsividade */
-    @media (min-width: 992px) {
-      .menu-toggle {
-        display: none;
-      }
-
+      /* Sidebar (mobile) */
       .sidebar {
-        display: none !important;
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #1a4e9b;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: width 0.28s ease;
+        z-index: 100005;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        box-shadow: 0 0 24px rgba(0, 0, 0, 0.18);
+        box-sizing: border-box;
+      }
+      .sidebar.open {
+        width: 250px;
+      }
+      .sidebar-link {
+        padding: 12px 24px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        color: white;
+        display: block;
+      }
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background-color: #6a9bd1;
+        color: white;
+      }
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
       }
 
-      .header-nav {
-        display: flex !important;
-      }
-    }
-
-    @media (max-width: 991px) {
-      .header-nav {
-        display: none !important;
-      }
-
+      /* Botão hamburguer */
       .menu-toggle {
-        display: inline-block;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: #163f7a;
+        cursor: pointer;
+        display: none;
+        margin-left: 15px;
+        align-self: center;
       }
-    }
-  </style>
-</head>
+      .menu-toggle.mobile-white {
+        color: white;
+      } /* when used on dark header */
 
-<body>
-  <header>
-    <div class="header-aluno">
-      <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+      /* HEADER */
+      .header-aluno {
+        background-color: var(--blue);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        gap: 10px;
+        height: var(--header-h);
+        box-sizing: border-box;
+        transition: opacity 0.28s ease, backdrop-filter 0.28s ease,
+          transform 0.28s ease;
+        will-change: opacity, backdrop-filter;
+      }
+      .header-aluno.scrolled {
+        opacity: 0.78;
+        backdrop-filter: blur(2px);
+      }
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid white;
+        cursor: pointer;
+      }
 
-      <!-- Botão hamburguer para mobile -->
-      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
-        &#9776;
-      </button>
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+        .header-nav {
+          display: none !important;
+        }
+        .header-aluno {
+          justify-content: space-between;
+        }
+      }
 
-      <!-- Navegação tradicional (desktop) -->
-      <nav class="header-nav">
-        <a href="HomeProfessor.html" class="header-link">Home</a>
-        <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-        <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
-        <a href="NotasProfessor.html" class="header-link">Notas</a>
-        <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
-        <a href="EventosProfessores.html" class="header-link active">Eventos</a>
+      /* MAIN layout */
+      main.painel-eventos {
+        max-width: 1200px;
+        margin: 18px auto;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 1fr 420px;
+        gap: 20px;
+        align-items: start;
+        min-height: calc(100vh - var(--header-h) - var(--footer-h));
+        padding-bottom: calc(var(--footer-h) + 24px);
+        box-sizing: border-box;
+      }
+      @media (max-width: 1000px) {
+        main.painel-eventos {
+          grid-template-columns: 1fr;
+          padding: 14px;
+        }
+      }
 
+      .section-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        box-sizing: border-box;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.56s ease, transform 0.56s ease;
+      }
+      .section-card.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-      </nav>
+      .col-esquerda h1 {
+        margin: 0 0 12px;
+        font-size: 1.4rem;
+      }
+      .col-direita h2 {
+        margin: 0 0 12px;
+        font-size: 1.15rem;
+      }
 
-      <a href="PerfilProfessor.html">
-        <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
-      </a>
-    </div>
+      form#eventForm {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      form#eventForm input[type="text"],
+      form#eventForm input[type="date"],
+      form#eventForm textarea,
+      form#eventForm select {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #e6eef8;
+        background: #fff;
+        font-size: 14px;
+      }
+      form#eventForm textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+      form#eventForm button {
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        background: var(--blue);
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer;
+      }
 
-    <!-- Sidebar para mobile -->
-    <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
-        &times;
-      </button>
-      <a href="HomeProfessor.html" class="sidebar-link">Home</a>
-      <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
-      <a href="AtividadesProfessor.html" class="sidebar-link">Atividades</a>
-      <a href="NotasProfessor.html" class="sidebar-link">Notas</a>
-      <a href="MensagensProfessor.html" class="sidebar-link">Mensagens</a>
-      <a href="EventosProfessores.html" class="sidebar-link active">Eventos</a>
+      #lista-eventos p {
+        margin: 0;
+        color: #6b7280;
+      }
 
+      /* fixed footer */
+      footer {
+        position: static;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--footer-h);
+        background: var(--blue);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100006;
+        box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.06);
+        box-sizing: border-box;
+      }
 
-    </nav>
-  </header>
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
 
-  <!-- CONTEÚDO PRINCIPAL -->
-  <main class="painel-eventos">
-    <section class="section-card col-esquerda">
-      <h1>Publicar Evento</h1>
-      <form id="eventForm">
-        <input type="text" id="title" placeholder="Título do evento" required />
-        <input type="date" id="date" required />
-        <input type="text" id="hora" placeholder="Horário (opcional)" />
-        <input type="text" id="local" placeholder="Local (opcional)" />
-        <textarea id="description" placeholder="Descrição do evento" required></textarea>
+  <body>
+    <header>
+      <div id="site-header" class="header-aluno" role="banner">
+        <img
+          src="Assets/poliedro.png"
+          alt="Logo Poliedro"
+          class="poliedro-logo-header"
+        />
 
-        <input type="file" id="arquivo" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" />
+        <!-- Botão hamburguer para mobile -->
+        <button
+          id="menu-toggle"
+          class="menu-toggle mobile-white"
+          aria-label="Abrir menu"
+          type="button"
+        >
+          &#9776;
+        </button>
 
-        <select id="turma" required>
-          <option value="">Selecione a turma</option>
-          <option value="1º Ano">1º Ano</option>
-          <option value="2º Ano">2º Ano</option>
-          <option value="3º Ano">3º Ano</option>
-          <option value="todas">Todas as turmas</option>
-        </select>
+        <!-- Navegação tradicional (desktop) -->
+        <nav class="header-nav" role="navigation" aria-label="Links principais">
+          <a href="HomeProfessor.html" class="header-link">Home</a>
+          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+          <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
+          <a href="NotasProfessor.html" class="header-link">Notas</a>
+          <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
+          <a href="EventosProfessores.html" class="header-link active"
+            >Eventos</a
+          >
+        </nav>
 
-
-        <input type="text" id="professor" placeholder="Professor" readonly />
-
-        <button type="submit">Postar Evento</button>
-        <button type="button" id="limpar-evento" class="btn-neutral">Limpar</button>
-      </form>
-    </section>
-
-    <aside class="section-card col-direita">
-      <h2>Eventos Postados</h2>
-      <div id="lista-eventos">
-        <p>Nenhum evento publicado ainda.</p>
+        <a href="PerfilProfessor.html" aria-label="Perfil do usuário">
+          <img
+            src="Assets/LogoUsuario.png"
+            alt="Meu cadastro"
+            class="header-profile-img"
+          />
+        </a>
       </div>
-    </aside>
-  </main>
 
-  <footer>
-    <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-  </footer>
+      <!-- Sidebar para mobile -->
+      <nav
+        id="sidebar"
+        class="sidebar"
+        aria-label="Menu lateral"
+        aria-hidden="true"
+      >
+        <button
+          id="menu-close"
+          class="menu-close"
+          aria-label="Fechar menu"
+          type="button"
+        >
+          &times;
+        </button>
+        <a href="HomeProfessor.html" class="sidebar-link">Home</a>
+        <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
+        <a href="AtividadesProfessor.html" class="sidebar-link">Atividades</a>
+        <a href="NotasProfessor.html" class="sidebar-link">Notas</a>
+        <a href="MensagensProfessor.html" class="sidebar-link">Mensagens</a>
+        <a href="EventosProfessores.html" class="sidebar-link active"
+          >Eventos</a
+        >
+      </nav>
+    </header>
 
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-  <script>
-    new window.VLibras.Widget("https://vlibras.gov.br/app");
-  </script>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="painel-eventos" role="main">
+      <section class="section-card col-esquerda" id="form-section">
+        <h1>Publicar Evento</h1>
+        <form id="eventForm">
+          <input
+            type="text"
+            id="title"
+            placeholder="Título do evento"
+            required
+          />
+          <input type="date" id="date" required />
+          <input type="text" id="hora" placeholder="Horário (opcional)" />
+          <input type="text" id="local" placeholder="Local (opcional)" />
+          <textarea
+            id="description"
+            placeholder="Descrição do evento"
+            required
+          ></textarea>
 
-  <script src="front/Scripts/eventos.Professor.js"></script>
-  <script src="front/Scripts/header.js"></script>
+          <input
+            type="file"
+            id="arquivo"
+            accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
+          />
 
-  <script>
-    // Sidebar toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebar = document.getElementById("sidebar");
-    const menuClose = document.getElementById("menu-close");
+          <select id="turma" required>
+            <option value="">Selecione a turma</option>
+            <option value="1º Ano">1º Ano</option>
+            <option value="2º Ano">2º Ano</option>
+            <option value="3º Ano">3º Ano</option>
+            <option value="todas">Todas as turmas</option>
+          </select>
 
-    menuToggle.addEventListener("click", () => {
-      sidebar.classList.add("open");
-      menuClose.focus();
-    });
+          <input type="text" id="professor" placeholder="Professor" readonly />
 
-    menuClose.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-    });
+          <button type="submit">Postar Evento</button>
+          <button type="button" id="limpar-evento" class="btn-neutral">
+            Limpar
+          </button>
+        </form>
+      </section>
 
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
-    window.addEventListener("click", (e) => {
-      if (
-        sidebar.classList.contains("open") &&
-        !sidebar.contains(e.target) &&
-        !menuToggle.contains(e.target)
-      ) {
-        sidebar.classList.remove("open");
-      }
-    });
-  </script>
-</body>
+      <aside
+        class="section-card col-direita"
+        id="list-section"
+        aria-live="polite"
+      >
+        <h2>Eventos Postados</h2>
+        <div id="lista-eventos">
+          <p>Nenhum evento publicado ainda.</p>
+        </div>
+      </aside>
+    </main>
 
+    <footer>
+      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+
+    <script src="front/Scripts/eventos.Professor.js"></script>
+    <script src="front/Scripts/header.js"></script>
+
+    <script>
+      (function () {
+        // Elements
+        const menuToggle = document.getElementById("menu-toggle");
+        const sidebar = document.getElementById("sidebar");
+        const menuClose = document.getElementById("menu-close");
+        const header = document.getElementById("site-header");
+        const formSection = document.getElementById("form-section");
+        const listSection = document.getElementById("list-section");
+
+        // Safety
+        if (!menuToggle || !sidebar) {
+          // still continue to wire observers below
+        } else {
+          // keep menu button state synced with sidebar class + aria-hidden
+          const mo = new MutationObserver(() => {
+            const open = sidebar.classList.contains("open");
+            menuToggle.classList.toggle("is-open", open);
+            sidebar.setAttribute("aria-hidden", open ? "false" : "true");
+          });
+          mo.observe(sidebar, { attributes: true, attributeFilter: ["class"] });
+
+          // Toggle
+          menuToggle.addEventListener("click", () => {
+            const open = !sidebar.classList.contains("open");
+            sidebar.classList.toggle("open", open);
+            sidebar.setAttribute("aria-hidden", open ? "false" : "true");
+            if (open && menuClose) menuClose.focus();
+          });
+
+          // Close button
+          if (menuClose) {
+            menuClose.addEventListener("click", () => {
+              sidebar.classList.remove("open");
+              sidebar.setAttribute("aria-hidden", "true");
+              menuToggle.focus();
+            });
+          }
+
+          // click outside closes sidebar
+          window.addEventListener("click", (e) => {
+            if (!sidebar.classList.contains("open")) return;
+            if (sidebar.contains(e.target) || menuToggle.contains(e.target))
+              return;
+            sidebar.classList.remove("open");
+            sidebar.setAttribute("aria-hidden", "true");
+          });
+        }
+
+        // Close menus with Esc
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            if (sidebar && sidebar.classList.contains("open")) {
+              sidebar.classList.remove("open");
+              sidebar.setAttribute("aria-hidden", "true");
+              if (menuToggle) menuToggle.focus();
+            }
+          }
+        });
+
+        // Header fade on scroll (rAF optimized)
+        const SCROLL_THRESHOLD = 8;
+        let ticking = false;
+        function updateHeaderOnScroll() {
+          if (!header) return;
+          const y = window.scrollY || window.pageYOffset;
+          if (y > SCROLL_THRESHOLD) header.classList.add("scrolled");
+          else header.classList.remove("scrolled");
+        }
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+              updateHeaderOnScroll();
+              ticking = false;
+            });
+          },
+          { passive: true }
+        );
+        // init state
+        updateHeaderOnScroll();
+
+        // Entrance animations
+        if ("IntersectionObserver" in window) {
+          const io = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((ent) => {
+                if (ent.isIntersecting) {
+                  ent.target.classList.add("in-view");
+                  obs.unobserve(ent.target);
+                }
+              });
+            },
+            { threshold: 0.08 }
+          );
+
+          [formSection, listSection].forEach((el) => {
+            if (el) io.observe(el);
+          });
+        } else {
+          [formSection, listSection].forEach((el) => {
+            if (el) el.classList.add("in-view");
+          });
+        }
+
+        // Accessibility: reflect expanded state on toggle button
+        if (menuToggle && sidebar) {
+          const updateAria = () =>
+            menuToggle.setAttribute(
+              "aria-expanded",
+              String(sidebar.classList.contains("open"))
+            );
+          const mo2 = new MutationObserver(updateAria);
+          mo2.observe(sidebar, {
+            attributes: true,
+            attributeFilter: ["class"],
+          });
+          updateAria();
+        }
+      })();
+    </script>
+    <!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+</script>
+
+  </body>
 </html>

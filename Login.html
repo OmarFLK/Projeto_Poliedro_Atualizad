@@ -3,25 +3,315 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Página de Login</title>
+    <title>Página de Login — Poliedro</title>
+
     <link rel="stylesheet" href="front/Styles/Login.css" />
+
+    <style>
+      /* Base */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #f4f6f9;
+        font-family: Inter, system-ui, Roboto, Arial;
+        color: #111;
+        box-sizing: border-box;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+
+      /* garante que pageContent ocupe a tela menos o footer */
+      #pageContent {
+        min-height: calc(100vh - 56px);
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* main cresce empurrando footer */
+      .login-container {
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* caixa login */
+      .login-box {
+        width: 100%;
+        max-width: 560px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 26px;
+        box-shadow: 0 14px 34px rgba(17, 24, 39, 0.08);
+        opacity: 0;
+        transform: translateY(15px);
+        transition: opacity 0.48s cubic-bezier(0.22, 0.9, 0.32, 1),
+          transform 0.48s cubic-bezier(0.22, 0.9, 0.32, 1);
+        will-change: opacity, transform;
+      }
+      .login-box.enter {
+        opacity: 1;
+        transform: none;
+      }
+
+      .logo {
+        display: block;
+        margin: 0 auto 18px;
+        max-width: 220px;
+        height: auto;
+      }
+      .toggle-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 14px;
+      }
+      .toggle {
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: 1px solid #e6eef8;
+        background: #fff;
+        cursor: pointer;
+      }
+      .toggle.active {
+        background: #163f7a;
+        color: #fff;
+        border-color: transparent;
+      }
+
+      form#loginForm {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      label {
+        font-size: 0.95rem;
+        color: #374151;
+        margin-top: 6px;
+      }
+      input[type="email"],
+      input[type="password"] {
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid #e6eef8;
+        background: #fff;
+        font-size: 1rem;
+        outline: none;
+      }
+      input:focus {
+        box-shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
+        border-color: #cbd5e1;
+      }
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 6px;
+      }
+      .terms-inline {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .terms-link {
+        background: none;
+        border: none;
+        color: #163f7a;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 0;
+        font-size: 0.95rem;
+      }
+      .recover-text {
+        color: #163f7a;
+        text-decoration: none;
+        font-size: 0.95rem;
+      }
+      .action-center {
+        display: flex;
+        justify-content: center;
+      }
+      .primary-access {
+        padding: 12px 18px;
+        border-radius: 10px;
+        border: none;
+        background: #163f7a;
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 1rem;
+        width: 100%;
+      }
+      .primary-access[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      footer {
+        height: 56px;
+        background: #163f7a;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 50;
+      }
+
+      /* OVERLAY */
+      #termsOverlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(3px);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* MODAL - IMPORTANT: flex column so actions stay visible */
+      .terms-modal {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 920px;
+        max-height: calc(100vh - 80px); /* room for margins + footer */
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 28px 68px rgba(2, 6, 23, 0.3);
+        transform: translateY(8px);
+        opacity: 0;
+        transition: transform 0.28s ease, opacity 0.28s ease;
+      }
+      .terms-modal.show {
+        transform: none;
+        opacity: 1;
+      }
+
+      .terms-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+      .terms-content {
+        padding: 16px 18px;
+        overflow: auto;
+        line-height: 1.5;
+        font-size: 0.95rem;
+        flex: 1 1 auto; /* <-- ensures content area takes available space and scrolls */
+        box-sizing: border-box;
+        /* leave bottom padding so last lines never hide behind actions */
+        padding-bottom: 28px;
+      }
+
+      .terms-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        padding: 12px 18px;
+        border-top: 1px solid #f1f5f9;
+        /* keep actions visible (flex-none) */
+        flex: 0 0 auto;
+        background: linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.8),
+          rgba(255, 255, 255, 0)
+        );
+      }
+      .terms-btn {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #e6eef8;
+        background: #fff;
+        cursor: pointer;
+      }
+      .terms-accept {
+        background: #163f7a;
+        color: #fff;
+        border-color: transparent;
+        font-weight: 700;
+      }
+      .terms-close {
+        background: none;
+        border: none;
+        font-size: 1.05rem;
+        cursor: pointer;
+      }
+
+      /* make sure modal sits above footer and is fully visible on small screens */
+      @media (max-width: 520px) {
+        .login-box {
+          padding: 18px;
+          border-radius: 10px;
+        }
+        .terms-modal {
+          max-width: 100%;
+          max-height: calc(100vh - 60px);
+          border-radius: 10px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .login-box,
+        .terms-modal {
+          transition: none !important;
+          transform: none !important;
+          opacity: 1 !important;
+        }
+      }
+    </style>
   </head>
+
   <body>
     <div id="pageContent">
       <main class="login-container" id="loginRoot">
-        <section class="login-box" role="region" aria-label="Área de login">
-          <img src="Assets/poliedro02.png" alt="Logo Poliedro" class="logo" />
+        <section
+          class="login-box"
+          role="region"
+          aria-label="Área de login"
+          aria-labelledby="loginTitle"
+        >
+          <img src="Assets/poliedro02.png" alt="Poliedro" class="logo" />
 
           <nav class="toggle-buttons" aria-label="Tipo de login">
-            <button type="button" id="btnAluno" class="toggle active">
+            <button
+              type="button"
+              id="btnAluno"
+              class="toggle active"
+              aria-pressed="true"
+            >
               Aluno
             </button>
-            <button type="button" id="btnProfessor" class="toggle">
+            <button
+              type="button"
+              id="btnProfessor"
+              class="toggle"
+              aria-pressed="false"
+            >
               Professor
             </button>
           </nav>
 
           <form id="loginForm" autocomplete="off" novalidate>
+            <h1 id="loginTitle" style="margin: 0 0 6px; font-size: 1.15rem">
+              Entrar
+            </h1>
+
             <label for="email">E-mail</label>
             <input
               type="email"
@@ -40,7 +330,6 @@
               required
             />
 
-            <!-- stacked actions: termos (top), recuperar (middle), acessar (bottom, maior) -->
             <div class="actions" role="group" aria-label="Ações de login">
               <div class="terms-inline">
                 <input
@@ -71,6 +360,7 @@
                   type="submit"
                   disabled
                   class="primary-access"
+                  aria-disabled="true"
                 >
                   Acessar
                 </button>
@@ -81,265 +371,89 @@
       </main>
     </div>
 
-    <!-- Terms modal (central, not fullscreen) -->
-    <div
-      class="terms-overlay"
-      id="termsOverlay"
-      role="dialog"
-      aria-modal="true"
-      aria-hidden="true"
-    >
+    <!-- MODAL DOS TERMOS -->
+    <div id="termsOverlay" aria-hidden="true" role="dialog" aria-modal="true">
       <div
         class="terms-modal"
         role="document"
-        aria-labelledby="termsTitle"
         tabindex="-1"
+        aria-labelledby="termsTitle"
       >
         <header class="terms-header">
-          <h2 id="termsTitle">Termos de Uso do Site</h2>
-          <button
-            class="terms-close"
-            id="termsCloseBtn"
-            aria-label="Fechar termos"
-          >
-            ✖
-          </button>
+          <h2 id="termsTitle" style="margin: 0; font-size: 1.05rem">
+            Termos de Uso do Site
+          </h2>
+          <button class="terms-close" aria-label="Fechar termos">✖</button>
         </header>
-        <div class="terms-content" id="termsContent" tabindex="0">
-          <!-- FULL TERMS CONTENT: substituído para exibir TODO o texto -->
+
+        <!-- content area: flex:1 so it scrolls inside modal -->
+        <div
+          class="terms-content"
+          id="termsContent"
+          tabindex="0"
+          role="region"
+          aria-label="Conteúdo dos termos"
+        >
+          <!-- COLE AQUI O SEU TEXTO COMPLETO DOS TERMOS (já incluí um exemplo) -->
           <article>
             <header>
               <p>
-                Bem-vindo ao site do <strong>Poliedro</strong>, instituição
-                educacional dedicada à formação de excelência no Ensino
-                Fundamental, Médio e Pré-Vestibular.
-              </p>
-              <p>
-                Por favor, leia atentamente os Termos de Uso abaixo antes de
-                utilizar o site. O acesso e uso deste site pressupõem a plena
-                aceitação e concordância com todas as condições aqui descritas.
+                <strong>Bem-vindo ao site do Poliedro</strong>. Leia os termos
+                abaixo.
               </p>
             </header>
 
             <section>
               <h3>1. Definições</h3>
-              <ul>
-                <li>
-                  <strong>Usuário:</strong> qualquer pessoa que acesse ou
-                  utilize o site, com ou sem cadastro.
-                </li>
-                <li>
-                  <strong>Site:</strong> ambiente digital de titularidade do
-                  Poliedro, acessível por meio do endereço
-                  <a
-                    href="https://www.poliedro.com.br"
-                    target="_blank"
-                    rel="noopener"
-                    >www.poliedro.com.br</a
-                  >.
-                </li>
-                <li>
-                  <strong>Conteúdo:</strong> qualquer informação, texto, imagem,
-                  vídeo, áudio, software ou outro material disponível no site.
-                </li>
-                <li>
-                  <strong>Dados Pessoais:</strong> informações relacionadas à
-                  pessoa natural identificada ou identificável, conforme a LGPD.
-                </li>
-              </ul>
+              <p>Usuário: qualquer pessoa que acesse ou utilize o site.</p>
             </section>
 
             <section>
-              <h3>2. Aceitação dos Termos</h3>
-              <p>Ao acessar o site, o usuário declara que:</p>
-              <ul>
-                <li>Leu, compreendeu e concorda com estes Termos de Uso;</li>
-                <li>
-                  Está ciente de que os termos podem ser modificados a qualquer
-                  momento;
-                </li>
-                <li>
-                  Possui capacidade legal para aceitar estes termos ou está
-                  autorizado por seus responsáveis legais, se menor de idade.
-                </li>
-              </ul>
-            </section>
-
-            <section>
-              <h3>3. Finalidade do Site</h3>
-              <p>O site do Poliedro tem como objetivo:</p>
-              <ul>
-                <li>
-                  Apresentar informações institucionais sobre a escola e o
-                  cursinho;
-                </li>
-                <li>Disponibilizar conteúdos pedagógicos e informativos;</li>
-                <li>
-                  Permitir cadastros, matrículas, inscrições e pagamentos
-                  online;
-                </li>
-                <li>Facilitar o contato com a equipe do Poliedro;</li>
-                <li>Divulgar eventos, processos seletivos e resultados.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h3>4. Cadastro e Acesso a Áreas Restritas</h3>
-              <p>Algumas funcionalidades exigem cadastro prévio, como:</p>
-              <ul>
-                <li>Área do aluno;</li>
-                <li>Portal de pais e responsáveis;</li>
-                <li>Inscrições em simulados, vestibulares e eventos;</li>
-                <li>Matrícula e emissão de boletos.</li>
-              </ul>
-
-              <h4>4.1 Responsabilidades do Usuário</h4>
-              <ul>
-                <li>Fornecer informações verídicas e atualizadas;</li>
-                <li>Manter a confidencialidade do login e senha;</li>
-                <li>Notificar o Poliedro em caso de uso não autorizado;</li>
-                <li>
-                  Assumir responsabilidade por ações realizadas com seu login.
-                </li>
-              </ul>
-            </section>
-
-            <section>
-              <h3>5. Propriedade Intelectual</h3>
+              <h3>2. Aceitação</h3>
               <p>
-                Todos os direitos sobre os conteúdos do site pertencem ao
-                Poliedro ou a seus parceiros. É proibido:
-              </p>
-              <ul>
-                <li>
-                  Reproduzir, copiar, modificar ou distribuir qualquer conteúdo
-                  sem autorização;
-                </li>
-                <li>
-                  Usar marcas, logotipos ou identidade visual da instituição sem
-                  permissão formal.
-                </li>
-              </ul>
-              <p>
-                O uso indevido poderá acarretar penalidades civis e criminais.
+                Ao acessar o site, o usuário declara que leu, compreendeu e
+                concorda com estes Termos.
               </p>
             </section>
 
             <section>
-              <h3>6. Conduta do Usuário</h3>
-              <p>O usuário compromete-se a:</p>
-              <ul>
-                <li>Respeitar a legislação vigente;</li>
-                <li>
-                  Não publicar conteúdos ofensivos, discriminatórios ou ilegais;
-                </li>
-                <li>Não tentar invadir sistemas ou áreas restritas;</li>
-                <li>
-                  Não utilizar o site para fins comerciais não autorizados.
-                </li>
-              </ul>
+              <h3>3. Proteção de Dados</h3>
+              <p>Tratamos dados pessoais conforme a LGPD.</p>
             </section>
 
             <section>
-              <h3>7. Proteção de Dados Pessoais</h3>
+              <h3>4. Conteúdo</h3>
               <p>
-                O Poliedro trata dados pessoais conforme a Lei Geral de Proteção
-                de Dados (LGPD - Lei 13.709/2018).
+                ... (cole aqui todo o conteúdo que quiser; a área é rolável) ...
               </p>
 
-              <h4>7.1 Coleta e Uso de Dados</h4>
-              <p>Dados são coletados por meio de:</p>
-              <ul>
-                <li>Formulários de inscrição, contato e matrícula;</li>
-                <li>Cookies e ferramentas de análise;</li>
-                <li>Interações em áreas logadas.</li>
-              </ul>
-              <p>
-                São utilizados para finalidades educacionais, administrativas e
-                legais.
+              <!-- repetição pra garantir scroll durante teste - apague quando colar os termos reais -->
+              <p style="margin-top: 12px">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Reprehenderit...
               </p>
-
-              <h4>7.2 Compartilhamento</h4>
-              <p>
-                O compartilhamento ocorre apenas com parceiros autorizados e
-                contratualmente obrigados à confidencialidade.
+              <p style="margin-top: 12px">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Reprehenderit...
               </p>
-
-              <h4>7.3 Direitos do Usuário</h4>
-              <p>O titular dos dados pode solicitar:</p>
-              <ul>
-                <li>Acesso às informações coletadas;</li>
-                <li>Correção ou atualização de dados;</li>
-                <li>Exclusão de dados, quando cabível.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h3>8. Links Externos</h3>
-              <p>
-                O site pode conter links para terceiros. O Poliedro não se
-                responsabiliza por conteúdos ou práticas de privacidade desses
-                sites.
+              <p style="margin-top: 12px">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Reprehenderit...
+              </p>
+              <p style="margin-top: 12px">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Reprehenderit...
+              </p>
+              <p style="margin-top: 12px">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Reprehenderit...
               </p>
             </section>
 
-            <section>
-              <h3>9. Disponibilidade e Atualizações</h3>
-              <p>
-                O Poliedro se esforça para manter o site sempre acessível e
-                atualizado, mas não garante:
-              </p>
-              <ul>
-                <li>Ausência de erros ou falhas técnicas;</li>
-                <li>Disponibilidade contínua dos serviços;</li>
-                <li>Ausência de vírus ou malwares.</li>
-              </ul>
-              <p>
-                O site e seus conteúdos podem ser alterados ou descontinuados
-                sem aviso prévio.
-              </p>
-            </section>
-
-            <section>
-              <h3>10. Isenção de Responsabilidade</h3>
-              <p>O Poliedro não se responsabiliza por:</p>
-              <ul>
-                <li>
-                  Perdas decorrentes do uso ou da incapacidade de uso do site;
-                </li>
-                <li>Erros causados por equipamentos ou conexão do usuário;</li>
-                <li>Conteúdo inserido por terceiros.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h3>11. Modificações dos Termos de Uso</h3>
-              <p>
-                Estes Termos podem ser atualizados a qualquer momento.
-                Recomendamos revisão periódica desta página. O uso contínuo do
-                site após alterações será considerado aceitação dos novos
-                termos.
-              </p>
-            </section>
-
-            <section>
-              <h3>12. Legislação e Foro</h3>
-              <p>
-                Estes Termos de Uso são regidos pelas leis brasileiras. Fica
-                eleito o foro da comarca de
-                <strong>São José dos Campos – SP</strong> para resolução de
-                eventuais controvérsias, salvo disposição legal em contrário.
-              </p>
-            </section>
-
-            <footer>
+            <footer style="margin-top: 12px">
               <p><strong>Última atualização:</strong> 14 de outubro de 2025</p>
               <p>
-                <strong>Contato:</strong> dúvidas ou solicitações podem ser
-                enviadas para:
-              </p>
-              <p>
-                📧
+                <strong>Contato:</strong>
                 <a href="mailto:contato@poliedro.com.br"
                   >contato@poliedro.com.br</a
                 >
@@ -348,21 +462,10 @@
           </article>
         </div>
 
+        <!-- actions always visible at bottom of modal -->
         <div class="terms-actions">
-          <div class="terms-hint">Role até o fim para habilitar "Aceitar"</div>
-          <button
-            type="button"
-            class="terms-btn terms-close"
-            id="termsBtnCloseBottom"
-          >
-            Fechar
-          </button>
-          <button
-            type="button"
-            class="terms-btn terms-accept"
-            id="termsBtnAccept"
-            disabled
-          >
+          <button class="terms-btn terms-close">Fechar</button>
+          <button id="termsBtnAccept" class="terms-btn terms-accept" disabled>
             Aceitar
           </button>
         </div>
@@ -372,7 +475,234 @@
     <footer>
       <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
     </footer>
+
+    <!-- seu script local (se houver) -->
     <script src="front/Scripts/login.js"></script>
+
+    <!-- Inline JS: animação, modal robusto, binding checkbox/login -->
+    <script>
+      (function () {
+        // Ajuste min-height
+        function adjustPageMinHeight() {
+          const page = document.getElementById("pageContent");
+          const footer = document.querySelector("footer");
+          if (!page || !footer) return;
+          const fh = footer.offsetHeight || 56;
+          page.style.minHeight = `calc(100vh - ${fh}px)`;
+        }
+
+        // animação
+        function animateLoginBox() {
+          const box = document.querySelector(".login-box");
+          if (!box) return;
+          requestAnimationFrame(() => box.classList.add("enter"));
+        }
+
+        // modal
+        const openBtn = document.getElementById("openTermsLink");
+        const overlay = document.getElementById("termsOverlay");
+        const modal = overlay ? overlay.querySelector(".terms-modal") : null;
+        const closeBtns = overlay
+          ? overlay.querySelectorAll(".terms-close")
+          : [];
+        const acceptBtn = document.getElementById("termsBtnAccept");
+        const termsContent = document.getElementById("termsContent");
+        const aceitarCheckbox = document.getElementById("aceitarTermos");
+        const loginBtn = document.getElementById("btnLogin");
+        let lastFocus = null;
+
+        function openModal(e) {
+          if (e) e.preventDefault();
+          if (!overlay || !modal) return;
+          lastFocus = document.activeElement;
+          overlay.style.display = "flex";
+          overlay.setAttribute("aria-hidden", "false");
+          modal.classList.add("show");
+          document.documentElement.style.overflow = "hidden";
+          if (termsContent) termsContent.scrollTop = 0;
+          if (acceptBtn) acceptBtn.disabled = true;
+          // small delay then focus modal for accessibility
+          setTimeout(() => modal.focus(), 40);
+          // recalc accept state (in case content short)
+          setTimeout(() => checkTermsScroll(), 80);
+        }
+
+        function closeModal() {
+          if (!overlay || !modal) return;
+          modal.classList.remove("show");
+          overlay.style.display = "none";
+          overlay.setAttribute("aria-hidden", "true");
+          document.documentElement.style.overflow = "";
+          if (lastFocus && typeof lastFocus.focus === "function")
+            lastFocus.focus();
+        }
+
+        function checkTermsScroll() {
+          if (!termsContent || !acceptBtn) return;
+          const atBottom =
+            Math.ceil(termsContent.scrollTop + termsContent.clientHeight) >=
+            Math.floor(termsContent.scrollHeight - 6);
+          // if content fits (no scrollbar) allow accept immediately
+          const fits =
+            termsContent.scrollHeight <= termsContent.clientHeight + 2;
+          acceptBtn.disabled = !(atBottom || fits);
+        }
+
+        function setupModal() {
+          if (!openBtn || !overlay || !termsContent || !acceptBtn) return;
+          openBtn.addEventListener("click", openModal);
+          closeBtns.forEach((b) =>
+            b.addEventListener("click", (ev) => {
+              ev.preventDefault();
+              closeModal();
+            })
+          );
+          overlay.addEventListener("click", (ev) => {
+            if (ev.target === overlay) closeModal();
+          });
+          window.addEventListener("keydown", (ev) => {
+            if (
+              ev.key === "Escape" &&
+              overlay.getAttribute("aria-hidden") === "false"
+            )
+              closeModal();
+          });
+
+          termsContent.addEventListener("scroll", checkTermsScroll, {
+            passive: true,
+          });
+          window.addEventListener("resize", checkTermsScroll);
+          // initial check
+          requestAnimationFrame(checkTermsScroll);
+
+          acceptBtn.addEventListener("click", () => {
+            if (acceptBtn.disabled) return;
+            if (aceitarCheckbox) {
+              aceitarCheckbox.checked = true;
+              aceitarCheckbox.dispatchEvent(
+                new Event("change", { bubbles: true })
+              );
+            }
+            closeModal();
+          });
+
+          // focus trap
+          overlay.addEventListener("keydown", (e) => {
+            if (e.key !== "Tab") return;
+            const focusable = Array.from(
+              overlay.querySelectorAll(
+                'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+              )
+            ).filter((el) => el.offsetParent !== null);
+            if (focusable.length === 0) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey) {
+              if (document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+              }
+            } else {
+              if (document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+              }
+            }
+          });
+        }
+
+        // checkbox -> login button binding
+        function setupCheckboxBinding() {
+          if (!aceitarCheckbox || !loginBtn) return;
+          aceitarCheckbox.addEventListener("change", () => {
+            loginBtn.disabled = !aceitarCheckbox.checked;
+            loginBtn.setAttribute(
+              "aria-disabled",
+              String(!aceitarCheckbox.checked)
+            );
+          });
+          // initial
+          loginBtn.disabled = !aceitarCheckbox.checked;
+          loginBtn.setAttribute(
+            "aria-disabled",
+            String(!aceitarCheckbox.checked)
+          );
+        }
+
+        // toggle UI
+        function setupToggle() {
+          const btnAluno = document.getElementById("btnAluno");
+          const btnProfessor = document.getElementById("btnProfessor");
+          if (!btnAluno || !btnProfessor) return;
+          [btnAluno, btnProfessor].forEach((b) =>
+            b.addEventListener("click", () => {
+              btnAluno.classList.toggle("active", b === btnAluno);
+              btnProfessor.classList.toggle("active", b === btnProfessor);
+              btnAluno.setAttribute(
+                "aria-pressed",
+                String(btnAluno.classList.contains("active"))
+              );
+              btnProfessor.setAttribute(
+                "aria-pressed",
+                String(btnProfessor.classList.contains("active"))
+              );
+            })
+          );
+        }
+
+        // form submit UX
+        function setupForm() {
+          const form = document.getElementById("loginForm");
+          if (!form || !loginBtn) return;
+          form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            if (loginBtn.disabled) return;
+            const original = loginBtn.textContent;
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Entrando...";
+            setTimeout(() => {
+              loginBtn.textContent = original;
+              loginBtn.disabled = !aceitarCheckbox.checked;
+              // aqui você integra com seu backend
+            }, 900);
+          });
+        }
+
+        // init
+        document.addEventListener("DOMContentLoaded", () => {
+          adjustPageMinHeight();
+          animateLoginBox();
+          setupModal();
+          setupCheckboxBinding();
+          setupToggle();
+          setupForm();
+        });
+
+        // resize debounce
+        let to = null;
+        window.addEventListener("resize", () => {
+          if (to) clearTimeout(to);
+          to = setTimeout(() => {
+            adjustPageMinHeight();
+            checkTermsScroll();
+          }, 120);
+        });
+
+        // expose checkTermsScroll for inline calls (defensive)
+        function checkTermsScroll() {
+          /* placeholder so linter not complain */
+        }
+      })();
+    </script>
+    <!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+</script>
 
   </body>
 </html>

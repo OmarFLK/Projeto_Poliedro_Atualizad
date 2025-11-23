@@ -1,115 +1,602 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil do Aluno</title>
 
-  <link rel="stylesheet" href="front/Styles/Login.css" />
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-  <link rel="stylesheet" href="front/Styles/PerfilAluno.css" />
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/PerfilAluno.css" />
 
-  <title>Perfil do Aluno</title>
-</head>
+    <style>
+      :root {
+        --header-h: 64px;
+        --footer-h: 56px;
+        --blue: #163f7a;
+        --ease: cubic-bezier(0.22, 0.9, 0.32, 1);
+      }
 
-<body>
+      /* base layout to avoid white bar under footer */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background: #f4f6f9;
+        font-family: Inter, Roboto, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
 
-<header>
-  <div class="header-aluno">
-    <img src="Assets/poliedro.png" class="poliedro-logo-header"/>
+      header {
+        z-index: 120;
+      }
+      main {
+        flex: 1 1 auto;
+        box-sizing: border-box;
+      }
 
-    <nav class="header-nav">
-      <a href="HomeAluno.html" class="header-link">Home</a>
-      <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
-      <a href="AtividadesAluno.html" class="header-link">Atividades</a>
-      <a href="NotasAluno.html" class="header-link">Notas</a>
-      <a href="MensagensAluno.html" class="header-link">Mensagens</a>
-      <a href="eventosAlunos.html" class="header-link">Eventos</a>
+      /* Header */
+      .header-aluno {
+        height: var(--header-h);
+        background: var(--blue);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        gap: 12px;
+        transition: opacity 0.28s var(--ease), backdrop-filter 0.28s var(--ease);
+        color: #fff;
+      }
+      .header-aluno.scrolled {
+        opacity: 0.78;
+        backdrop-filter: blur(2px);
+      }
 
-      <select id="daltonismo-select">
-        <option value="">Normal</option>
-        <option value="protanopia">Protanopia</option>
-        <option value="deuteranopia">Deuteranopia</option>
-        <option value="tritanopia">Tritanopia</option>
-      </select>
-    </nav>
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
+      .header-nav {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+      .header-link {
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 10px;
+        border-radius: 6px;
+      }
+      .header-link.active {
+        background: #fff;
+        color: var(--blue);
+      }
 
-    <a href="PerfilAluno.html">
-      <img src="Assets/LogoUsuario.png" class="header-profile-img"/>
-    </a>
-  </div>
-</header>
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.4rem;
+        cursor: pointer;
+      }
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+        .header-nav {
+          display: none !important;
+        }
+      }
 
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        object-fit: cover;
+        cursor: pointer;
+      }
 
-<main class="perfil-wrap">
-  <div class="perfil-card">
+      /* sidebar mobile */
+      .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: #1a4e9b;
+        padding-top: 60px;
+        overflow: hidden;
+        transition: width 0.28s var(--ease);
+        z-index: 1400;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        pointer-events: none;
+      }
+      .sidebar.open {
+        width: 250px;
+        pointer-events: auto;
+      }
+      .sidebar-link {
+        color: #fff;
+        padding: 12px 20px;
+        text-decoration: none;
+        font-size: 1.1rem;
+        display: block;
+      }
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 18px;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
+      }
 
-    <h2 class="perfil-title">Meu Perfil</h2>
+      /* Profile layout */
+      .perfil-wrap {
+        max-width: 1100px;
+        margin: 26px auto;
+        padding: 0 20px 30px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+      }
 
-    <div class="perfil-top">
-      <img id="avatar-preview" src="Assets/LogoUsuario.png" class="perfil-avatar"/>
+      .perfil-card {
+        width: 100%;
+        max-width: 930px;
+        background: #fff;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 12px 30px rgba(17, 24, 39, 0.06);
+        box-sizing: border-box;
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+      }
+      .perfil-card.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-      <label for="avatar-upload" class="perfil-btn avatar-btn">Alterar foto</label>
-      <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+      .perfil-title {
+        margin: 0 0 12px;
+        font-size: 1.4rem;
+        color: var(--blue);
+      }
+      .perfil-top {
+        display: flex;
+        gap: 18px;
+        align-items: center;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .perfil-avatar {
+        width: 110px;
+        height: 110px;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 2px solid #eef4fb;
+        background: #fff;
+      }
+
+      .avatar-btn {
+        display: inline-block;
+        padding: 10px 14px;
+        background: #2173ee;
+        color: #fff;
+        border-radius: 10px;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+      }
+      .perfil-info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 8px;
+      }
+      @media (max-width: 800px) {
+        .perfil-info-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .perfil-block {
+        background: #fbfdff;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #eef4fb;
+      }
+      .perfil-label {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 6px;
+        display: block;
+      }
+      .perfil-read {
+        font-weight: 700;
+        color: #111;
+        min-height: 22px;
+      }
+
+      .perfil-subtitle {
+        margin-top: 18px;
+        margin-bottom: 8px;
+        color: #333;
+      }
+      .perfil-senha {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .perfil-input {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #e6eef8;
+        flex: 1;
+        min-width: 180px;
+      }
+
+      .perfil-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+      }
+      .perfil-btn {
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+      }
+      .perfil-btn.cancel {
+        background: #eef2f6;
+        color: #333;
+      }
+      .perfil-btn.save {
+        background: #2173ee;
+        color: #fff;
+      }
+
+      footer {
+        background: var(--blue);
+        color: #fff;
+        padding: 12px 0;
+        text-align: center;
+        margin-top: auto;
+      }
+
+      /* reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .perfil-card {
+          transition: none !important;
+          transform: none !important;
+          opacity: 1 !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="header-aluno" id="site-header">
+        <!-- use uploaded logo path as requested -->
+        <img
+          src="/mnt/data/409696a3-6e9b-44b5-b9f1-a692f10c27ca.png"
+          alt="Poliedro"
+          class="poliedro-logo-header"
+        />
+
+        <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">
+          ☰
+        </button>
+
+        <nav class="header-nav" aria-label="Navegação principal">
+          <a href="HomeAluno.html" class="header-link">Home</a>
+          <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
+          <a href="AtividadesAluno.html" class="header-link">Atividades</a>
+          <a href="NotasAluno.html" class="header-link">Notas</a>
+          <a href="MensagensAluno.html" class="header-link">Mensagens</a>
+          <a href="eventosAlunos.html" class="header-link">Eventos</a>
+        </nav>
+
+        <a href="PerfilAluno.html" aria-label="Meu perfil">
+          <img
+            src="Assets/LogoUsuario.png"
+            alt="Perfil"
+            class="header-profile-img"
+          />
+        </a>
+      </div>
+
+      <!-- mobile sidebar -->
+      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
+        <button id="menu-close" class="menu-close" aria-label="Fechar menu">
+          &times;
+        </button>
+        <a href="HomeAluno.html" class="sidebar-link">Home</a>
+        <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
+        <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
+        <a href="NotasAluno.html" class="sidebar-link">Notas</a>
+        <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
+        <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
+      </nav>
+    </header>
+
+    <main class="perfil-wrap">
+      <div
+        class="perfil-card"
+        id="perfilCard"
+        role="region"
+        aria-labelledby="perfilTitle"
+      >
+        <h2 id="perfilTitle" class="perfil-title">Meu Perfil</h2>
+
+        <div class="perfil-top">
+          <img
+            id="avatar-preview"
+            src="Assets/LogoUsuario.png"
+            alt="Avatar"
+            class="perfil-avatar"
+          />
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <label for="avatar-upload" class="avatar-btn" role="button"
+              >Alterar foto</label
+            >
+            <input
+              type="file"
+              id="avatar-upload"
+              accept="image/*"
+              style="display: none"
+              aria-label="Upload de avatar"
+            />
+            <div style="color: #666; font-size: 0.9rem">
+              Atualize sua foto de perfil. (png, jpg)
+            </div>
+          </div>
+        </div>
+
+        <div class="perfil-info-grid" aria-live="polite">
+          <div class="perfil-block">
+            <label class="perfil-label">Nome</label>
+            <div class="perfil-read" id="campoNome">—</div>
+          </div>
+
+          <div class="perfil-block">
+            <label class="perfil-label">Sobrenome</label>
+            <div class="perfil-read" id="campoSobrenome">—</div>
+          </div>
+
+          <div class="perfil-block">
+            <label class="perfil-label">RA</label>
+            <div class="perfil-read" id="campoRA">—</div>
+          </div>
+
+          <div class="perfil-block">
+            <label class="perfil-label">Email</label>
+            <div class="perfil-read" id="campoEmail">—</div>
+          </div>
+
+          <div class="perfil-block">
+            <label class="perfil-label">Ano</label>
+            <div class="perfil-read" id="campoAno">—</div>
+          </div>
+
+          <div class="perfil-block">
+            <label class="perfil-label">Sub-sala</label>
+            <div class="perfil-read" id="campoSubSala">—</div>
+          </div>
+        </div>
+
+        <h3 class="perfil-subtitle">Alterar senha</h3>
+
+        <div class="perfil-senha">
+          <input
+            type="password"
+            id="novaSenha"
+            class="perfil-input"
+            placeholder="Nova senha"
+            aria-label="Nova senha"
+          />
+          <input
+            type="password"
+            id="confirmarSenha"
+            class="perfil-input"
+            placeholder="Confirmar nova senha"
+            aria-label="Confirmar nova senha"
+          />
+        </div>
+
+        <div class="perfil-actions">
+          <button class="perfil-btn cancel" id="btnCancelar">Cancelar</button>
+          <button class="perfil-btn save" id="btnSalvar">
+            Salvar alterações
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
+
+    <script>
+      // ===== header fade (performant) =====
+      (function () {
+        const header = document.getElementById("site-header");
+        if (!header) return;
+        const TH = 8;
+        let ticking = false;
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+              header.classList.toggle("scrolled", window.scrollY > TH);
+              ticking = false;
+            });
+          },
+          { passive: true }
+        );
+      })();
+
+      // ===== mobile sidebar =====
+      (function () {
+        const toggle = document.getElementById("menu-toggle");
+        const side = document.getElementById("sidebar");
+        const closeBtn = document.getElementById("menu-close");
+
+        if (toggle && side) {
+          toggle.addEventListener("click", () => side.classList.add("open"));
+          if (closeBtn)
+            closeBtn.addEventListener("click", () =>
+              side.classList.remove("open")
+            );
+
+          window.addEventListener("click", (e) => {
+            if (!side.classList.contains("open")) return;
+            if (side.contains(e.target) || toggle.contains(e.target)) return;
+            side.classList.remove("open");
+          });
+        }
+      })();
+
+      // ===== intersection observer: reveal perfil card =====
+      (function () {
+        const card = document.getElementById("perfilCard");
+        if (!card) return;
+        if (!("IntersectionObserver" in window)) {
+          card.classList.add("in-view");
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((ent) => {
+              if (ent.isIntersecting) {
+                ent.target.classList.add("in-view");
+                obs.unobserve(ent.target);
+              }
+            });
+          },
+          { threshold: 0.08 }
+        );
+        io.observe(card);
+      })();
+
+      // ===== avatar preview =====
+      (function () {
+        const upload = document.getElementById("avatar-upload");
+        const preview = document.getElementById("avatar-preview");
+        if (!upload || !preview) return;
+        upload.addEventListener("change", (e) => {
+          const f = e.target.files && e.target.files[0];
+          if (!f) return;
+          if (!f.type.startsWith("image/")) {
+            alert("Envie uma imagem.");
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = () => {
+            preview.src = reader.result;
+          };
+          reader.readAsDataURL(f);
+        });
+        // click label opens file dialog (label already attached in markup)
+      })();
+
+      // ===== load demo profile (defensive: your real script can replace this) =====
+      (function () {
+        // only fill demo values if they're empty (non-intrusive)
+        if (document.getElementById("campoNome").textContent.trim() === "—") {
+          document.getElementById("campoNome").textContent = "Aluno Exemplo";
+        }
+        if (
+          document.getElementById("campoSobrenome").textContent.trim() === "—"
+        ) {
+          document.getElementById("campoSobrenome").textContent = "Silva";
+        }
+        if (document.getElementById("campoRA").textContent.trim() === "—") {
+          document.getElementById("campoRA").textContent = "RA123456";
+        }
+        if (document.getElementById("campoEmail").textContent.trim() === "—") {
+          document.getElementById("campoEmail").textContent =
+            "aluno@exemplo.com";
+        }
+        if (document.getElementById("campoAno").textContent.trim() === "—") {
+          document.getElementById("campoAno").textContent = "2º Ano";
+        }
+        if (
+          document.getElementById("campoSubSala").textContent.trim() === "—"
+        ) {
+          document.getElementById("campoSubSala").textContent = "Sub 1";
+        }
+      })();
+
+      // ===== form actions (save / cancel) =====
+      (function () {
+        const btnCancelar = document.getElementById("btnCancelar");
+        const btnSalvar = document.getElementById("btnSalvar");
+        if (btnCancelar)
+          btnCancelar.addEventListener("click", (e) => {
+            e.preventDefault();
+            // simple behaviour: reset demo password fields
+            document.getElementById("novaSenha").value = "";
+            document.getElementById("confirmarSenha").value = "";
+            // optional: show toast
+            try {
+              window.alert("Alterações canceladas");
+            } catch {}
+          });
+        if (btnSalvar)
+          btnSalvar.addEventListener("click", (e) => {
+            e.preventDefault();
+            // basic validation for password match (if filled)
+            const a = document.getElementById("novaSenha").value;
+            const b = document.getElementById("confirmarSenha").value;
+            if (a || b) {
+              if (a.length < 6) {
+                return alert("Senha precisa ter ao menos 6 caracteres.");
+              }
+              if (a !== b) {
+                return alert("Senhas não conferem.");
+              }
+            }
+            // TODO: replace with real save (fetch / form submit)
+            alert("Alterações salvas (demo).");
+          });
+      })();
+    </script>
+
+    <!-- external scripts kept (you can remove if header.js duplicates logic) -->
+    <script src="front/Scripts/PerfilAluno.js" defer></script>
+    <script src="front/Scripts/header.js" defer></script>
+    <!-- VLibras -->
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
     </div>
-
-    <div class="perfil-info-grid">
-
-      <div class="perfil-block">
-        <label class="perfil-label">Nome</label>
-        <div class="perfil-read" id="campoNome">—</div>
-      </div>
-
-      <div class="perfil-block">
-        <label class="perfil-label">Sobrenome</label>
-        <div class="perfil-read" id="campoSobrenome">—</div>
-      </div>
-
-      <div class="perfil-block">
-        <label class="perfil-label">RA</label>
-        <div class="perfil-read" id="campoRA">—</div>
-      </div>
-
-      <div class="perfil-block">
-        <label class="perfil-label">Email</label>
-        <div class="perfil-read" id="campoEmail">—</div>
-      </div>
-
-      <div class="perfil-block">
-        <label class="perfil-label">Ano</label>
-        <div class="perfil-read" id="campoAno">—</div>
-      </div>
-
-      <div class="perfil-block">
-        <label class="perfil-label">Sub-sala</label>
-        <div class="perfil-read" id="campoSubSala">—</div>
-      </div>
-
-    </div>
-
-    <h3 class="perfil-subtitle">Alterar senha</h3>
-
-    <div class="perfil-senha">
-      <input type="password" id="novaSenha" class="perfil-input" placeholder="Nova senha">
-      <input type="password" id="confirmarSenha" class="perfil-input" placeholder="Confirmar nova senha">
-    </div>
-
-    <div class="perfil-actions">
-      <button class="perfil-btn cancel" id="btnCancelar">Cancelar</button>
-      <button class="perfil-btn save" id="btnSalvar">Salvar alterações</button>
-    </div>
-
-  </div>
-</main>
-
-
-<footer>
-  <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
-</footer>
-
-
-<script src="front/Scripts/PerfilAluno.js"></script>
-<script src="front/Scripts/header.js"></script>
-
-
-</body>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+  </body>
 </html>

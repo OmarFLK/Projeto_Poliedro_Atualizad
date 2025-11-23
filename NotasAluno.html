@@ -1,313 +1,550 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notas do Aluno</title>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Notas do Aluno</title>
-  <link rel="stylesheet" href="front/Styles/NotasAluno.css" />
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-  <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/NotasAluno.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/Login.css" />
 
-  <style>
-    /* Top icons (ajusta como q empilha no mobile) */
-    .top-icons {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      flex-wrap: nowrap;
-      /* mantem os ícones em uma fileira */
-    }
-
-    .top-icons a,
-    .top-icons button,
-    .top-icons img,
-    .top-icons i {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      min-height: 36px;
-      max-width: 48px;
-      max-height: 48px;
-      padding: 4px;
-      box-sizing: border-box;
-    }
-
-    .top-icons img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-
-    @media (max-width: 420px) {
-      .top-icons {
-        gap: 6px;
+    <style>
+      :root {
+        --header-h: 64px;
+        --footer-h: 56px;
+        --blue: #163f7a;
+        --anim-ease: cubic-bezier(0.22, 0.9, 0.32, 1);
       }
 
-      .top-icons a,
-      .top-icons button,
-      .top-icons img,
-      .top-icons i {
-        min-width: 32px;
-        min-height: 32px;
-        max-width: 40px;
-        max-height: 40px;
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #f4f6f9;
+        box-sizing: border-box;
+        font-family: Inter, system-ui, Roboto, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
-    }
-
-    /* barra lateral */
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #1a4e9b;
-      overflow-x: hidden;
-      padding-top: 60px;
-      transition: 0.3s;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .sidebar.open {
-      width: 250px;
-    }
-
-    .sidebar-link {
-      padding: 12px 24px;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: white;
-      display: block;
-    }
-
-    .sidebar-link:hover,
-    .sidebar-link.active {
-      background-color: #6a9bd1;
-      color: white;
-    }
-
-    .menu-close {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Botão hamburguer */
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: #163f7a;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-      margin-left: 15px;
-      align-self: center;
-    }
-
-    /* Nav header */
-    .header-aluno {
-      background-color: #163f7a;
-      display: flex;
-      align-items: flex;
-      justify-content: space-between;
-      padding: 10px 20px;
-      flex-wrap: nowrap;
-      gap: 10px;
-    }
-
-    .poliedro-logo-header {
-      height: 40px;
-      cursor: pointer;
-    }
-
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-    }
-
-    .header-profile-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid white;
-      cursor: pointer;
-    }
-
-    @media (max-width: 991px) {
-      .menu-toggle {
-        display: inline-block;
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
       }
 
-      /* mantém logo, menu e perfil na mesma linha */
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      header {
+        z-index: 120;
+      }
+
+      main.container {
+        flex: 1 1 auto;
+        min-height: calc(100vh - var(--header-h) - var(--footer-h));
+        padding: 18px;
+        max-width: 1200px;
+        margin: 8px auto;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* HEADER */
       .header-aluno {
+        background-color: var(--blue);
+        display: flex;
+        align-items: center;
         justify-content: space-between;
+        padding: 10px 20px;
+        height: var(--header-h);
+        transition: opacity 0.28s var(--anim-ease),
+          backdrop-filter 0.28s var(--anim-ease);
+        color: #fff;
       }
-    }
+      .header-aluno.scrolled {
+        opacity: 0.78;
+        backdrop-filter: blur(2px);
+      }
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        object-fit: cover;
+      }
 
-    #daltonismo-select {
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    .daltonismo-select-sidebar {
-      margin: 0 24px 12px 24px;
-      padding: 6px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: none;
-    }
-
-    /* Responsividade */
-    @media (min-width: 992px) {
       .menu-toggle {
+        font-size: 1.4rem;
+        background: none;
+        border: none;
+        color: #fff;
+        cursor: pointer;
         display: none;
       }
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+        .header-nav {
+          display: none !important;
+        }
+      }
 
+      /* SIDEBAR */
       .sidebar {
-        display: none !important;
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #1a4e9b;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: width 0.28s var(--anim-ease);
+        z-index: 1400;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .sidebar.open {
+        width: 250px;
+      }
+      .sidebar-link {
+        color: #fff;
+        padding: 12px 20px;
+        text-decoration: none;
+        display: block;
+        font-size: 1.05rem;
+      }
+      .sidebar-link.active,
+      .sidebar-link:hover {
+        background: #6a9bd1;
       }
 
-      .header-nav {
-        display: flex !important;
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 18px;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
       }
-    }
 
-    @media (max-width: 991px) {
-      .header-nav {
-        display: none !important;
+      /* NOTAS CONTENT */
+      .notas-box {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
       }
 
-      .menu-toggle {
-        display: inline-block;
+      .semester-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 10px 28px rgba(2, 6, 23, 0.06);
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.56s var(--anim-ease),
+          transform 0.56s var(--anim-ease);
       }
-    }
-  </style>
-</head>
+      .semester-card.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-<body>
-  <header>
-    <div class="header-aluno">
-      <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+      .semester-card h3 {
+        margin: 0 0 8px;
+        color: var(--blue);
+      }
 
-      <!-- Botão hamburguer para mobile -->
-      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
-        &#9776;
-      </button>
+      .charts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 800px) {
+        .charts {
+          grid-template-columns: 1fr;
+        }
+      }
 
-      <!-- Navegação tradicional (desktop) -->
-      <nav class="header-nav">
-        <a href="HomeAluno.html" class="header-link">Home</a>
-        <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
-        <a href="AtividadesAluno.html" class="header-link">Atividades</a>
-        <a href="NotasAluno.html" class="header-link active">Notas</a>
-        <a href="MensagensAluno.html" class="header-link">Mensagens</a>
-        <a href="eventosAlunos.html" class="header-link">Eventos</a>
+      .chart-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 10px 28px rgba(2, 6, 23, 0.06);
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.56s var(--anim-ease),
+          transform 0.56s var(--anim-ease);
+      }
+      .chart-card.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
+      /* IMPORTANT: fix height for canvas to avoid infinite grow */
+      .chart-card canvas {
+        display: block;
+        width: 100% !important;
+        height: 140px !important; /* fixed height */
+      }
+      /* also ensure card has min height so layout is stable */
+      .chart-card {
+        min-height: 160px;
+      }
+
+      .empty-note {
+        color: #666;
+        padding: 12px 0;
+        text-align: center;
+      }
+
+      footer {
+        background: var(--blue);
+        color: #fff;
+        text-align: center;
+        padding: 12px 0;
+        flex-shrink: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .semester-card,
+        .chart-card {
+          transition: none !important;
+          transform: none !important;
+          opacity: 1 !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-aluno" id="site-header">
+        <img
+          src="Assets/poliedro.png"
+          class="poliedro-logo-header"
+          alt="Poliedro"
+        />
+
+        <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">
+          ☰
+        </button>
+
+        <nav class="header-nav" aria-label="Navegação principal">
+          <a href="HomeAluno.html" class="header-link">Home</a>
+          <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
+          <a href="AtividadesAluno.html" class="header-link">Atividades</a>
+          <a href="NotasAluno.html" class="header-link active">Notas</a>
+          <a href="MensagensAluno.html" class="header-link">Mensagens</a>
+          <a href="eventosAlunos.html" class="header-link">Eventos</a>
+        </nav>
+
+        <a href="PerfilAluno.html" aria-label="Meu perfil">
+          <img
+            src="Assets/LogoUsuario.png"
+            class="header-profile-img"
+            alt="Perfil"
+          />
+        </a>
+      </div>
+
+      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
+        <button id="menu-close" class="menu-close" aria-label="Fechar menu">
+          &times;
+        </button>
+        <a href="HomeAluno.html" class="sidebar-link">Home</a>
+        <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
+        <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
+        <a href="NotasAluno.html" class="sidebar-link active">Notas</a>
+        <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
+        <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
       </nav>
+    </header>
 
-      <a href="PerfilAluno.html">
-        <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
-      </a>
-    </div>
+    <!-- MAIN -->
+    <main class="container" role="main" id="main">
+      <div class="notas-box" id="notas-box">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+          "
+        >
+          <div>
+            <h1 style="margin: 0; color: #163f7a; font-size: 1.6rem">
+              Minhas Notas
+            </h1>
+            <div style="color: #666">
+              Visualize suas notas por semestre — apenas você tem acesso.
+            </div>
+          </div>
+        </div>
 
-    <!-- Sidebar para mobile -->
-    <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
-        &times;
-      </button>
-      <a href="HomeAluno.html" class="sidebar-link">Home</a>
-      <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
-      <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
-      <a href="NotasAluno.html" class="sidebar-link active">Notas</a>
-      <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
-      <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
+        <div id="semestre1" class="semester-card" aria-labelledby="sem1-title">
+          <h3 id="sem1-title">1º Semestre</h3>
+          <div id="tabelaSem1">Carregando...</div>
+        </div>
 
-    </nav>
-  </header>
+        <div id="semestre2" class="semester-card" aria-labelledby="sem2-title">
+          <h3 id="sem2-title">2º Semestre</h3>
+          <div id="tabelaSem2">Carregando...</div>
+        </div>
 
-  <main class="container">
-    <div class="notas-box">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div>
-          <h1 style="margin:0;color:#1a4e9b;">Minhas Notas</h1>
-          <div style="color:#666;">Visualize suas notas por semestre — apenas você tem acesso.</div>
+        <div class="charts" aria-live="polite">
+          <div class="chart-card" id="chart-wrap-1" aria-hidden="false">
+            <h4 style="margin: 0 0 8px">Gráfico — 1º Semestre</h4>
+            <canvas
+              id="chartSem1"
+              aria-label="Gráfico do primeiro semestre"
+            ></canvas>
+          </div>
+          <div class="chart-card" id="chart-wrap-2" aria-hidden="false">
+            <h4 style="margin: 0 0 8px">Gráfico — 2º Semestre</h4>
+            <canvas
+              id="chartSem2"
+              aria-label="Gráfico do segundo semestre"
+            ></canvas>
+          </div>
         </div>
       </div>
+    </main>
 
-      <div id="semestre1" class="semester-card">
-        <h3>1º Semestre</h3>
-        <div id="tabelaSem1">Carregando...</div>
-      </div>
-      <div id="semestre2" class="semester-card">
-        <h3>2º Semestre</h3>
-        <div id="tabelaSem2">Carregando...</div>
-      </div>
+    <footer>
+      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
 
-      <div class="charts">
-        <div class="chart-card">
-          <h4>Gráfico — 1º Semestre</h4><canvas id="chartSem1" height="140"></canvas>
-        </div>
-        <div class="chart-card">
-          <h4>Gráfico — 2º Semestre</h4><canvas id="chartSem2" height="140"></canvas>
-        </div>
-      </div>
-    </div>
-  </main>
+    <!-- libs & scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // safe global container for charts
+      window.__notasCharts = window.__notasCharts || {};
 
-  <footer>
-    <p style="text-align:center;">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="front/Scripts/notas.aluno.js"></script>
-  <script src="front/Scripts/header.js"></script>
-
-  <script>
-    // Sidebar toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebar = document.getElementById("sidebar");
-    const menuClose = document.getElementById("menu-close");
-
-    menuToggle.addEventListener("click", () => {
-      sidebar.classList.add("open");
-      menuClose.focus();
-    });
-
-    menuClose.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-    });
-
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
-    window.addEventListener("click", (e) => {
-      if (
-        sidebar.classList.contains("open") &&
-        !sidebar.contains(e.target) &&
-        !menuToggle.contains(e.target)
-      ) {
-        sidebar.classList.remove("open");
+      // helper to create/destroy charts safely
+      function createOrReplaceChart(canvasId, configFactory) {
+        try {
+          const el = document.getElementById(canvasId);
+          if (!el) return null;
+          // destroy previous chart if exists
+          if (
+            window.__notasCharts[canvasId] &&
+            window.__notasCharts[canvasId].destroy
+          ) {
+            try {
+              window.__notasCharts[canvasId].destroy();
+            } catch (e) {
+              /* ignore */
+            }
+            window.__notasCharts[canvasId] = null;
+          }
+          const ctx = el.getContext("2d");
+          const cfg = configFactory();
+          // ensure maintainAspectRatio true so canvas respects CSS height
+          if (!cfg.options) cfg.options = {};
+          cfg.options.responsive = true;
+          cfg.options.maintainAspectRatio = true;
+          const chart = new Chart(ctx, cfg);
+          window.__notasCharts[canvasId] = chart;
+          return chart;
+        } catch (err) {
+          console.error("Erro ao inicializar chart", canvasId, err);
+          return null;
+        }
       }
-    });
-  </script>
 
-</body>
+      // default fallback chart factory (demo)
+      function defaultChartFactory() {
+        return {
+          type: "bar",
+          data: {
+            labels: ["Mat", "Port", "Bio", "Fís", "Qui"],
+            datasets: [
+              {
+                label: "Notas",
+                data: [7, 8.5, 6.5, 7.8, 8],
+                borderRadius: 6,
+                backgroundColor: "rgba(33,115,238,0.9)",
+              },
+            ],
+          },
+          options: {
+            scales: { y: { beginAtZero: true, max: 10 } },
+            plugins: { legend: { display: false } },
+          },
+        };
+      }
 
+      // expose a render function that your notas.aluno.js can call if it wants
+      window.renderNotasChart =
+        window.renderNotasChart ||
+        function (canvasId, semKey, data) {
+          // semKey can be used to select dataset; if data provided, use it
+          const factory = () => {
+            if (data && data.labels && data.datasets) {
+              return {
+                type: "bar",
+                data: data,
+                options: {
+                  scales: { y: { beginAtZero: true, max: 10 } },
+                  plugins: { legend: { display: false } },
+                },
+              };
+            }
+            return defaultChartFactory();
+          };
+          return createOrReplaceChart(canvasId, factory);
+        };
+    </script>
+
+    <script src="front/Scripts/notas.aluno.js" defer></script>
+    <script src="front/Scripts/header.js" defer></script>
+
+    <script>
+      /* Sidebar toggle (consistent pattern) */
+      (function () {
+        const menuToggle = document.getElementById("menu-toggle");
+        const sidebar = document.getElementById("sidebar");
+        const menuClose = document.getElementById("menu-close");
+
+        if (!menuToggle || !sidebar) return;
+
+        menuToggle.addEventListener("click", () => {
+          const open = !sidebar.classList.contains("open");
+          sidebar.classList.toggle("open", open);
+          menuToggle.classList.toggle("is-open", open);
+          if (open && menuClose) menuClose.focus();
+        });
+
+        if (menuClose)
+          menuClose.addEventListener("click", () => {
+            sidebar.classList.remove("open");
+            menuToggle.classList.remove("is-open");
+          });
+
+        window.addEventListener("click", (e) => {
+          if (!sidebar.classList.contains("open")) return;
+          if (sidebar.contains(e.target) || menuToggle.contains(e.target))
+            return;
+          sidebar.classList.remove("open");
+          menuToggle.classList.remove("is-open");
+        });
+      })();
+
+      /* Header fade on scroll (performant) */
+      (function () {
+        const header = document.getElementById("site-header");
+        if (!header) return;
+        const TH = 8;
+        let ticking = false;
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+              header.classList.toggle("scrolled", window.scrollY > TH);
+              ticking = false;
+            });
+          },
+          { passive: true }
+        );
+      })();
+
+      /* IntersectionObserver: animate semester cards and charts; initialize charts lazily */
+      (function () {
+        const sem1 = document.getElementById("semestre1");
+        const sem2 = document.getElementById("semestre2");
+        const wrap1 = document.getElementById("chart-wrap-1");
+        const wrap2 = document.getElementById("chart-wrap-2");
+
+        function makeObserver(targets, cb) {
+          if (!("IntersectionObserver" in window)) {
+            targets.forEach((t) => cb(t));
+            return;
+          }
+          const io = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((ent) => {
+                if (ent.isIntersecting) {
+                  cb(ent.target);
+                  obs.unobserve(ent.target);
+                }
+              });
+            },
+            { threshold: 0.12 }
+          );
+          targets.forEach((t) => t && io.observe(t));
+        }
+
+        makeObserver([sem1, sem2], (el) => {
+          el.classList.add("in-view");
+        });
+
+        // lazy init charts when chart-card enters view
+        makeObserver([wrap1, wrap2], (el) => {
+          el.classList.add("in-view");
+          // if your notas.aluno.js provided a specific dataset and calls window.renderNotasChart, it will use that.
+          // Otherwise call fallback demo chart:
+          const canvas = el.querySelector("canvas");
+          if (canvas && !window.__notasCharts[canvas.id]) {
+            // try to let notas.aluno.js fill actual data by calling a known function it might expose:
+            // if not present, fallback to demo
+            if (
+              window.notasDataFor &&
+              typeof window.notasDataFor === "function"
+            ) {
+              const data = window.notasDataFor(canvas.id); // optional API your script can provide
+              if (data) {
+                window.renderNotasChart(canvas.id, null, data);
+                return;
+              }
+            }
+            // fallback demo
+            window.renderNotasChart(canvas.id, null);
+          }
+        });
+      })();
+
+      /* Defensive placeholder if notas.aluno.js didn't replace "Carregando..." */
+      (function () {
+        setTimeout(() => {
+          const t1 = document.getElementById("tabelaSem1");
+          const t2 = document.getElementById("tabelaSem2");
+
+          if (t1 && t1.textContent.trim() === "Carregando...") {
+            t1.innerHTML =
+              '<div class="empty-note">Nenhuma nota disponível para o 1º semestre.</div>';
+          }
+          if (t2 && t2.textContent.trim() === "Carregando...") {
+            t2.innerHTML =
+              '<div class="empty-note">Nenhuma nota disponível para o 2º semestre.</div>';
+          }
+        }, 600);
+      })();
+    </script>
+    <!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+</script>
+
+  </body>
 </html>

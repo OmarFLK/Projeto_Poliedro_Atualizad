@@ -1,299 +1,420 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Itinerário do Aluno</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Itinerário do Aluno</title>
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/itinerarioAluno.css" />
 
-  <link rel="stylesheet" href="front/Styles/Login.css">
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css">
-  <link rel="stylesheet" href="front/Styles/itinerarioAluno.css">
-
-  <style>
-    /* Top icons (ajusta como q empilha no mobile) */
-    .top-icons {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      flex-wrap: nowrap;
-      /* mantem os ícones em uma fileira */
-    }
-
-    .top-icons a,
-    .top-icons button,
-    .top-icons img,
-    .top-icons i {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      min-height: 36px;
-      max-width: 48px;
-      max-height: 48px;
-      padding: 4px;
-      box-sizing: border-box;
-    }
-
-    .top-icons img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-
-    @media (max-width: 420px) {
-      .top-icons {
-        gap: 6px;
+    <style>
+      :root {
+        --header-h: 64px;
+        --footer-h: 56px;
+        --blue: #163f7a;
       }
 
-      .top-icons a,
-      .top-icons button,
-      .top-icons img,
-      .top-icons i {
-        min-width: 32px;
-        min-height: 32px;
-        max-width: 40px;
-        max-height: 40px;
+      /* Layout base — evita barra branca no fim */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #f4f6f9;
+        box-sizing: border-box;
+        font-family: Inter, system-ui, Roboto, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
-    }
-
-    /* barra lateral */
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #1a4e9b;
-      overflow-x: hidden;
-      padding-top: 60px;
-      transition: 0.3s;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .sidebar.open {
-      width: 250px;
-    }
-
-    .sidebar-link {
-      padding: 12px 24px;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: white;
-      display: block;
-    }
-
-    .sidebar-link:hover,
-    .sidebar-link.active {
-      background-color: #6a9bd1;
-      color: white;
-    }
-
-    .menu-close {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Botão hamburguer */
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: #163f7a;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-      margin-left: 15px;
-      align-self: center;
-    }
-
-    /* Nav header */
-    .header-aluno {
-      background-color: #163f7a;
-      display: flex;
-      align-items: flex;
-      justify-content: space-between;
-      padding: 10px 20px;
-      flex-wrap: nowrap;
-      gap: 10px;
-    }
-
-    .poliedro-logo-header {
-      height: 40px;
-      cursor: pointer;
-    }
-
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-    }
-
-    .header-profile-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid white;
-      cursor: pointer;
-    }
-
-    @media (max-width: 991px) {
-      .menu-toggle {
-        display: inline-block;
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
       }
 
-      /* mantém logo, menu e perfil na mesma linha */
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      header {
+        z-index: 100;
+      }
+
+      main.container-itinerario-aluno {
+        flex: 1 1 auto; /* ocupa espaço sobrando, empurra footer para baixo */
+        min-height: calc(100vh - var(--header-h) - var(--footer-h));
+        box-sizing: border-box;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 10px auto;
+        width: 100%;
+      }
+
+      /* HEADER */
       .header-aluno {
+        background-color: var(--blue);
+        display: flex;
+        align-items: center;
         justify-content: space-between;
+        padding: 10px 20px;
+        height: var(--header-h);
+        transition: opacity 0.28s ease, backdrop-filter 0.28s ease;
       }
-    }
+      .header-aluno.scrolled {
+        opacity: 0.78;
+        backdrop-filter: blur(2px);
+      }
 
-    #daltonismo-select {
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        object-fit: cover;
+      }
 
-    .daltonismo-select-sidebar {
-      margin: 0 24px 12px 24px;
-      padding: 6px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: none;
-    }
-
-    /* Responsividade */
-    @media (min-width: 992px) {
       .menu-toggle {
+        font-size: 1.4rem;
+        background: none;
+        border: none;
+        color: #fff;
+        cursor: pointer;
         display: none;
       }
 
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+        .header-nav {
+          display: none !important;
+        }
+      }
+
+      /* SIDEBAR */
       .sidebar {
-        display: none !important;
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: #1a4e9b;
+        padding-top: 60px;
+        overflow-x: hidden;
+        transition: width 0.28s ease;
+        z-index: 1200;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .sidebar.open {
+        width: 250px;
+      }
+      .sidebar-link {
+        color: #fff;
+        padding: 12px 20px;
+        text-decoration: none;
+        display: block;
+        font-size: 1.05rem;
+      }
+      .sidebar-link.active,
+      .sidebar-link:hover {
+        background: #6a9bd1;
       }
 
-      .header-nav {
-        display: flex !important;
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 18px;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
       }
-    }
 
-    @media (max-width: 991px) {
-      .header-nav {
-        display: none !important;
+      /* TITULO E SUBTITULO */
+      h2 {
+        margin: 6px 0 0;
+        font-size: 1.8rem;
+        text-align: left;
+      }
+      .subtitulo {
+        margin: 4px 0 16px;
+        color: #555;
       }
 
-      .menu-toggle {
-        display: inline-block;
+      /* TABELA WRAPPER */
+      .tabela-wrapper {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+        min-height: 160px;
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.6s cubic-bezier(0.22, 0.9, 0.32, 1),
+          transform 0.6s cubic-bezier(0.22, 0.9, 0.32, 1);
       }
-    }
-  </style>
-</head>
+      .tabela-wrapper.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-<body>
+      /* table basic */
+      .tabela-itinerario-aluno {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+      .tabela-itinerario-aluno th,
+      .tabela-itinerario-aluno td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #eef3fb;
+        text-align: left;
+      }
+      .tabela-itinerario-aluno thead th {
+        background: #f7fbff;
+        font-weight: 700;
+        color: #163f7a;
+      }
+      .empty-note {
+        color: #666;
+        padding: 22px 0;
+        text-align: center;
+      }
 
-  <header>
-    <div class="header-aluno">
-      <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+      /* FOOTER */
+      footer {
+        background: var(--blue);
+        color: #fff;
+        text-align: center;
+        padding: 12px 0;
+        flex-shrink: 0;
+      }
 
-      <!-- Botão hamburguer para mobile -->
-      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
-        &#9776;
-      </button>
+      /* reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .tabela-wrapper {
+          transition: none !important;
+          transform: none !important;
+          opacity: 1 !important;
+        }
+      }
+    </style>
+  </head>
 
-      <!-- Navegação tradicional (desktop) -->
-      <nav class="header-nav">
-        <a href="HomeAluno.html" class="header-link">Home</a>
-        <a href="ItinerarioAluno.html" class="header-link active">Itinerário</a>
-        <a href="AtividadesAluno.html" class="header-link">Atividades</a>
-        <a href="NotasAluno.html" class="header-link">Notas</a>
-        <a href="MensagensAluno.html" class="header-link">Mensagens</a>
-        <a href="eventosAlunos.html" class="header-link">Eventos</a>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-aluno" id="site-header">
+        <img
+          src="Assets/poliedro.png"
+          alt="Poliedro"
+          class="poliedro-logo-header"
+        />
 
+        <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">
+          ☰
+        </button>
 
+        <nav class="header-nav" aria-label="Navegação principal">
+          <a href="HomeAluno.html" class="header-link">Home</a>
+          <a href="ItinerarioAluno.html" class="header-link active"
+            >Itinerário</a
+          >
+          <a href="AtividadesAluno.html" class="header-link">Atividades</a>
+          <a href="NotasAluno.html" class="header-link">Notas</a>
+          <a href="MensagensAluno.html" class="header-link">Mensagens</a>
+          <a href="eventosAlunos.html" class="header-link">Eventos</a>
+        </nav>
+
+        <a href="PerfilAluno.html" aria-label="Meu perfil">
+          <img
+            src="Assets/LogoUsuario.png"
+            class="header-profile-img"
+            alt="Perfil"
+          />
+        </a>
+      </div>
+
+      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
+        <button id="menu-close" class="menu-close" aria-label="Fechar menu">
+          &times;
+        </button>
+        <a href="HomeAluno.html" class="sidebar-link">Home</a>
+        <a href="ItinerarioAluno.html" class="sidebar-link active"
+          >Itinerário</a
+        >
+        <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
+        <a href="NotasAluno.html" class="sidebar-link">Notas</a>
+        <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
+        <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
       </nav>
+    </header>
 
-      <a href="PerfilAluno.html">
-        <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
-      </a>
-    </div>
+    <!-- MAIN -->
+    <main class="container-itinerario-aluno" id="main" role="main">
+      <h2 id="it-title">Meu Itinerário</h2>
+      <p id="turmaInfo" class="subtitulo">
+        Visualize sua programação semanal por turma/subsala
+      </p>
 
-    <!-- Sidebar para mobile -->
-    <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
-        &times;
-      </button>
-      <a href="HomeAluno.html" class="sidebar-link">Home</a>
-      <a href="ItinerarioAluno.html" class="sidebar-link active">Itinerário</a>
-      <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
-      <a href="NotasAluno.html" class="sidebar-link">Notas</a>
-      <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
-      <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
+      <div class="tabela-wrapper" id="tabela-wrap" aria-live="polite">
+        <table
+          id="tabelaAluno"
+          class="tabela-itinerario-aluno"
+          aria-describedby="tabela-desc"
+        >
+          <caption id="tabela-desc" style="display: none">
+            Tabela com o itinerário semanal
+          </caption>
+          <!-- conteúdo da tabela será inserido dinamicamente pelo script itinerario.aluno.js -->
+        </table>
 
+        <div
+          id="tabela-empty"
+          class="empty-note"
+          aria-hidden="true"
+          style="display: none"
+        >
+          Nenhum itinerário disponível para a turma selecionada.
+        </div>
+      </div>
+    </main>
 
-    </nav>
-  </header>
+    <footer>
+      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
 
+    <!-- SCRIPTS -->
+    <script src="front/Scripts/itinerario.aluno.js"></script>
+    <script src="front/Scripts/header.js"></script>
 
-  <main class="container-itinerario-aluno">
-    <h2>Meu Itinerário</h2>
-    <p id="turmaInfo" class="subtitulo"></p>
+    <script>
+      /* Sidebar toggle (same pattern used across site) */
+      (function () {
+        const menuToggle = document.getElementById("menu-toggle");
+        const sidebar = document.getElementById("sidebar");
+        const menuClose = document.getElementById("menu-close");
 
-    <div class="tabela-wrapper">
-      <table id="tabelaAluno" class="tabela-itinerario-aluno"></table>
-    </div>
-  </main>
+        if (menuToggle && sidebar) {
+          menuToggle.addEventListener("click", () => {
+            const open = !sidebar.classList.contains("open");
+            sidebar.classList.toggle("open", open);
+            menuToggle.classList.toggle("is-open", open);
+            if (open && menuClose) menuClose.focus();
+          });
 
+          if (menuClose)
+            menuClose.addEventListener("click", () => {
+              sidebar.classList.remove("open");
+              menuToggle.classList.remove("is-open");
+            });
 
-  <footer>
-    <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-  </footer>
+          window.addEventListener("click", (e) => {
+            if (!sidebar.classList.contains("open")) return;
+            if (sidebar.contains(e.target) || menuToggle.contains(e.target))
+              return;
+            sidebar.classList.remove("open");
+            menuToggle.classList.remove("is-open");
+          });
+        }
+      })();
 
+      /* Header fade on scroll (performant) */
+      (function () {
+        const header = document.getElementById("site-header");
+        if (!header) return;
+        const TH = 8;
+        let ticking = false;
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+              header.classList.toggle("scrolled", window.scrollY > TH);
+              ticking = false;
+            });
+          },
+          { passive: true }
+        );
+      })();
 
-  <script src="front/Scripts/itinerario.aluno.js"></script>
-  <script src="front/Scripts/header.js"></script>
+      /* IntersectionObserver: anima título e tabela */
+      (function () {
+        if (!("IntersectionObserver" in window)) {
+          document.getElementById("it-title").style.opacity = 1;
+          document.getElementById("it-title").style.transform = "translateY(0)";
+          document.getElementById("tabela-wrap").classList.add("in-view");
+          return;
+        }
 
-  <script>
-    // Sidebar toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebar = document.getElementById("sidebar");
-    const menuClose = document.getElementById("menu-close");
+        const title = document.getElementById("it-title");
+        const titleObs = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((ent) => {
+              if (ent.isIntersecting) {
+                title.style.opacity = 1;
+                title.style.transform = "translateY(0)";
+                obs.unobserve(ent.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+        if (title) titleObs.observe(title);
 
-    menuToggle.addEventListener("click", () => {
-      sidebar.classList.add("open");
-      menuClose.focus();
-    });
+        const wrap = document.getElementById("tabela-wrap");
+        const wrapObs = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((ent) => {
+              if (ent.isIntersecting) {
+                wrap.classList.add("in-view");
+                obs.unobserve(ent.target);
+              }
+            });
+          },
+          { threshold: 0.08 }
+        );
+        if (wrap) wrapObs.observe(wrap);
+      })();
 
-    menuClose.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-    });
+      /* Small defensive: if itinerario.aluno.js renders nothing, show empty note */
+      (function () {
+        // Delay tiny to let other script run
+        setTimeout(() => {
+          const table = document.getElementById("tabelaAluno");
+          const empty = document.getElementById("tabela-empty");
+          // if table has no rows, show placeholder
+          if (table && table.children.length === 0) {
+            empty.style.display = "block";
+            empty.setAttribute("aria-hidden", "false");
+          } else if (empty) {
+            empty.style.display = "none";
+            empty.setAttribute("aria-hidden", "true");
+          }
+        }, 220);
+      })();
+    </script>
+    <!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+</script>
 
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
-    window.addEventListener("click", (e) => {
-      if (
-        sidebar.classList.contains("open") &&
-        !sidebar.contains(e.target) &&
-        !menuToggle.contains(e.target)
-      ) {
-        sidebar.classList.remove("open");
-      }
-    });
-  </script>
-
-</body>
-
+  </body>
 </html>

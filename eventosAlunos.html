@@ -1,299 +1,287 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Eventos do Aluno</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="front/Styles/Login.css" />
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-  <link rel="stylesheet" href="front/Styles/EventosAluno.css" />
-  <title>Eventos do Aluno</title>
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/EventosAluno.css" />
 
-  <style>
-    /* Top icons (ajusta como q empilha no mobile) */
-    .top-icons {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      flex-wrap: nowrap;
-      /* mantem os ícones em uma fileira */
-    }
-
-    .top-icons a,
-    .top-icons button,
-    .top-icons img,
-    .top-icons i {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      min-height: 36px;
-      max-width: 48px;
-      max-height: 48px;
-      padding: 4px;
-      box-sizing: border-box;
-    }
-
-    .top-icons img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-
-    @media (max-width: 420px) {
-      .top-icons {
-        gap: 6px;
+    <style>
+      :root {
+        --header-h: 64px;
+        --footer-h: 56px;
+        --blue: #163f7a;
       }
 
-      .top-icons a,
-      .top-icons button,
-      .top-icons img,
-      .top-icons i {
-        min-width: 32px;
-        min-height: 32px;
-        max-width: 40px;
-        max-height: 40px;
-      }
-    }
-
-    /* barra lateral */
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #1a4e9b;
-      overflow-x: hidden;
-      padding-top: 60px;
-      transition: 0.3s;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .sidebar.open {
-      width: 250px;
-    }
-
-    .sidebar-link {
-      padding: 12px 24px;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: white;
-      display: block;
-    }
-
-    .sidebar-link:hover,
-    .sidebar-link.active {
-      background-color: #6a9bd1;
-      color: white;
-    }
-
-    .menu-close {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Botão hamburguer */
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: #163f7a;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-      margin-left: 15px;
-      align-self: center;
-    }
-
-    /* Nav header */
-    .header-aluno {
-      background-color: #163f7a;
-      display: flex;
-      align-items: flex;
-      justify-content: space-between;
-      padding: 10px 20px;
-      flex-wrap: nowrap;
-      gap: 10px;
-    }
-
-    .poliedro-logo-header {
-      height: 40px;
-      cursor: pointer;
-    }
-
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-    }
-
-    .header-profile-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid white;
-      cursor: pointer;
-    }
-
-    @media (max-width: 991px) {
-      .menu-toggle {
-        display: inline-block;
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f4f6f9;
+        overflow-x: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
       }
 
-      /* mantém logo, menu e perfil na mesma linha */
+      body {
+        flex: 1;
+      }
+
+      /* HEADER */
       .header-aluno {
+        background-color: var(--blue);
+        display: flex;
+        align-items: center;
         justify-content: space-between;
+        height: var(--header-h);
+        padding: 10px 20px;
+        position: relative;
+        transition: opacity 0.28s ease, backdrop-filter 0.28s ease;
       }
-    }
 
-    #daltonismo-select {
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
+      .header-aluno.scrolled {
+        opacity: 0.72;
+        backdrop-filter: blur(2px);
+      }
 
-    .daltonismo-select-sidebar {
-      margin: 0 24px 12px 24px;
-      padding: 6px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: none;
-    }
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
 
-    /* Responsividade */
-    @media (min-width: 992px) {
       .menu-toggle {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
         display: none;
       }
 
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+        .header-nav {
+          display: none !important;
+        }
+      }
+
+      @media (min-width: 992px) {
+        .sidebar {
+          display: none !important;
+        }
+      }
+
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+      }
+
+      /* SIDEBAR MOBILE */
       .sidebar {
-        display: none !important;
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: #1a4e9b;
+        overflow: hidden;
+        padding-top: 60px;
+        z-index: 1200;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        transition: 0.28s ease;
       }
 
-      .header-nav {
-        display: flex !important;
-      }
-    }
-
-    @media (max-width: 991px) {
-      .header-nav {
-        display: none !important;
+      .sidebar.open {
+        width: 250px;
       }
 
-      .menu-toggle {
-        display: inline-block;
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <header>
-    <div class="header-aluno">
-      <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+      .sidebar-link {
+        color: #fff;
+        padding: 12px 26px;
+        text-decoration: none;
+        font-size: 1.2rem;
+      }
 
-      <!-- Botão hamburguer para mobile -->
-      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
-        &#9776;
-      </button>
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background: #6a9bd1;
+      }
 
-      <!-- Navegação tradicional (desktop) -->
-      <nav class="header-nav">
-        <a href="HomeAluno.html" class="header-link">Home</a>
-        <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
-        <a href="AtividadesAluno.html" class="header-link">Atividades</a>
-        <a href="NotasAluno.html" class="header-link">Notas</a>
-        <a href="MensagensAluno.html" class="header-link">Mensagens</a>
-        <a href="eventosAlunos.html" class="header-link active">Eventos</a>
+      /* MAIN */
+      .event-container {
+        flex: 1;
+        max-width: 1100px;
+        margin: 24px auto;
+        padding: 0 20px;
+        width: 100%;
+        box-sizing: border-box;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: 0.6s ease;
+      }
 
+      .event-container.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
+      .event-list > * {
+        opacity: 0;
+        transform: translateY(14px);
+        transition: 0.55s ease;
+      }
+
+      .event-list > *.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* FOOTER */
+      footer {
+        background: var(--blue);
+        color: #fff;
+        text-align: center;
+        padding: 14px 0;
+        margin-top: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="header-aluno" id="site-header">
+        <img src="Assets/poliedro.png" class="poliedro-logo-header" />
+
+        <button id="menu-toggle" class="menu-toggle">&#9776;</button>
+
+        <nav class="header-nav">
+          <a href="HomeAluno.html" class="header-link">Home</a>
+          <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
+          <a href="AtividadesAluno.html" class="header-link">Atividades</a>
+          <a href="NotasAluno.html" class="header-link">Notas</a>
+          <a href="MensagensAluno.html" class="header-link">Mensagens</a>
+          <a href="eventosAlunos.html" class="header-link active">Eventos</a>
+        </nav>
+
+        <a href="PerfilAluno.html">
+          <img src="Assets/LogoUsuario.png" class="header-profile-img" />
+        </a>
+      </div>
+
+      <nav id="sidebar" class="sidebar">
+        <button id="menu-close" class="menu-close">&times;</button>
+        <a href="HomeAluno.html" class="sidebar-link">Home</a>
+        <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
+        <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
+        <a href="NotasAluno.html" class="sidebar-link">Notas</a>
+        <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
+        <a href="eventosAlunos.html" class="sidebar-link active">Eventos</a>
       </nav>
+    </header>
 
-      <a href="PerfilAluno.html">
-        <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
-      </a>
-    </div>
+    <main class="event-container" id="event-container">
+      <h1>Eventos</h1>
+      <section class="event-list" id="eventList"></section>
+    </main>
 
-    <!-- Sidebar para mobile -->
-    <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
-        &times;
-      </button>
-      <a href="HomeAluno.html" class="sidebar-link">Home</a>
-      <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
-      <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
-      <a href="NotasAluno.html" class="sidebar-link">Notas</a>
-      <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
-      <a href="eventosAlunos.html" class="sidebar-link active">Eventos</a>
+    <footer>
+      <p>&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
 
+    <script src="front/Scripts/eventos.Aluno.js"></script>
 
-    </nav>
-  </header>
+    <script>
+      /* HEADER FADE */
+      const header = document.getElementById("site-header");
+      window.addEventListener("scroll", () => {
+        header.classList.toggle("scrolled", scrollY > 8);
+      });
 
-  <div class="event-container">
-    <h1>Eventos</h1>
-    <section class="event-list" id="eventList"></section>
-  </div>
+      /* SIDEBAR */
+      const toggle = document.getElementById("menu-toggle");
+      const closeBtn = document.getElementById("menu-close");
+      const side = document.getElementById("sidebar");
 
-  <footer>
-    <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-  </footer>
+      toggle.onclick = () => side.classList.add("open");
+      closeBtn.onclick = () => side.classList.remove("open");
 
-  <!-- VLibras -->
-  <div vw class="enabled">
-    <div vw-access-button class="active"></div>
-    <div vw-plugin-wrapper></div>
-  </div>
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-  <script>
-    new window.VLibras.Widget("https://vlibras.gov.br/app");
-  </script>
+      window.onclick = (e) => {
+        if (
+          side.classList.contains("open") &&
+          !side.contains(e.target) &&
+          !toggle.contains(e.target)
+        ) {
+          side.classList.remove("open");
+        }
+      };
 
-  <script src="front/Scripts/eventos.Aluno.js"></script>
-  <script src="front/Scripts/header.js"></script>
+      /* ANIMAÇÃO - Container */
+      const container = document.getElementById("event-container");
 
-  <script>
-    // Sidebar toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebar = document.getElementById("sidebar");
-    const menuClose = document.getElementById("menu-close");
+      const io1 = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((ent) => {
+            if (ent.isIntersecting) {
+              container.classList.add("in-view");
+              io1.disconnect();
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
 
-    menuToggle.addEventListener("click", () => {
-      sidebar.classList.add("open");
-      menuClose.focus();
-    });
+      io1.observe(container);
 
-    menuClose.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-    });
+      /* ANIMAÇÃO - Cards gerados via JS */
+      const io2 = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((ent) => {
+            if (ent.isIntersecting) {
+              ent.target.classList.add("in-view");
+              io2.unobserve(ent.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
 
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
-    window.addEventListener("click", (e) => {
-      if (
-        sidebar.classList.contains("open") &&
-        !sidebar.contains(e.target) &&
-        !menuToggle.contains(e.target)
-      ) {
-        sidebar.classList.remove("open");
-      }
-    });
-  </script>
-</body>
+      /* Delay para esperar o JS carregar os cards */
+      setTimeout(() => {
+        document.querySelectorAll(".event-list > *").forEach((card) => {
+          io2.observe(card);
+        });
+      }, 600);
+    </script>
+    <!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+</script>
 
+  </body>
 </html>

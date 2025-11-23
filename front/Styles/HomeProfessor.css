@@ -1,171 +1,197 @@
-:root {
-    --google-blue:#112cc4;      /* azul mais escuro */
-    --google-blue-dark: #436fea;
-    --yellow-poliedro: #f1ae05;
-    --red-poliedro: #e65454;
-    --botao: #2173ee   ; /* hover */
+:root{
+  --google-blue:#112cc4;
+  --google-blue-dark:#436fea;
+  --botao:#2173ee;
 
-    --text-dark: #1a1a1a;
-    --text-muted: #a9a5a5;
+  --text-dark:#1a1a1a;
+  --text-muted:#a9a5a5;
 
-    --card-bg: #ffffff;
-    --page-bg: #f4f6f9;
+  --card-bg:#ffffff;
+  --page-bg:#f4f6f9;
+
+  --site-blue: var(--primary-blue-light, #163f7a);
+  --site-header-height: 72px;
+  --site-footer-height: 56px;
+  --card-entry-distance: 28px;
 }
 
-body {
-    background: var(--page-bg);
-    font-family: "Inter", sans-serif;
+html, body{
+  margin:0;
+  padding:0;
+  height:100%;
+  font-family:"Inter", sans-serif;
+  background:var(--page-bg);
+  color:var(--text-dark);
 }
 
-#welcome-title {
-    text-align: center;
-    color: var(--text-dark);
-    margin-top: 14px;
-    font-size: 2.4rem;
-    font-weight: 800;
+body{
+  padding-top: var(--site-header-height);
+  padding-bottom: var(--site-footer-height);
 }
 
-#welcome-sub {
-    text-align: center;
-    color: var(--text-muted);
-    margin-bottom: 28px;
-    font-size: 1.1rem;
+/* welcome */
+#welcome-title{
+  text-align:center;
+  color:var(--text-dark);
+  margin-top: 12px;
+  font-size:2.6rem;
+  font-weight:800;
+}
+#welcome-sub{
+  text-align:center;
+  color:var(--text-muted);
+  margin-bottom:28px;
+  font-size:1.05rem;
 }
 
-/* GRID DOS CARDS — AGORA 3 LADO A LADO */
-.cards-wrapper {
-    max-width: 1400px;
-    margin: 0 auto 50px;
-    padding: 0 20px;
-
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 34px;
-    justify-items: center;
+/* GRID */
+.cards-wrapper{
+  max-width:1400px;
+  margin: 18px auto 40px;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:34px;
+  justify-items:center;
+  box-sizing:border-box;
 }
 
-/* CARD MENOR PARA CABER 3 LADO A LADO */
-.card {
-    width: 100%;
-    max-width: 420px;      /* impede de virar enorme */
-    background: var(--card-bg);
-    border-radius: 40px;
-    overflow: hidden;
-    box-shadow: 0 14px 26px rgba(0,0,0,0.10);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    justify-content: space-between;
-    min-height: 420px;     /* um pouco menor que antes */
+/* CARD */
+.card{
+  width:100%;
+  max-width:480px;
+  background:var(--card-bg);
+  border-radius:40px;
+  overflow:hidden;
+  box-shadow:0 16px 32px rgba(0,0,0,0.08);
+  display:flex;
+  flex-direction:column;
+  transition: transform .28s ease, box-shadow .28s ease;
+  justify-content:space-between;
+  min-height:460px;
 }
 
-.card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 34px rgba(0,0,0,0.12);
+.card:hover{
+  transform: translateY(-8px);
+  box-shadow: 0 28px 46px rgba(0,0,0,0.12);
 }
 
-/* RESPONSIVIDADE – 1 card por linha no celular */
-@media (max-width: 900px) {
-    .cards-wrapper {
-        grid-template-columns: 1fr;
-        gap: 26px;
-    }
-    
-    .card {
-        max-width: 100%;
-        min-height: 360px;
-    }
+@media (max-width: 1000px){
+  .cards-wrapper{ grid-template-columns: 1fr; gap:26px; }
+  .card{ max-width:100%; min-height:380px; }
 }
 
-
-.card-top {
-    padding: 20px 26px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    background: var(--google-blue);
-    color: white;
+/* CARD TOP (mesma cor do header) */
+.card-top{
+  padding:20px 26px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background: var(--site-blue) !important;
+  color:#fff;
+  border-top-left-radius:40px;
+  border-top-right-radius:40px;
 }
 
-.card-top h2 {
-    margin: 0;
-    font-size: 1.55rem;
-    font-weight: 700;
+.card-top h2{
+  margin:0;
+  font-size:1.6rem;
+  font-weight:700;
 }
 
-.card-icon {
-    width: 34px;
-    height: 34px;
-    opacity: 0.9;
+/* conteúdo do card */
+.card-content{
+  padding:28px 28px;
+  flex:1;
 }
 
-.card-content {
-    padding: 26px;
-    flex: 1;
+.card-label{
+  font-size:1rem;
+  font-weight:600;
+  color:var(--text-muted);
 }
 
-.card-label {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-muted);
+.card-title{
+  margin-top:12px;
+  font-size:1.45rem;
+  font-weight:700;
+  color:var(--text-dark);
+  line-height:1.4;
 }
 
-.card-title {
-    margin-top: 10px;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    line-height: 1.5;
+.card-info{
+  margin-top:18px;
+  color:var(--text-muted);
+  font-size:1rem;
 }
 
-.card-info {
-    margin-top: 14px;
-    color: var(--text-muted);
-    font-size: 1rem;
+.card-button{
+  margin:0 26px 26px;
+  padding:14px;
+  text-align:center;
+  border-radius:12px;
+  font-size:1.1rem;
+  font-weight:700;
+  color:white;
+  background:var(--botao);
+  text-decoration:none;
+  display:block;
+  transition: background .18s ease, transform .18s ease;
 }
 
-.card-button {
-    margin: 0 26px 26px;
-    padding: 14px;
-    text-align: center;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: white;
-    background: var(--botao);
-    text-decoration: none;
-    display: block;
-    transition: background 0.2s ease, transform 0.2s ease;
+.card-button:hover{ background:var(--google-blue-dark); transform: translateY(-2px); }
+
+/* Protege os textos contra overflow */
+.card-title{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.card-title, .card-info { white-space: normal; }
+
+/* ANIMAÇÕES DE ENTRADA E STAGGER */
+.card{ opacity:0; transform: translateY(var(--card-entry-distance)); transition: opacity 520ms cubic-bezier(.2,.9,.3,1), transform 520ms cubic-bezier(.2,.9,.3,1); will-change: transform, opacity; }
+.card.in-view{ opacity:1; transform: translateY(0); }
+
+.card .card-top h2,
+.card .card-content .card-title,
+.card .card-content .card-label,
+.card .card-button{
+  opacity:0;
+  transform: translateY(8px);
+  transition: opacity 420ms ease, transform 420ms ease;
 }
 
-.card-button:hover {
-    background: var(--google-blue-dark);
-    transform: translateY(-2px);
+.card.in-view .card-top h2{ opacity:1; transform:none; transition-delay:60ms; }
+.card.in-view .card-content .card-label{ opacity:1; transform:none; transition-delay:120ms; }
+.card.in-view .card-content .card-title{ opacity:1; transform:none; transition-delay:180ms; }
+.card.in-view .card-button{ opacity:1; transform:none; transition-delay:240ms; }
+
+/* FOOTER fixo no mesmo azul */
+footer{
+  position: fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height: var(--site-footer-height);
+  background: var(--site-blue) !important;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  box-shadow: 0 -6px 18px rgba(8,20,50,0.06);
+  transform:none !important;
+}
+footer .footer-text{ margin:0; font-size:13px; }
+
+main.home-main, .cards-wrapper{ padding-bottom: calc(var(--site-footer-height) + 28px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .card * { transition: none !important; animation: none !important; transform: none !important; }
+  .header-aluno, .header-aluno.scrolled { opacity:1 !important; box-shadow:none !important; }
 }
 
-@media (max-width: 900px) {
-    .card {
-        min-height: 310px;
-    }
-}
-.card-title {
-    margin-top: 10px;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    line-height: 1.5;
-
-    /* EVITAR QUE O TEXTO EXPLODA O CARD */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;     /* quantidade de linhas */
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-.card-title,
-.card-info {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+@media (max-width: 700px){
+  :root { --site-header-height: 64px; }
+  #welcome-title{ font-size: 1.9rem; }
+  .card{ min-height: 300px; border-radius: 28px; }
+  .card-top{ border-radius: 28px 28px 0 0; padding:16px 20px; }
+  .cards-wrapper{ margin-bottom: 36px; }
 }
