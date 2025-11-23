@@ -1,379 +1,541 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Home do Aluno</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Home do Aluno</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/HomeAluno.css" />
 
-  <link rel="stylesheet" href="front/Styles/Login.css" />
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-  <link rel="stylesheet" href="front/Styles/HomeAluno.css" />
-
-  <style>
-    /* Top icons (ajusta como q empilha no mobile) */
-    .top-icons {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      flex-wrap: nowrap;
-      /* mantem os ícones em uma fileira */
-    }
-
-    .top-icons a,
-    .top-icons button,
-    .top-icons img,
-    .top-icons i {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      min-height: 36px;
-      max-width: 48px;
-      max-height: 48px;
-      padding: 4px;
-      box-sizing: border-box;
-    }
-
-    .top-icons img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-
-    @media (max-width: 420px) {
-      .top-icons {
-        gap: 6px;
+    <style>
+      :root {
+        --header-h: 64px;
+        --footer-h: 56px;
+        --blue: #163f7a;
       }
 
-      .top-icons a,
-      .top-icons button,
-      .top-icons img,
-      .top-icons i {
-        min-width: 32px;
-        min-height: 32px;
-        max-width: 40px;
-        max-height: 40px;
+      /* Full-height layout so footer sticks to bottom without fixed positioning */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #f4f6f9;
+        overflow-x: hidden;
+        font-family: Inter, system-ui, Roboto, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        box-sizing: border-box;
       }
-    }
-
-    /* barra lateral */
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #1a4e9b;
-      overflow-x: hidden;
-      padding-top: 60px;
-      transition: 0.3s;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .sidebar.open {
-      width: 250px;
-    }
-
-    .sidebar-link {
-      padding: 12px 24px;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: white;
-      display: block;
-    }
-
-    .sidebar-link:hover,
-    .sidebar-link.active {
-      background-color: #6a9bd1;
-      color: white;
-    }
-
-    .menu-close {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Botão hamburguer */
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: #163f7a;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-      margin-left: 15px;
-      align-self: center;
-    }
-
-    /* Nav header */
-    .header-aluno {
-      background-color: #163f7a;
-      display: flex;
-      align-items: flex;
-      justify-content: space-between;
-      padding: 10px 20px;
-      flex-wrap: nowrap;
-      gap: 10px;
-    }
-
-    .poliedro-logo-header {
-      height: 40px;
-      cursor: pointer;
-    }
-
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-    }
-
-    .header-profile-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid white;
-      cursor: pointer;
-    }
-
-    @media (max-width: 991px) {
-      .menu-toggle {
-        display: inline-block;
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
       }
 
-      /* mantém logo, menu e perfil na mesma linha */
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      main.home-main {
+        flex: 1 1 auto; /* takes remaining space so footer sits at bottom */
+        box-sizing: border-box;
+        padding-bottom: 12px;
+        min-height: calc(100vh - var(--header-h) - var(--footer-h));
+      }
+
+      /* HEADER */
       .header-aluno {
+        background-color: var(--blue);
+        display: flex;
+        align-items: center;
         justify-content: space-between;
+        padding: 10px 20px;
+        height: var(--header-h);
+        position: relative;
+        transition: opacity 0.28s ease, backdrop-filter 0.28s ease;
+        z-index: 100;
       }
-    }
 
-    #daltonismo-select {
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
+      .header-aluno.scrolled {
+        opacity: 0.72;
+        backdrop-filter: blur(2px);
+      }
 
-    .daltonismo-select-sidebar {
-      margin: 0 24px 12px 24px;
-      padding: 6px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: none;
-    }
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
 
-    /* Responsividade */
-    @media (min-width: 992px) {
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        object-fit: cover;
+        cursor: pointer;
+      }
+
+      /* MENU MOBILE */
       .menu-toggle {
+        font-size: 1.4rem;
+        color: white;
+        background: none;
+        border: none;
+        cursor: pointer;
         display: none;
       }
 
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+
+        .header-nav {
+          display: none !important;
+        }
+      }
+
       .sidebar {
-        display: none !important;
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #1a4e9b;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: width 0.28s ease;
+        z-index: 1200;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
       }
 
-      .header-nav {
-        display: flex !important;
-      }
-    }
-
-    @media (max-width: 991px) {
-      .header-nav {
-        display: none !important;
+      .sidebar.open {
+        width: 250px;
       }
 
-      .menu-toggle {
-        display: inline-block;
+      .sidebar-link {
+        color: white;
+        padding: 14px 24px;
+        display: block;
+        text-decoration: none;
+        font-size: 1.15rem;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <header>
-    <div class="header-aluno">
-      <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+      .sidebar-link.active,
+      .sidebar-link:hover {
+        background: #6a9bd1;
+      }
 
-      <!-- Botão hamburguer para mobile -->
-      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
-        &#9776;
-      </button>
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+      }
 
-      <!-- Navegação tradicional (desktop) -->
-      <nav class="header-nav">
-        <a href="HomeAluno.html" class="header-link active">Home</a>
-        <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
-        <a href="AtividadesAluno.html" class="header-link">Atividades</a>
-        <a href="NotasAluno.html" class="header-link">Notas</a>
-        <a href="MensagensAluno.html" class="header-link">Mensagens</a>
-        <a href="eventosAlunos.html" class="header-link">Eventos</a>
+      /* TITULOS */
+      #welcome-title {
+        font-size: 2.3rem;
+        font-weight: 900;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
 
+      #welcome-sub {
+        text-align: center;
+        color: #777;
+        margin-top: 4px;
+        font-size: 1rem;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+        transition-delay: 0.12s;
+      }
 
+      .welcome-row {
+        padding-top: 14px;
+      }
+
+      .welcome-left {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* CARDS (centralizados) */
+      .cards-wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 28px;
+        width: 100%;
+        max-width: 1100px;
+        margin: 24px auto;
+        padding: 0 20px;
+        justify-items: center;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 360px;
+        background: #fff;
+        border-radius: 32px;
+        overflow: hidden;
+        box-shadow: 0 14px 26px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.56s cubic-bezier(0.22, 0.9, 0.32, 1),
+          transform 0.56s cubic-bezier(0.22, 0.9, 0.32, 1);
+      }
+
+      .card.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .card-top {
+        background: var(--blue);
+        color: #fff;
+        padding: 20px 26px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .card-top h2 {
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 700;
+      }
+
+      .card-content {
+        padding: 24px;
+      }
+
+      .card-label {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #a1a1a1;
+        margin: 0;
+      }
+
+      .card-title {
+        margin-top: 8px;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #111;
+        min-height: 40px;
+      }
+
+      .card-info p {
+        margin: 6px 0 0;
+        color: #777;
+      }
+
+      .card-button {
+        margin: 0 26px 26px;
+        padding: 14px;
+        border-radius: 12px;
+        background: #2173ee;
+        color: white;
+        text-align: center;
+        font-weight: 700;
+        text-decoration: none;
+        display: block;
+      }
+
+      /* FOOTER - static (not fixed) but body flex ensures it sticks bottom */
+      footer {
+        background: var(--blue);
+        color: white;
+        text-align: center;
+        padding: 12px 0;
+        flex-shrink: 0;
+      }
+
+      /* small responsive tweaks */
+      @media (max-width: 640px) {
+        #welcome-title {
+          font-size: 1.6rem;
+        }
+        .card {
+          border-radius: 18px;
+        }
+      }
+
+      /* respects reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .card,
+        #welcome-title,
+        #welcome-sub {
+          transition: none !important;
+          transform: none !important;
+          opacity: 1 !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-aluno" id="site-header">
+        <img
+          src="Assets/poliedro.png"
+          class="poliedro-logo-header"
+          alt="Poliedro"
+        />
+
+        <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">
+          ☰
+        </button>
+
+        <nav class="header-nav" aria-label="Navegação principal">
+          <a href="HomeAluno.html" class="header-link active">Home</a>
+          <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
+          <a href="AtividadesAluno.html" class="header-link">Atividades</a>
+          <a href="NotasAluno.html" class="header-link">Notas</a>
+          <a href="MensagensAluno.html" class="header-link">Mensagens</a>
+          <a href="eventosAlunos.html" class="header-link">Eventos</a>
+        </nav>
+
+        <a href="PerfilAluno.html" aria-label="Meu perfil">
+          <img
+            src="Assets/LogoUsuario.png"
+            class="header-profile-img"
+            alt="Perfil"
+          />
+        </a>
+      </div>
+
+      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
+        <button id="menu-close" class="menu-close" aria-label="Fechar menu">
+          &times;
+        </button>
+        <a href="HomeAluno.html" class="sidebar-link active">Home</a>
+        <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
+        <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
+        <a href="NotasAluno.html" class="sidebar-link">Notas</a>
+        <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
+        <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
       </nav>
+    </header>
 
-      <a href="PerfilAluno.html">
-        <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
-      </a>
-    </div>
+    <!-- MAIN -->
+    <main class="home-main" id="home-main" role="main">
+      <section class="welcome-row" aria-labelledby="welcome-title">
+        <div class="welcome-left">
+          <h1 id="welcome-title">Seja bem-vindo, Aluno</h1>
+          <p id="welcome-sub">Resumo rápido do que aconteceu na sua turma</p>
+        </div>
+      </section>
 
-    <!-- Sidebar para mobile -->
-    <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
-        &times;
-      </button>
-      <a href="HomeAluno.html" class="sidebar-link active">Home</a>
-      <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
-      <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
-      <a href="NotasAluno.html" class="sidebar-link">Notas</a>
-      <a href="MensagensAluno.html" class="sidebar-link">Mensagens</a>
-      <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
+      <div
+        class="cards-wrapper"
+        id="cards-wrapper"
+        role="region"
+        aria-label="Resumo rápido"
+      >
+        <!-- CARD 1 -->
+        <div class="card" role="article" aria-labelledby="atividade-title">
+          <div class="card-top">
+            <h2 id="atividade-title">Última atividade</h2>
+          </div>
 
+          <div class="card-content" id="atividade-body">
+            <p class="card-label">Criação Recente:</p>
+            <p class="card-title">—</p>
+            <div class="card-info">
+              <p><strong>Turma:</strong> —</p>
+            </div>
+          </div>
 
-    </nav>
-  </header>
+          <a href="AtividadesAluno.html" class="card-button" role="button"
+            >Ver todas</a
+          >
+        </div>
 
-  <!-- MAIN -->
-  <main id="home-main" class="home-main">
-    <section class="welcome-row">
-      <div class="welcome-left">
-        <h1 id="welcome-title">Seja bem-vindo, Aluno</h1>
-        <p id="welcome-sub">Resumo rápido do que aconteceu na sua turma</p>
+        <!-- CARD 2 -->
+        <div class="card" role="article" aria-labelledby="evento-title">
+          <div class="card-top">
+            <h2 id="evento-title">Último evento</h2>
+          </div>
+
+          <div class="card-content" id="evento-body">
+            <p class="card-label">Agendamento:</p>
+            <p class="card-title">—</p>
+            <div class="card-info">
+              <p><strong>Local:</strong> —</p>
+              <p><strong>Data/Hora:</strong> —</p>
+            </div>
+          </div>
+
+          <a href="eventosAlunos.html" class="card-button" role="button"
+            >Ver eventos</a
+          >
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="card" role="article" aria-labelledby="mensagem-title">
+          <div class="card-top">
+            <h2 id="mensagem-title">Última mensagem recebida</h2>
+          </div>
+
+          <div class="card-content" id="mensagem-body">
+            <p class="card-label">Mensagem:</p>
+            <p class="card-title">Nenhuma mensagem recebida ainda.</p>
+          </div>
+
+          <a href="MensagensAluno.html" class="card-button" role="button"
+            >Abrir conversas</a
+          >
+        </div>
       </div>
-    </section>
+    </main>
 
-    <!-- GRID DOS CARDS -->
-    <div class="cards-wrapper">
+    <footer>
+      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
 
-      <!-- CARD 1 – Última atividade -->
-      <div class="card">
-        <div class="card-top">
-          <h2>Última atividade</h2>
+    <!-- SCRIPTS -->
+    <script src="front/Scripts/homeAluno.js"></script>
+    <script src="front/Scripts/header.js"></script>
 
-          <div class="card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="none" stroke="white" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-              <path d="m9 14 2 2 4-4" />
-            </svg>
-          </div>
-        </div>
+    <script>
+      /* ==== Header fade ==== */
+      (function () {
+        const header = document.getElementById("site-header");
+        if (!header) return;
+        const SCROLL_THRESHOLD = 8;
+        let ticking = false;
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+              header.classList.toggle(
+                "scrolled",
+                window.scrollY > SCROLL_THRESHOLD
+              );
+              ticking = false;
+            });
+          },
+          { passive: true }
+        );
+      })();
 
-        <div class="card-content" id="atividade-body">
-          <p class="card-label">Criação Recente:</p>
-          <p class="card-title">—</p>
+      /* ==== Sidebar ==== */
+      (function () {
+        const menuToggle = document.getElementById("menu-toggle");
+        const sidebar = document.getElementById("sidebar");
+        const menuClose = document.getElementById("menu-close");
 
-          <div class="card-info">
-            <p><strong>Turma:</strong> —</p>
-          </div>
-        </div>
+        if (menuToggle && sidebar) {
+          menuToggle.addEventListener("click", () => {
+            const open = !sidebar.classList.contains("open");
+            sidebar.classList.toggle("open", open);
+            menuToggle.classList.toggle("is-open", open);
+            if (open && menuClose) menuClose.focus();
+          });
 
-        <a href="AtividadesAluno.html" class="card-button">Ver todas</a>
-      </div>
+          if (menuClose) {
+            menuClose.addEventListener("click", () => {
+              sidebar.classList.remove("open");
+              menuToggle.classList.remove("is-open");
+            });
+          }
 
-      <!-- CARD 2 – Último evento -->
-      <div class="card">
-        <div class="card-top">
-          <h2>Último evento</h2>
+          window.addEventListener("click", (e) => {
+            if (!sidebar.classList.contains("open")) return;
+            if (sidebar.contains(e.target) || menuToggle.contains(e.target))
+              return;
+            sidebar.classList.remove("open");
+            menuToggle.classList.remove("is-open");
+          });
+        }
+      })();
 
-          <div class="card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="none" stroke="white" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-              <path d="m10 15 2 2 4-4" />
-            </svg>
-          </div>
-        </div>
+      /* ==== Intersection Observer for cards & titles ==== */
+      (function () {
+        if (!("IntersectionObserver" in window)) {
+          document
+            .querySelectorAll(".card")
+            .forEach((c) => c.classList.add("in-view"));
+          const title = document.getElementById("welcome-title");
+          const sub = document.getElementById("welcome-sub");
+          if (title) {
+            title.style.opacity = 1;
+            title.style.transform = "translateY(0)";
+          }
+          if (sub) {
+            sub.style.opacity = 1;
+            sub.style.transform = "translateY(0)";
+          }
+          return;
+        }
 
-        <div class="card-content" id="evento-body">
-          <p class="card-label">Agendamento:</p>
-          <p class="card-title">—</p>
+        const cards = document.querySelectorAll(".card");
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("in-view");
+                obs.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.08 }
+        );
 
-          <div class="card-info">
-            <p><strong>Local:</strong> —</p>
-            <p><strong>Data/Hora:</strong> —</p>
-          </div>
-        </div>
+        cards.forEach((c) => io.observe(c));
 
-        <a href="eventosAlunos.html" class="card-button">Ver eventos</a>
-      </div>
+        const title = document.getElementById("welcome-title");
+        const sub = document.getElementById("welcome-sub");
+        if (title) {
+          const titleObs = new IntersectionObserver(
+            (entries, tObs) => {
+              entries.forEach((ent) => {
+                if (ent.isIntersecting) {
+                  title.style.opacity = 1;
+                  title.style.transform = "translateY(0)";
+                  if (sub) {
+                    sub.style.opacity = 1;
+                    sub.style.transform = "translateY(0)";
+                  }
+                  tObs.unobserve(ent.target);
+                }
+              });
+            },
+            { threshold: 0.12 }
+          );
+          titleObs.observe(title);
+        }
+      })();
+    </script>
+    <!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+</script>
 
-      <!-- CARD 3 – Última mensagem -->
-      <div class="card">
-        <div class="card-top">
-          <h2>Última mensagem recebida</h2>
-
-          <div class="card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="none" stroke="white" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
-          </div>
-        </div>
-
-        <div class="card-content" id="mensagem-body">
-          <p class="card-label">Mensagem:</p>
-          <p class="card-title">Nenhuma mensagem recebida ainda.</p>
-        </div>
-
-        <a href="MensagensAluno.html" class="card-button">Abrir conversas</a>
-      </div>
-
-    </div>
-
-  </main>
-
-  <footer>
-    <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-  </footer>
-
-  <!-- Scripts específicos da Home do Aluno e cabeçalho -->
-  <script src="front/Scripts/homeAluno.js"></script>
-  <script src="front/Scripts/header.js"></script>
-
-  <script>
-    // Sidebar toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebar = document.getElementById("sidebar");
-    const menuClose = document.getElementById("menu-close");
-
-    menuToggle.addEventListener("click", () => {
-      sidebar.classList.add("open");
-      menuClose.focus();
-    });
-
-    menuClose.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-    });
-
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
-    window.addEventListener("click", (e) => {
-      if (
-        sidebar.classList.contains("open") &&
-        !sidebar.contains(e.target) &&
-        !menuToggle.contains(e.target)
-      ) {
-        sidebar.classList.remove("open");
-      }
-    });
-  </script>
-</body>
-
+  </body>
 </html>

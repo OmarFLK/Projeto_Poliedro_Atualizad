@@ -1,334 +1,358 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mensagens - Aluno</title>
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/MensagensAluno.css" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mensagens - Aluno</title>
-  <link rel="stylesheet" href="front/Styles/Login.css" />
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-  <link rel="stylesheet" href="front/Styles/MensagensAluno.css" />
-
-  <style>
-    /* Top icons (ajusta como q empilha no mobile) */
-    .top-icons {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      flex-wrap: nowrap;
-      /* mantem os ícones em uma fileira */
-    }
-
-    .top-icons a,
-    .top-icons button,
-    .top-icons img,
-    .top-icons i {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      min-height: 36px;
-      max-width: 48px;
-      max-height: 48px;
-      padding: 4px;
-      box-sizing: border-box;
-    }
-
-    .top-icons img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-
-    @media (max-width: 420px) {
+    <style>
+      /* Top icons (ajusta como q empilha no mobile) */
       .top-icons {
-        gap: 6px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: nowrap;
+        /* mantem os ícones em uma fileira */
       }
 
       .top-icons a,
       .top-icons button,
       .top-icons img,
       .top-icons i {
-        min-width: 32px;
-        min-height: 32px;
-        max-width: 40px;
-        max-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 36px;
+        min-height: 36px;
+        max-width: 48px;
+        max-height: 48px;
+        padding: 4px;
+        box-sizing: border-box;
       }
-    }
 
-    /* barra lateral do menu hamburguer */
-    .menu-sidebar {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #1a4e9b;
-  overflow-x: hidden;
-  padding-top: 60px;
-  transition: 0.3s;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  pointer-events: none;
-    }
+      .top-icons img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
 
-    .menu-sidebar.open {
-  width: 250px;
-  pointer-events: auto;
-    }
+      @media (max-width: 420px) {
+        .top-icons {
+          gap: 6px;
+        }
 
-    .sidebar-link {
-      padding: 12px 24px;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: white;
-      display: block;
-    }
+        .top-icons a,
+        .top-icons button,
+        .top-icons img,
+        .top-icons i {
+          min-width: 32px;
+          min-height: 32px;
+          max-width: 40px;
+          max-height: 40px;
+        }
+      }
 
-    .sidebar-link:hover,
-    .sidebar-link.active {
-      background-color: #6a9bd1;
-      color: white;
-    }
+      /* barra lateral do menu hamburguer */
+      .menu-sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #1a4e9b;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.3s;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        pointer-events: none;
+      }
 
-    .menu-close {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
+      .menu-sidebar.open {
+        width: 250px;
+        pointer-events: auto;
+      }
 
-    /* Botão hamburguer */
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: #163f7a;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-      margin-left: 15px;
-      align-self: center;
-    }
+      .sidebar-link {
+        padding: 12px 24px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        color: white;
+        display: block;
+      }
 
-    /* Nav header */
-    .header-aluno {
-      background-color: #163f7a;
-      display: flex;
-      align-items: flex;
-      justify-content: space-between;
-      padding: 10px 20px;
-      flex-wrap: nowrap;
-      gap: 10px;
-    }
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background-color: #6a9bd1;
+        color: white;
+      }
 
-    .poliedro-logo-header {
-      height: 40px;
-      cursor: pointer;
-    }
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
 
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-    }
-
-    .header-profile-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid white;
-      cursor: pointer;
-    }
-
-    @media (max-width: 991px) {
+      /* Botão hamburguer */
       .menu-toggle {
-        display: inline-block;
-      }
-
-      /* mantém logo, menu e perfil na mesma linha */
-      .header-aluno {
-        justify-content: space-between;
-      }
-    }
-
-    #daltonismo-select {
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    .daltonismo-select-sidebar {
-      margin: 0 24px 12px 24px;
-      padding: 6px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: none;
-    }
-
-    /* Responsividade */
-    @media (min-width: 992px) {
-      .menu-toggle {
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: #163f7a;
+        cursor: pointer;
         display: none;
+        /* só aparece no mobile */
+        margin-left: 15px;
+        align-self: center;
       }
 
-      .sidebar {
-        display: none !important;
+      /* Nav header */
+      .header-aluno {
+        background-color: #163f7a;
+        display: flex;
+        align-items: flex;
+        justify-content: space-between;
+        padding: 10px 20px;
+        flex-wrap: nowrap;
+        gap: 10px;
       }
 
-      .header-nav {
-        display: flex !important;
-      }
-    }
-
-    @media (max-width: 991px) {
-      .header-nav {
-        display: none !important;
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
       }
 
       .menu-toggle {
-        display: inline-block;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: none;
+        /* só aparece no mobile */
       }
-    }
-  </style>
 
-</head>
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid white;
+        cursor: pointer;
+      }
 
-<body>
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
 
-  <header>
-    <div class="header-aluno">
-      <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+        /* mantém logo, menu e perfil na mesma linha */
+        .header-aluno {
+          justify-content: space-between;
+        }
+      }
 
-      <!-- Botão hamburguer para mobile -->
-      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
-        &#9776;
-      </button>
+      #daltonismo-select {
+        padding: 6px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
 
-      <!-- Navegação tradicional (desktop) -->
-      <nav class="header-nav">
-        <a href="HomeAluno.html" class="header-link">Home</a>
-        <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
-        <a href="AtividadesAluno.html" class="header-link">Atividades</a>
-        <a href="NotasAluno.html" class="header-link">Notas</a>
-        <a href="MensagensAluno.html" class="header-link active">Mensagens</a>
-        <a href="eventosAlunos.html" class="header-link">Eventos</a>
+      .daltonismo-select-sidebar {
+        margin: 0 24px 12px 24px;
+        padding: 6px;
+        font-size: 1rem;
+        border-radius: 4px;
+        border: none;
+      }
 
+      /* Responsividade */
+      @media (min-width: 992px) {
+        .menu-toggle {
+          display: none;
+        }
 
+        .sidebar {
+          display: none !important;
+        }
+
+        .header-nav {
+          display: flex !important;
+        }
+      }
+
+      @media (max-width: 991px) {
+        .header-nav {
+          display: none !important;
+        }
+
+        .menu-toggle {
+          display: inline-block;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="header-aluno">
+        <img
+          src="Assets/poliedro.png"
+          alt="Logo Poliedro"
+          class="poliedro-logo-header"
+        />
+
+        <!-- Botão hamburguer para mobile -->
+        <button
+          id="menu-toggle"
+          aria-label="Abrir menu"
+          class="menu-toggle"
+          type="button"
+        >
+          &#9776;
+        </button>
+
+        <!-- Navegação tradicional (desktop) -->
+        <nav class="header-nav">
+          <a href="HomeAluno.html" class="header-link">Home</a>
+          <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
+          <a href="AtividadesAluno.html" class="header-link">Atividades</a>
+          <a href="NotasAluno.html" class="header-link">Notas</a>
+          <a href="MensagensAluno.html" class="header-link active">Mensagens</a>
+          <a href="eventosAlunos.html" class="header-link">Eventos</a>
+        </nav>
+
+        <a href="PerfilAluno.html">
+          <img
+            src="Assets/LogoUsuario.png"
+            alt="Meu cadastro"
+            class="header-profile-img"
+          />
+        </a>
+      </div>
+
+      <!-- Sidebar para mobile -->
+      <nav id="menu-sidebar" class="menu-sidebar" aria-label="Menu lateral">
+        <button
+          id="menu-close"
+          aria-label="Fechar menu"
+          class="menu-close"
+          type="button"
+        >
+          &times;
+        </button>
+        <a href="HomeAluno.html" class="sidebar-link">Home</a>
+        <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
+        <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
+        <a href="NotasAluno.html" class="sidebar-link">Notas</a>
+        <a href="MensagensAluno.html" class="sidebar-link active">Mensagens</a>
+        <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
       </nav>
+    </header>
 
-      <a href="PerfilAluno.html">
-        <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
-      </a>
+    <!-- LAYOUT PRINCIPAL -->
+    <div class="page-wrap">
+      <!-- SIDEBAR: MURAL + PROFESSORES -->
+      <aside id="sidebar" class="sidebar">
+        <h2 class="sidebar-title">Conversas</h2>
+
+        <div class="sidebar-section">
+          <h3 class="section-title">Mural da Turma</h3>
+          <ul id="mural-list" class="mural-list"></ul>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="section-title">Professores</h3>
+          <ul id="prof-list" class="alunos-list"></ul>
+        </div>
+      </aside>
+
+      <!-- CHAT -->
+      <main class="chat-main">
+        <header class="chat-header">
+          <div class="chat-header-left">
+            <button id="chat-menu-toggle" class="btn-menu">☰</button>
+            <h2 id="chat-title">Selecione uma conversa</h2>
+          </div>
+
+          <div>
+            <button id="btnRefresh" class="btn-refresh">⟳</button>
+          </div>
+        </header>
+
+        <section id="chat-mensagens" class="chat-mensagens">
+          <div id="placeholder" class="chat-placeholder">
+            Selecione uma conversa
+          </div>
+        </section>
+
+        <div class="chat-footer">
+          <form id="sendForm" class="input-wrap" onsubmit="return false;">
+            <input
+              id="chatInput"
+              type="text"
+              placeholder="Digite..."
+              autocomplete="off"
+            />
+            <button id="btnSend" class="btn-send" type="button">➤</button>
+          </form>
+        </div>
+      </main>
     </div>
 
-    <!-- Sidebar para mobile -->
-    <nav id="menu-sidebar" class="menu-sidebar" aria-label="Menu lateral">
-      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
-        &times;
-      </button>
-      <a href="HomeAluno.html" class="sidebar-link">Home</a>
-      <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
-      <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
-      <a href="NotasAluno.html" class="sidebar-link">Notas</a>
-      <a href="MensagensAluno.html" class="sidebar-link active">Mensagens</a>
-      <a href="eventosAlunos.html" class="sidebar-link">Eventos</a>
-    </nav>
-  </header>
+    <footer>
+      <p>© Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
 
-  <!-- LAYOUT PRINCIPAL -->
-  <div class="page-wrap">
+    <script src="front/Scripts/MensagensAluno.js"></script>
+    <script src="front/Scripts/header.js"></script>
 
-    <!-- SIDEBAR: MURAL + PROFESSORES -->
-    <aside id="sidebar" class="sidebar">
-      <h2 class="sidebar-title">Conversas</h2>
+    <script>
+      // Sidebar hamburguer toggle
+      const menuToggle = document.getElementById("menu-toggle");
+      const menuSidebar = document.getElementById("menu-sidebar");
+      const menuClose = document.getElementById("menu-close");
 
-      <div class="sidebar-section">
-        <h3 class="section-title">Mural da Turma</h3>
-        <ul id="mural-list" class="mural-list"></ul>
-      </div>
+      menuToggle.addEventListener("click", () => {
+        menuSidebar.classList.add("open");
+        menuClose.focus();
+      });
 
-      <div class="sidebar-section">
-        <h3 class="section-title">Professores</h3>
-        <ul id="prof-list" class="alunos-list"></ul>
-      </div>
-    </aside>
-
-    <!-- CHAT -->
-    <main class="chat-main">
-
-      <header class="chat-header">
-        <div class="chat-header-left">
-          <button id="chat-menu-toggle" class="btn-menu">☰</button>
-          <h2 id="chat-title">Selecione uma conversa</h2>
-        </div>
-
-        <div>
-          <button id="btnRefresh" class="btn-refresh">⟳</button>
-        </div>
-      </header>
-
-      <section id="chat-mensagens" class="chat-mensagens">
-        <div id="placeholder" class="chat-placeholder">
-          Selecione uma conversa
-        </div>
-      </section>
-
-      <div class="chat-footer">
-        <form id="sendForm" class="input-wrap" onsubmit="return false;">
-          <input id="chatInput" type="text" placeholder="Digite..." autocomplete="off" />
-          <button id="btnSend" class="btn-send" type="button">➤</button>
-        </form>
-      </div>
-    </main>
-
-  </div>
-
-  <footer>
-    <p>© Projeto desenvolvido por: [Nossos nomes]</p>
-  </footer>
-
-  <script src="front/Scripts/MensagensAluno.js"></script>
-  <script src="front/Scripts/header.js"></script>
-
-  <script>
-    // Sidebar hamburguer toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const menuSidebar = document.getElementById("menu-sidebar");
-    const menuClose = document.getElementById("menu-close");
-
-    menuToggle.addEventListener("click", () => {
-      menuSidebar.classList.add("open");
-      menuClose.focus();
-    });
-
-    menuClose.addEventListener("click", () => {
-      menuSidebar.classList.remove("open");
-    });
-
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
-    window.addEventListener("click", (e) => {
-      if (
-        menuSidebar.classList.contains("open") &&
-        !menuSidebar.contains(e.target) &&
-        !menuToggle.contains(e.target)
-      ) {
+      menuClose.addEventListener("click", () => {
         menuSidebar.classList.remove("open");
-      }
-    });
-  </script>
-</body>
+      });
 
+      // Fecha sidebar clicando fora dela e fora do botão hamburguer
+      window.addEventListener("click", (e) => {
+        if (
+          menuSidebar.classList.contains("open") &&
+          !menuSidebar.contains(e.target) &&
+          !menuToggle.contains(e.target)
+        ) {
+          menuSidebar.classList.remove("open");
+        }
+      });
+    </script>
+    <!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+</script>
+
+  </body>
 </html>

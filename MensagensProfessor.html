@@ -1,355 +1,727 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mensagens - Professor</title>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mensagens - Professor</title>
+    <link rel="stylesheet" href="front/Styles/MensagensProfessor.css" />
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
 
-  <link rel="stylesheet" href="front/Styles/MensagensProfessor.css" />
-  <link rel="stylesheet" href="front/Styles/Login.css" />
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <style>
+      :root {
+        --header-h: 64px;
+        --footer-h: 56px;
+        --blue: #163f7a;
+      }
 
-  <style>
-    /* Top icons (ajusta como q empilha no mobile) */
-    .top-icons {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      flex-wrap: nowrap;
-      /* mantem os ícones em uma fileira */
-    }
+      /* base */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #f4f6f9;
+        overflow-x: hidden;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
 
-    .top-icons a,
-    .top-icons button,
-    .top-icons img,
-    .top-icons i {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      min-height: 36px;
-      max-width: 48px;
-      max-height: 48px;
-      padding: 4px;
-      box-sizing: border-box;
-    }
-
-    .top-icons img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-
-    @media (max-width: 420px) {
+      /* Top icons (ajusta como q empilha no mobile) */
       .top-icons {
-        gap: 6px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: nowrap;
       }
 
       .top-icons a,
       .top-icons button,
       .top-icons img,
       .top-icons i {
-        min-width: 32px;
-        min-height: 32px;
-        max-width: 40px;
-        max-height: 40px;
-      }
-    }
-
-    /* barra lateral do header */
-    .menu-sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #1a4e9b;
-      overflow-x: hidden;
-      padding-top: 60px;
-      transition: 0.3s;
-      z-index: 9999; /* garante sobreposição máxima */
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      box-shadow: 0 0 24px 0 rgba(0,0,0,0.25);
-    }
-
-    .menu-sidebar.open {
-      width: 250px;
-    }
-
-    .sidebar-link {
-      padding: 12px 24px;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: white;
-      display: block;
-    }
-
-    .sidebar-link:hover,
-    .sidebar-link.active {
-      background-color: #6a9bd1;
-      color: white;
-    }
-
-    .menu-close {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Botão hamburguer */
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: #163f7a;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-      margin-left: 15px;
-      align-self: center;
-    }
-
-    /* Nav header */
-    .header-aluno {
-      background-color: #163f7a;
-      display: flex;
-      align-items: flex;
-      justify-content: space-between;
-      padding: 10px 20px;
-      flex-wrap: nowrap;
-      gap: 10px;
-    }
-
-    .poliedro-logo-header {
-      height: 40px;
-      cursor: pointer;
-    }
-
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-    }
-
-    .header-profile-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid white;
-      cursor: pointer;
-    }
-
-    @media (max-width: 991px) {
-      .menu-toggle {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 36px;
+        min-height: 36px;
+        max-width: 48px;
+        max-height: 48px;
+        padding: 4px;
+        box-sizing: border-box;
       }
 
-      /* mantém logo, menu e perfil na mesma linha */
-      .header-aluno {
-        justify-content: space-between;
-      }
-    }
-
-    #daltonismo-select {
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    .daltonismo-select-sidebar {
-      margin: 0 24px 12px 24px;
-      padding: 6px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: none;
-    }
-
-    /* Responsividade */
-    @media (min-width: 992px) {
-      .menu-toggle {
-        display: none;
+      .top-icons img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
       }
 
+      @media (max-width: 420px) {
+        .top-icons {
+          gap: 6px;
+        }
+        .top-icons a,
+        .top-icons button,
+        .top-icons img,
+        .top-icons i {
+          min-width: 32px;
+          min-height: 32px;
+          max-width: 40px;
+          max-height: 40px;
+        }
+      }
+
+      /* barra lateral do header (menu mobile) */
       .menu-sidebar {
-        display: none !important;
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #1a4e9b;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: width 0.28s ease;
+        z-index: 100005;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        box-shadow: 0 0 24px rgba(0, 0, 0, 0.18);
+        box-sizing: border-box;
+      }
+      .menu-sidebar.open {
+        width: 250px;
+      }
+      .sidebar-link {
+        padding: 12px 24px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        color: white;
+        display: block;
+      }
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background-color: #6a9bd1;
+        color: white;
+      }
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
       }
 
-      .header-nav {
-        display: flex !important;
-      }
-    }
-
-    @media (max-width: 991px) {
-      .header-nav {
-        display: none !important;
-      }
-
+      /* Botão hamburguer (mobile) */
       .menu-toggle {
-        display: inline-block;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: none;
+        margin-left: 15px;
+        align-self: center;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <header>
-    <div class="header-aluno">
-      <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+      /* HEADER */
+      .header-aluno {
+        background-color: var(--blue);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        gap: 10px;
+        height: var(--header-h);
+        box-sizing: border-box;
+        transition: opacity 0.28s ease, backdrop-filter 0.28s ease;
+        will-change: opacity, backdrop-filter;
+      }
+      .header-aluno.scrolled {
+        opacity: 0.78;
+        backdrop-filter: blur(2px);
+      }
 
-      <!-- Botão hamburguer para mobile -->
-      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
-        &#9776;
-      </button>
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid white;
+        cursor: pointer;
+      }
 
-      <!-- Navegação tradicional (desktop) -->
-      <nav class="header-nav">
-        <a href="HomeProfessor.html" class="header-link">Home</a>
-        <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-        <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
-        <a href="NotasProfessor.html" class="header-link">Notas</a>
-        <a href="MensagensProfessor.html" class="header-link active">Mensagens</a>
-        <a href="EventosProfessores.html" class="header-link">Eventos</a>
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+        .header-aluno {
+          justify-content: space-between;
+        }
+      }
 
+      /* area principal layout */
+      .page-wrap {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 20px;
+        max-width: 1200px;
+        margin: 18px auto;
+        padding: 12px 18px;
+        box-sizing: border-box;
+        /* reserve espaço para footer fixo */
+        padding-bottom: calc(var(--footer-h) + 20px);
+        min-height: calc(100vh - var(--header-h) - var(--footer-h));
+        align-items: start;
+      }
 
+      /* Responsive: collapse to single column on small screens */
+      @media (max-width: 920px) {
+        .page-wrap {
+          grid-template-columns: 1fr;
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+        aside#sidebar {
+          order: 2;
+        }
+        main.chat-main {
+          order: 1;
+        }
+      }
+
+      /* SIDEBAR (conversas) */
+      aside.sidebar {
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        height: calc(100vh - var(--header-h) - var(--footer-h) - 48px);
+        overflow: auto;
+        box-sizing: border-box;
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      aside.sidebar.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .sidebar-title {
+        margin: 0 0 8px;
+        font-size: 1.15rem;
+      }
+      .mural-list,
+      .alunos-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      /* CHAT */
+      .chat-main {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - var(--header-h) - var(--footer-h) - 48px);
+        overflow: hidden;
+        box-sizing: border-box;
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      .chat-main.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .chat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        border-bottom: 1px solid #eef2f7;
+        gap: 12px;
+        background: linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0)
+        );
+      }
+      .btn-menu {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      @media (max-width: 920px) {
+        .btn-menu {
+          display: inline-block;
+        }
+      }
+
+      .chat-header-left h2 {
+        margin: 0;
+        font-size: 1.15rem;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.42s ease, transform 0.42s ease;
+      }
+      .chat-header-left h2.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .chat-subtitle {
+        margin: 0;
+        color: #6b7280;
+        font-size: 0.95rem;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.42s ease 0.06s, transform 0.42s ease 0.06s;
+      }
+      .chat-subtitle.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .chat-mensagens {
+        flex: 1;
+        padding: 18px;
+        overflow: auto;
+      }
+      .chat-placeholder {
+        color: #9aa4b2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        font-size: 1rem;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.48s ease, transform 0.48s ease;
+      }
+      .chat-placeholder.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .chat-footer {
+        border-top: 1px solid #eef2f7;
+        padding: 10px 12px;
+        background: #fff;
+      }
+      .input-wrap {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .input-wrap input[type="text"] {
+        flex: 1;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #e6eef8;
+      }
+      .btn-send {
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: var(--blue);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* footer fixo */
+      footer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--footer-h);
+        background: var(--blue);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100006;
+        box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.06);
+        box-sizing: border-box;
+      }
+
+      /* reduce motion */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div id="site-header" class="header-aluno" role="banner">
+        <img
+          src="Assets/poliedro.png"
+          alt="Logo Poliedro"
+          class="poliedro-logo-header"
+        />
+
+        <!-- Botão hamburguer para mobile -->
+        <button
+          id="menu-toggle"
+          aria-label="Abrir menu"
+          class="menu-toggle"
+          type="button"
+        >
+          &#9776;
+        </button>
+
+        <!-- Navegação tradicional (desktop) -->
+        <nav class="header-nav" role="navigation" aria-label="Links principais">
+          <a href="HomeProfessor.html" class="header-link">Home</a>
+          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+          <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
+          <a href="NotasProfessor.html" class="header-link">Notas</a>
+          <a href="MensagensProfessor.html" class="header-link active"
+            >Mensagens</a
+          >
+          <a href="EventosProfessores.html" class="header-link">Eventos</a>
+        </nav>
+
+        <a href="PerfilProfessor.html" aria-label="Perfil do usuário">
+          <img
+            src="Assets/LogoUsuario.png"
+            alt="Meu cadastro"
+            class="header-profile-img"
+          />
+        </a>
+      </div>
+
+      <!-- Sidebar para mobile -->
+      <nav
+        id="menu-sidebar"
+        class="menu-sidebar"
+        aria-label="Menu lateral"
+        aria-hidden="true"
+      >
+        <button
+          id="menu-close"
+          aria-label="Fechar menu"
+          class="menu-close"
+          type="button"
+        >
+          &times;
+        </button>
+        <a href="HomeProfessor.html" class="sidebar-link">Home</a>
+        <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
+        <a href="AtividadesProfessor.html" class="sidebar-link">Atividades</a>
+        <a href="NotasProfessor.html" class="sidebar-link">Notas</a>
+        <a href="MensagensProfessor.html" class="sidebar-link active"
+          >Mensagens</a
+        >
+        <a href="EventosProfessores.html" class="sidebar-link">Eventos</a>
       </nav>
+    </header>
 
-      <a href="PerfilProfessor.html">
-        <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
-      </a>
+    <!-- LAYOUT PRINCIPAL -->
+    <div class="page-wrap">
+      <!-- SIDEBAR DE CONVERSAS -->
+      <aside id="sidebar" class="sidebar" aria-label="Conversas">
+        <h2 class="sidebar-title">Conversas</h2>
+
+        <div class="sidebar-section">
+          <h3 class="section-title">Mural das Turmas</h3>
+          <ul id="mural-list" class="mural-list"></ul>
+        </div>
+
+        <div class="sidebar-section private-section">
+          <h3 class="section-title">Chat Privado</h3>
+
+          <div class="filters">
+            <select id="filter-year">
+              <option value="">Todos os anos</option>
+              <option value="1">1º Ano</option>
+              <option value="2">2º Ano</option>
+              <option value="3">3º Ano</option>
+            </select>
+
+            <select id="filter-sub">
+              <option value="">Todas as subturmas</option>
+              <option value="sub1">Sub1</option>
+              <option value="sub2">Sub2</option>
+              <option value="sub3">Sub3</option>
+            </select>
+          </div>
+
+          <div class="search-box">
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Buscar aluno..."
+            />
+          </div>
+
+          <ul id="alunos-list" class="alunos-list"></ul>
+        </div>
+      </aside>
+
+      <!-- CHAT -->
+      <main class="chat-main" aria-live="polite">
+        <header class="chat-header">
+          <!-- Botão EXCLUSIVO DO CHAT -->
+          <button
+            id="chat-menu-toggle"
+            class="btn-menu"
+            aria-label="Abrir conversas"
+          >
+            ☰
+          </button>
+
+          <div class="chat-header-left">
+            <h2 id="chat-title">Selecione uma conversa</h2>
+            <p id="chat-subtitle" class="chat-subtitle"></p>
+          </div>
+
+          <div class="chat-header-right">
+            <button id="btnRefresh" class="btn-refresh" aria-label="Atualizar">
+              ⟳
+            </button>
+          </div>
+        </header>
+
+        <section id="chat-mensagens" class="chat-mensagens">
+          <div id="placeholder" class="chat-placeholder">
+            Selecione uma conversa
+          </div>
+        </section>
+
+        <div class="chat-footer">
+          <form id="sendForm" class="input-wrap" onsubmit="return false;">
+            <input
+              id="chatInput"
+              type="text"
+              placeholder="Digite uma mensagem..."
+              autocomplete="off"
+            />
+            <button id="btnSend" class="btn-send" aria-label="Enviar mensagem">
+              ➤
+            </button>
+          </form>
+        </div>
+      </main>
     </div>
 
-  <!-- Sidebar para mobile -->
-  <nav id="menu-sidebar" class="menu-sidebar" aria-label="Menu lateral">
-      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
-        &times;
-      </button>
-      <a href="HomeProfessor.html" class="sidebar-link">Home</a>
-      <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
-      <a href="AtividadesProfessor.html" class="sidebar-link">Atividades</a>
-      <a href="NotasProfessor.html" class="sidebar-link">Notas</a>
-      <a href="MensagensProfessor.html" class="sidebar-link active">Mensagens</a>
-      <a href="EventosProfessores.html" class="sidebar-link">Eventos</a>
+    <footer>
+      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
 
-    </nav>
-  </header>
+    <script src="front/Scripts/MensagensProfessor.js"></script>
+    <script src="front/Scripts/header.js"></script>
 
+    <script>
+      (function () {
+        // Elements
+        const menuToggle = document.getElementById("menu-toggle");
+        const menuSidebar = document.getElementById("menu-sidebar");
+        const menuClose = document.getElementById("menu-close");
+        const header = document.getElementById("site-header");
+        const pageSidebar = document.getElementById("sidebar");
+        const chatMain = document.querySelector(".chat-main");
+        const chatTitle = document.getElementById("chat-title");
+        const chatSubtitle = document.getElementById("chat-subtitle");
+        const chatPlaceholder = document.getElementById("placeholder");
+        const chatMenuToggle = document.getElementById("chat-menu-toggle");
 
-  <!-- LAYOUT PRINCIPAL -->
-  <div class="page-wrap">
+        // --- Menu mobile (menu-sidebar) behavior & accessibility ---
+        if (menuToggle && menuSidebar) {
+          // keep button state synced with sidebar class
+          const mo = new MutationObserver(() => {
+            const open = menuSidebar.classList.contains("open");
+            menuToggle.classList.toggle("is-open", open);
+            menuSidebar.setAttribute("aria-hidden", open ? "false" : "true");
+          });
+          mo.observe(menuSidebar, {
+            attributes: true,
+            attributeFilter: ["class"],
+          });
 
-    <!-- SIDEBAR DE CONVERSAS (gente vai abrir com o chat-menu-toggle) -->
-    <aside id="sidebar" class="sidebar">
-      <h2 class="sidebar-title">Conversas</h2>
+          menuToggle.addEventListener("click", () => {
+            const open = !menuSidebar.classList.contains("open");
+            menuSidebar.classList.toggle("open", open);
+            menuSidebar.setAttribute("aria-hidden", open ? "false" : "true");
+            if (open && menuClose) menuClose.focus();
+          });
 
-      <div class="sidebar-section">
-        <h3 class="section-title">Mural das Turmas</h3>
-        <ul id="mural-list" class="mural-list"></ul>
-      </div>
+          if (menuClose) {
+            menuClose.addEventListener("click", () => {
+              menuSidebar.classList.remove("open");
+              menuSidebar.setAttribute("aria-hidden", "true");
+              menuToggle.focus();
+            });
+          }
 
-      <div class="sidebar-section private-section">
-        <h3 class="section-title">Chat Privado</h3>
+          // click outside to close
+          window.addEventListener("click", (e) => {
+            if (!menuSidebar.classList.contains("open")) return;
+            if (menuSidebar.contains(e.target) || menuToggle.contains(e.target))
+              return;
+            menuSidebar.classList.remove("open");
+            menuSidebar.setAttribute("aria-hidden", "true");
+          });
+        }
 
-        <div class="filters">
-          <select id="filter-year">
-            <option value="">Todos os anos</option>
-            <option value="1">1º Ano</option>
-            <option value="2">2º Ano</option>
-            <option value="3">3º Ano</option>
-          </select>
+        // --- Chat sidebar toggle (small screens) ---
+        if (chatMenuToggle && pageSidebar) {
+          chatMenuToggle.addEventListener("click", () => {
+            const open = !pageSidebar.classList.contains("open");
+            pageSidebar.classList.toggle("open", open);
+            pageSidebar.style.transform = open ? "translateX(0)" : "";
+            // on small screens we can focus first item if present
+            if (open) {
+              const first = pageSidebar.querySelector(".sidebar-link");
+              if (first) first.focus();
+            }
+          });
 
-          <select id="filter-sub">
-            <option value="">Todas as subturmas</option>
-            <option value="sub1">Sub1</option>
-            <option value="sub2">Sub2</option>
-            <option value="sub3">Sub3</option>
-          </select>
-        </div>
+          // close on click outside (for the chat sidebar)
+          window.addEventListener("click", (e) => {
+            if (!pageSidebar.classList.contains("open")) return;
+            if (
+              pageSidebar.contains(e.target) ||
+              chatMenuToggle.contains(e.target)
+            )
+              return;
+            pageSidebar.classList.remove("open");
+          });
+        }
 
-        <div class="search-box">
-          <input id="search-input" type="text" placeholder="Buscar aluno..." />
-        </div>
+        // close menu or sidebar with Escape key
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            if (menuSidebar && menuSidebar.classList.contains("open")) {
+              menuSidebar.classList.remove("open");
+              menuSidebar.setAttribute("aria-hidden", "true");
+              if (menuToggle) menuToggle.focus();
+            }
+            if (pageSidebar && pageSidebar.classList.contains("open")) {
+              pageSidebar.classList.remove("open");
+            }
+          }
+        });
 
-        <ul id="alunos-list" class="alunos-list"></ul>
-      </div>
-    </aside>
+        // --- Header fade on scroll (rAF optimized) ---
+        const SCROLL_THRESHOLD = 8;
+        let ticking = false;
+        function updateHeaderOnScroll() {
+          const y = window.scrollY || window.pageYOffset;
+          if (!header) return;
+          if (y > SCROLL_THRESHOLD) header.classList.add("scrolled");
+          else header.classList.remove("scrolled");
+        }
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+              updateHeaderOnScroll();
+              ticking = false;
+            });
+          },
+          { passive: true }
+        );
 
-    <!-- CHAT -->
-    <main class="chat-main">
+        // initialize header state (in case page loaded scrolled)
+        updateHeaderOnScroll();
 
-      <header class="chat-header">
+        // --- Simple IntersectionObservers for entrance animations ---
+        const ioOptions = { threshold: 0.08 };
+        if ("IntersectionObserver" in window) {
+          const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("in-view");
+                obs.unobserve(entry.target);
+              }
+            });
+          }, ioOptions);
 
-        <!-- Botão EXCLUSIVO DO CHAT -->
-        <button id="chat-menu-toggle" class="btn-menu" aria-label="Abrir conversas">☰</button>
+          if (pageSidebar) io.observe(pageSidebar);
+          if (chatMain) io.observe(chatMain);
+        } else {
+          // fallback
+          if (pageSidebar) pageSidebar.classList.add("in-view");
+          if (chatMain) chatMain.classList.add("in-view");
+        }
 
-        <div class="chat-header-left">
-          <h2 id="chat-title">Selecione uma conversa</h2>
-          <p id="chat-subtitle" class="chat-subtitle"></p>
-        </div>
+        // Title + placeholder animation
+        const titleObserver =
+          "IntersectionObserver" in window
+            ? new IntersectionObserver(
+                (entries, obs) => {
+                  entries.forEach((ent) => {
+                    if (ent.isIntersecting) {
+                      if (chatTitle) chatTitle.classList.add("visible");
+                      if (chatSubtitle) chatSubtitle.classList.add("visible");
+                      if (chatPlaceholder)
+                        chatPlaceholder.classList.add("visible");
+                      obs.unobserve(ent.target);
+                    }
+                  });
+                },
+                { threshold: 0.12 }
+              )
+            : null;
 
-        <div class="chat-header-right">
-          <button id="btnRefresh" class="btn-refresh">⟳</button>
-        </div>
-      </header>
+        if (titleObserver && chatMain) titleObserver.observe(chatMain);
+        else {
+          if (chatTitle) chatTitle.classList.add("visible");
+          if (chatSubtitle) chatSubtitle.classList.add("visible");
+          if (chatPlaceholder) chatPlaceholder.classList.add("visible");
+        }
 
-      <section id="chat-mensagens" class="chat-mensagens">
-        <div id="placeholder" class="chat-placeholder">Selecione uma conversa</div>
-      </section>
+        // small accessibility: mark the menu button as expanded when open (optional)
+        if (menuToggle && menuSidebar) {
+          const updateAria = () =>
+            menuToggle.setAttribute(
+              "aria-expanded",
+              String(menuSidebar.classList.contains("open"))
+            );
+          const mo2 = new MutationObserver(updateAria);
+          mo2.observe(menuSidebar, {
+            attributes: true,
+            attributeFilter: ["class"],
+          });
+          updateAria();
+        }
+      })();
+    </script>
+    <!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+</script>
 
-      <div class="chat-footer">
-        <form id="sendForm" class="input-wrap" onsubmit="return false;">
-          <input id="chatInput" type="text" placeholder="Digite uma mensagem..." autocomplete="off" />
-          <button id="btnSend" class="btn-send">➤</button>
-        </form>
-      </div>
-
-    </main>
-
-  </div>
-
-  <script src="front/Scripts/MensagensProfessor.js"></script>
-  <script src="front/Scripts/header.js"></script>
-
-
-  <script>
-    // Sidebar toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const menuSidebar = document.getElementById("menu-sidebar");
-    const menuClose = document.getElementById("menu-close");
-
-    menuToggle.addEventListener("click", () => {
-      menuSidebar.classList.add("open");
-      menuClose.focus();
-    });
-
-    menuClose.addEventListener("click", () => {
-      menuSidebar.classList.remove("open");
-    });
-
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
-    window.addEventListener("click", (e) => {
-      if (
-        menuSidebar.classList.contains("open") &&
-        !menuSidebar.contains(e.target) &&
-        !menuToggle.contains(e.target)
-      ) {
-        menuSidebar.classList.remove("open");
-      }
-    });
-  </script>
-</body>
-
+  </body>
 </html>

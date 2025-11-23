@@ -1,350 +1,398 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atividades Professor</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Atividades Professor</title>
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/AtividadesProfessor.css" />
 
-  <link rel="stylesheet" href="front/Styles/Login.css" />
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-  <link rel="stylesheet" href="front/Styles/AtividadesProfessor.css" />
-
-  <style>
-    /* Top icons (ajusta como q empilha no mobile) */
-    .top-icons {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      flex-wrap: nowrap;
-      /* mantem os ícones em uma fileira */
-    }
-
-    .top-icons a,
-    .top-icons button,
-    .top-icons img,
-    .top-icons i {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      min-height: 36px;
-      max-width: 48px;
-      max-height: 48px;
-      padding: 4px;
-      box-sizing: border-box;
-    }
-
-    .top-icons img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-
-    @media (max-width: 420px) {
-      .top-icons {
-        gap: 6px;
+    <style>
+      :root {
+        --header-h: 64px;
+        --footer-h: 56px;
+        --blue: #163f7a;
       }
 
-      .top-icons a,
-      .top-icons button,
-      .top-icons img,
-      .top-icons i {
-        min-width: 32px;
-        min-height: 32px;
-        max-width: 40px;
-        max-height: 40px;
-      }
-    }
-
-    /* barra lateral */
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #1a4e9b;
-      overflow-x: hidden;
-      padding-top: 60px;
-      transition: 0.3s;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .sidebar.open {
-      width: 250px;
-    }
-
-    .sidebar-link {
-      padding: 12px 24px;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: white;
-      display: block;
-    }
-
-    .sidebar-link:hover,
-    .sidebar-link.active {
-      background-color: #6a9bd1;
-      color: white;
-    }
-
-    .menu-close {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Botão hamburguer */
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: #163f7a;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-      margin-left: 15px;
-      align-self: center;
-    }
-
-    /* Nav header */
-    .header-aluno {
-      background-color: #163f7a;
-      display: flex;
-      align-items: flex;
-      justify-content: space-between;
-      padding: 10px 20px;
-      flex-wrap: nowrap;
-      gap: 10px;
-    }
-
-    .poliedro-logo-header {
-      height: 40px;
-      cursor: pointer;
-    }
-
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-    }
-
-    .header-profile-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid white;
-      cursor: pointer;
-    }
-
-    @media (max-width: 991px) {
-      .menu-toggle {
-        display: inline-block;
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f4f6f9;
+        height: 100%;
+        overflow-x: hidden;
       }
 
-      /* mantém logo, menu e perfil na mesma linha */
+      /* HEADER */
       .header-aluno {
+        background-color: var(--blue);
+        display: flex;
+        align-items: center;
         justify-content: space-between;
+        padding: 10px 20px;
+        gap: 10px;
+        height: var(--header-h);
       }
-    }
 
-    #daltonismo-select {
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
 
-    .daltonismo-select-sidebar {
-      margin: 0 24px 12px 24px;
-      padding: 6px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: none;
-    }
-
-    /* Responsividade */
-    @media (min-width: 992px) {
       .menu-toggle {
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
         display: none;
       }
 
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid white;
+        cursor: pointer;
+      }
+
+      /* NAV DESKTOP */
+      .header-nav {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .header-link {
+        color: #fff;
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+      }
+
+      .header-link.active {
+        background: #fff;
+        color: var(--blue);
+      }
+
+      /* SIDEBAR */
       .sidebar {
-        display: none !important;
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #1a4e9b;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.3s;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
       }
 
-      .header-nav {
-        display: flex !important;
-      }
-    }
-
-    @media (max-width: 991px) {
-      .header-nav {
-        display: none !important;
+      .sidebar.open {
+        width: 250px;
       }
 
-      .menu-toggle {
-        display: inline-block;
+      .sidebar-link {
+        padding: 12px 24px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        color: white;
+        display: block;
       }
-    }
 
-  </style>
-</head>
+      .menu-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
 
-<body>
+      @media (max-width: 991px) {
+        .menu-toggle {
+          display: inline-block;
+        }
 
-  <header>
-    <div class="header-aluno">
-      <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+        .header-nav {
+          display: none;
+        }
+      }
 
-      <!-- Botão hamburguer para mobile -->
-      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
-        &#9776;
-      </button>
+      @media (min-width: 992px) {
+        .menu-toggle {
+          display: none;
+        }
 
-      <!-- Navegação tradicional (desktop) -->
-      <nav class="header-nav">
-        <a href="HomeProfessor.html" class="header-link">Home</a>
-        <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-        <a href="AtividadesProfessor.html" class="header-link active">Atividades</a>
-        <a href="NotasProfessor.html" class="header-link">Notas</a>
-        <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
-        <a href="EventosProfessores.html" class="header-link">Eventos</a>
+        .sidebar {
+          display: none !important;
+        }
 
+        .header-nav {
+          display: flex !important;
+        }
+      }
 
-      </nav>
+      /* ANIMAÇÕES GERAIS */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: 0.6s ease;
+      }
 
-      <a href="PerfilProfessor.html">
-        <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
-      </a>
-    </div>
+      .fade-in.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-    <!-- Sidebar para mobile -->
-    <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
-        &times;
-      </button>
-      <a href="HomeProfessor.html" class="sidebar-link">Home</a>
-      <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
-      <a href="AtividadesProfessor.html" class="sidebar-link active">Atividades</a>
-      <a href="NotasProfessor.html" class="sidebar-link">Notas</a>
-      <a href="MensagensProfessor.html" class="sidebar-link">Mensagens</a>
-      <a href="EventosProfessores.html" class="sidebar-link">Eventos</a>
+      /* CONTEÚDO PRINCIPAL */
+      .atividades-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 20px;
+        padding-bottom: 80px;
+        max-width: 1200px;
+        margin: auto;
+        box-sizing: border-box;
+      }
 
+      .card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: 0.6s ease;
+      }
 
-    </nav>
-  </header>
+      .card.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
+      h1,
+      h2 {
+        margin-top: 0;
+      }
 
-  <main class="atividades-grid">
+      textarea,
+      select,
+      input[type="text"],
+      input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        background: white;
+      }
 
-    <!-- COLUNA DA ESQUERDA: FORMULÁRIO -->
-    <section class="card formulario">
-      <h1>Atividades do Professor</h1>
+      button[type="submit"],
+      .btn-resolver {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        background: #163f7a;
+        color: white;
+      }
 
-      <form id="form-tarefa">
-        <select id="turma" required>
-          <option value="">Selecione o ano</option>
-          <option value="1º Ano">1º Ano</option>
-          <option value="2º Ano">2º Ano</option>
-          <option value="3º Ano">3º Ano</option>
-        </select>
+      /* GRID MOBILE */
+      @media (max-width: 900px) {
+        .atividades-grid {
+          grid-template-columns: 1fr;
+        }
+      }
 
-        <select id="subSala" required>
-          <option value="">Selecione a sub-sala</option>
-          <option value="Sub 1">Sub 1</option>
-          <option value="Sub 2">Sub 2</option>
-          <option value="Sub 3">Sub 3</option>
-        </select>
+      footer {
+        background: var(--blue);
+        color: white;
+        padding: 14px 0;
+        text-align: center;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
 
-        <select id="materia" required>
-          <option value="">Selecione a matéria</option>
-          <option value="Português">Português</option>
-          <option value="Matemática">Matemática</option>
-          <option value="Biologia">Biologia</option>
-          <option value="Física">Física</option>
-          <option value="Química">Química</option>
-          <option value="Geografia">Geografia</option>
-          <option value="História">História</option>
-          <option value="Filosofia">Filosofia</option>
-          <option value="Sociologia">Sociologia</option>
-          <option value="Artes">Artes</option>
-          <option value="Educação Física">Educação Física</option>
-          <option value="Inglês">Inglês</option>
-        </select>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-aluno">
+        <img src="Assets/poliedro.png" class="poliedro-logo-header" />
 
-        <input type="text" id="titulo" placeholder="Título da tarefa" required />
-        <textarea id="descricao" placeholder="Descrição da tarefa" rows="3"></textarea>
-        <input type="file" id="arquivo" />
+        <button id="menu-toggle" class="menu-toggle">&#9776;</button>
 
-        <button type="submit">Postar Tarefa</button>
-      </form>
-    </section>
+        <nav class="header-nav">
+          <a href="HomeProfessor.html" class="header-link">Home</a>
+          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+          <a href="AtividadesProfessor.html" class="header-link active"
+            >Atividades</a
+          >
+          <a href="NotasProfessor.html" class="header-link">Notas</a>
+          <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
+          <a href="EventosProfessores.html" class="header-link">Eventos</a>
+        </nav>
 
-    <!-- COLUNA DA DIREITA: LISTA DE ATIVIDADES -->
-    <section class="card atividades-card">
-      <h2>Atividades Criadas</h2>
-      <div id="lista-tarefas"></div>
-    </section>
-
-    <!-- CARD INFERIOR: RESOLUÇÕES (LARGURA TOTAL DO GRID) -->
-    <section class="card resolucoes-card" id="painel-resolucoes">
-      <h2>Resoluções Enviadas</h2>
-      <div id="lista-resolucoes">
-        <p>Selecione uma atividade para visualizar as resoluções.</p>
+        <a href="PerfilProfessor.html">
+          <img src="Assets/LogoUsuario.png" class="header-profile-img" />
+        </a>
       </div>
-    </section>
 
-  </main>
+      <nav id="sidebar" class="sidebar">
+        <button id="menu-close" class="menu-close">&times;</button>
 
-  <footer>
-    <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-  </footer>
+        <a href="HomeProfessor.html" class="sidebar-link">Home</a>
+        <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
+        <a href="AtividadesProfessor.html" class="sidebar-link active"
+          >Atividades</a
+        >
+        <a href="NotasProfessor.html" class="sidebar-link">Notas</a>
+        <a href="MensagensProfessor.html" class="sidebar-link">Mensagens</a>
+        <a href="EventosProfessores.html" class="sidebar-link">Eventos</a>
+      </nav>
+    </header>
 
-  <script src="front/Scripts/header.js"></script>
-  <script src="front/Scripts/atividades.Professor.js"></script>
+    <!-- MAIN -->
+    <main class="atividades-grid">
+      <!-- FORMULÁRIO -->
+      <section class="card formulario fade-in">
+        <h1>Atividades do Professor</h1>
 
-  <script>
-    // Sidebar toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebar = document.getElementById("sidebar");
-    const menuClose = document.getElementById("menu-close");
+        <form id="form-tarefa">
+          <select id="turma" required>
+            <option value="">Selecione o ano</option>
+            <option value="1º Ano">1º Ano</option>
+            <option value="2º Ano">2º Ano</option>
+            <option value="3º Ano">3º Ano</option>
+          </select>
 
-    menuToggle.addEventListener("click", () => {
-      sidebar.classList.add("open");
-      menuClose.focus();
-    });
+          <select id="subSala" required>
+            <option value="">Selecione a sub-sala</option>
+            <option value="Sub 1">Sub 1</option>
+            <option value="Sub 2">Sub 2</option>
+            <option value="Sub 3">Sub 3</option>
+          </select>
 
-    menuClose.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-    });
+          <select id="materia" required>
+            <option value="">Selecione a matéria</option>
+            <option value="Português">Português</option>
+            <option value="Matemática">Matemática</option>
+            <option value="Biologia">Biologia</option>
+            <option value="Física">Física</option>
+            <option value="Química">Química</option>
+            <option value="Geografia">Geografia</option>
+            <option value="História">História</option>
+            <option value="Filosofia">Filosofia</option>
+            <option value="Sociologia">Sociologia</option>
+            <option value="Artes">Artes</option>
+            <option value="Educação Física">Educação Física</option>
+            <option value="Inglês">Inglês</option>
+          </select>
 
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
-    window.addEventListener("click", (e) => {
-      if (
-        sidebar.classList.contains("open") &&
-        !sidebar.contains(e.target) &&
-        !menuToggle.contains(e.target)
-      ) {
+          <input
+            type="text"
+            id="titulo"
+            placeholder="Título da tarefa"
+            required
+          />
+          <textarea
+            id="descricao"
+            placeholder="Descrição da tarefa"
+            rows="3"
+          ></textarea>
+          <input type="file" id="arquivo" />
+
+          <button type="submit">Postar Tarefa</button>
+        </form>
+      </section>
+
+      <!-- ATIVIDADES CRIADAS -->
+      <section class="card atividades-card fade-in">
+        <h2>Atividades Criadas</h2>
+        <div id="lista-tarefas"></div>
+      </section>
+
+      <!-- RESOLUÇÕES -->
+      <section class="card resolucoes-card fade-in" id="painel-resolucoes">
+        <h2>Resoluções Enviadas</h2>
+        <div id="lista-resolucoes">
+          <p>Selecione uma atividade para visualizar as resoluções.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="front/Scripts/header.js"></script>
+    <script src="front/Scripts/atividades.Professor.js"></script>
+
+    <script>
+      // Sidebar toggle
+      const menuToggle = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+      const menuClose = document.getElementById("menu-close");
+
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.add("open");
+      });
+
+      menuClose.addEventListener("click", () => {
         sidebar.classList.remove("open");
-      }
-    });
-  </script>
+      });
 
-</body>
+      window.addEventListener("click", (e) => {
+        if (
+          sidebar.classList.contains("open") &&
+          !sidebar.contains(e.target) &&
+          !menuToggle.contains(e.target)
+        ) {
+          sidebar.classList.remove("open");
+        }
+      });
 
+      // Intersection Observer para animações
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("show");
+              entry.target.classList.add("in-view");
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      document
+        .querySelectorAll(".fade-in, .card")
+        .forEach((el) => observer.observe(el));
+    </script>
+    <!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+</script>
+
+  </body>
 </html>

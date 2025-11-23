@@ -1,229 +1,691 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil do Professor</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Perfil do Professor</title>
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
+    <link rel="stylesheet" href="front/Styles/PerfilProfessor.css" />
 
-  <link rel="stylesheet" href="front/Styles/Login.css" />
-  <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-  <link rel="stylesheet" href="front/Styles/PerfilProfessor.css" />
-</head>
+    <style>
+      :root {
+        --header-h: 64px;
+        --footer-h: 56px;
+        --blue: #163f7a;
+      }
 
-<body>
-  <header>
-    <div class="header-aluno">
-      <img src="Assets/poliedro.png" class="poliedro-logo-header" />
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #f4f6f9;
+        overflow-x: hidden;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        box-sizing: border-box;
+      }
 
-      <nav class="header-nav">
-        <a href="HomeProfessor.html" class="header-link">Home</a>
-        <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-        <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
-        <a href="NotasProfessor.html" class="header-link">Notas</a>
-        <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
-        <a href="EventosProfessores.html" class="header-link">Eventos</a>
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
 
-        <select id="daltonismo-select">
-          <option value="">Normal</option>
-          <option value="protanopia">Protanopia</option>
-          <option value="deuteranopia">Deuteranopia</option>
-          <option value="tritanopia">Tritanopia</option>
-        </select>
-      </nav>
+      /* HEADER */
+      .header-aluno {
+        background: var(--blue);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 20px;
+        gap: 12px;
+        height: var(--header-h);
+        box-sizing: border-box;
+        transition: opacity 0.28s ease, backdrop-filter 0.28s ease,
+          transform 0.18s ease;
+        will-change: opacity, backdrop-filter;
+      }
+      .header-aluno.scrolled {
+        opacity: 0.72;
+        backdrop-filter: blur(2px);
+      }
 
-      <a href="PerfilProfessor.html">
-        <img src="Assets/LogoUsuario.png" class="header-profile-img" />
-      </a>
-    </div>
-  </header>
+      .poliedro-logo-header {
+        height: 40px;
+        cursor: pointer;
+      }
 
-  <main class="page-wrap">
-    <div class="profile-grid">
+      .header-nav {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
 
-      <!-- CARD DE PERFIL -->
-      <div class="card card-perfil">
-        <h2 class="titulo-perfil">Meu Perfil</h2>
+      .header-link {
+        color: #fff;
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+      }
 
-        <div class="perfil-top">
-          <div class="avatar-area">
-            <img src="Assets/LogoUsuario.png" id="avatar-preview" class="avatar-img" />
-            <label class="btn-avatar" for="avatar-upload">Alterar foto</label>
-            <input type="file" id="avatar-upload" accept="image/*" style="display: none" />
-          </div>
+      .header-link .daltonismo-select {
+        margin-left: 8px;
+      }
 
-          <div class="perfil-info">
-            <label class="field-label">Nome</label>
-            <div class="field-read" id="campoNome"></div>
+      .header-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        object-fit: cover;
+      }
 
-            <label class="field-label">Email</label>
-            <div class="field-read" id="campoEmail"></div>
+      /* page wrap */
+      .page-wrap {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 12px 20px;
+        box-sizing: border-box;
+        padding-bottom: calc(
+          var(--footer-h) + 24px
+        ); /* reserve space for fixed footer */
+        min-height: calc(100vh - var(--header-h) - var(--footer-h));
+      }
 
-            <label class="field-label">Matéria</label>
-            <div class="field-read" id="campoMateria"></div>
-          </div>
-        </div>
+      .profile-grid {
+        display: grid;
+        grid-template-columns: 480px 1fr;
+        gap: 20px;
+        align-items: start;
+      }
 
-        <div class="senha-bloco">
-          <div class="subtitle">Alterar senha</div>
-          <input type="password" id="novaSenha" class="input input-senha" placeholder="Nova senha" />
-          <input type="password" id="confirmarSenha" class="input input-senha" placeholder="Confirmar nova senha" />
-        </div>
+      @media (max-width: 1000px) {
+        .profile-grid {
+          grid-template-columns: 1fr;
+        }
+      }
 
-        <div class="perfil-actions">
-          <button class="btn btn-neutral" id="btnCancelarPerfil">Cancelar</button>
-          <button class="btn btn-primary" id="btnSalvarPerfil">Salvar alterações</button>
-        </div>
+      .card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+        box-sizing: border-box;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.56s ease, transform 0.56s ease;
+      }
+      .card.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .card-perfil .titulo-perfil {
+        margin: 0 0 12px;
+      }
+
+      .perfil-top {
+        display: flex;
+        gap: 18px;
+        align-items: center;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .avatar-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .avatar-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #f1f5f9;
+        background: #fff;
+      }
+      .btn-avatar {
+        cursor: pointer;
+        background: var(--blue);
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .perfil-info {
+        flex: 1;
+        min-width: 180px;
+      }
+      .field-label {
+        display: block;
+        font-size: 0.9rem;
+        color: #6b7280;
+        margin-top: 8px;
+      }
+      .field-read {
+        background: #f8fafc;
+        padding: 10px;
+        border-radius: 8px;
+        margin-top: 6px;
+        min-height: 34px;
+      }
+
+      .senha-bloco {
+        margin-top: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .input {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #e6eef8;
+        background: #fff;
+      }
+
+      .perfil-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 12px;
+      }
+      .btn {
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-neutral {
+        background: #e6eef8;
+        color: #111;
+      }
+      .btn-primary {
+        background: var(--blue);
+        color: #fff;
+        font-weight: 700;
+      }
+
+      /* forms */
+      .card-form .tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .tab-btn {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        background: #f1f5f9;
+      }
+      .tab-btn.active {
+        background: var(--blue);
+        color: #fff;
+      }
+      .tab-pane {
+        display: none;
+      }
+      .tab-pane.active {
+        display: block;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .form-grid .input {
+        width: 100%;
+      }
+      .form-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 10px;
+      }
+
+      .list-two-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 20px;
+      }
+      @media (max-width: 1000px) {
+        .list-two-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .list-title {
+        margin: 0 0 12px;
+      }
+
+      .list-scroll {
+        max-height: 360px;
+        overflow: auto;
+        padding-right: 8px;
+      }
+
+      /* footer fixo */
+      footer {
+        position: static;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--footer-h);
+        background: var(--blue);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100003;
+        box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.06);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div id="site-header" class="header-aluno" role="banner">
+        <img
+          src="Assets/poliedro.png"
+          class="poliedro-logo-header"
+          alt="Poliedro"
+        />
+
+        <nav class="header-nav" role="navigation" aria-label="Links principais">
+          <a href="HomeProfessor.html" class="header-link">Home</a>
+          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+          <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
+          <a href="NotasProfessor.html" class="header-link">Notas</a>
+          <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
+          <a href="EventosProfessores.html" class="header-link">Eventos</a>
+        </nav>
+
+        <a href="PerfilProfessor.html" aria-label="Perfil do usuário">
+          <img
+            src="Assets/LogoUsuario.png"
+            class="header-profile-img"
+            alt="Usuário"
+          />
+        </a>
       </div>
+    </header>
 
-      <!-- CARD DE FORMULARIOS -->
-      <div class="card card-form">
-        <div class="tabs">
-          <button class="tab-btn active" data-tab="tab-aluno">Criar novo aluno</button>
-          <button class="tab-btn" data-tab="tab-professor">Criar novo professor</button>
+    <main class="page-wrap">
+      <div class="profile-grid">
+        <!-- CARD DE PERFIL -->
+        <div class="card card-perfil" id="card-perfil">
+          <h2 class="titulo-perfil">Meu Perfil</h2>
+
+          <div class="perfil-top">
+            <div class="avatar-area">
+              <img
+                src="Assets/LogoUsuario.png"
+                id="avatar-preview"
+                class="avatar-img"
+                alt="Avatar"
+              />
+              <label class="btn-avatar" for="avatar-upload">Alterar foto</label>
+              <input
+                type="file"
+                id="avatar-upload"
+                accept="image/*"
+                style="display: none"
+              />
+            </div>
+
+            <div class="perfil-info">
+              <label class="field-label">Nome</label>
+              <div class="field-read" id="campoNome"></div>
+
+              <label class="field-label">Email</label>
+              <div class="field-read" id="campoEmail"></div>
+
+              <label class="field-label">Matéria</label>
+              <div class="field-read" id="campoMateria"></div>
+            </div>
+          </div>
+
+          <div class="senha-bloco">
+            <div class="subtitle">Alterar senha</div>
+            <input
+              type="password"
+              id="novaSenha"
+              class="input input-senha"
+              placeholder="Nova senha"
+            />
+            <input
+              type="password"
+              id="confirmarSenha"
+              class="input input-senha"
+              placeholder="Confirmar nova senha"
+            />
+          </div>
+
+          <div class="perfil-actions">
+            <button class="btn btn-neutral" id="btnCancelarPerfil">
+              Cancelar
+            </button>
+            <button class="btn btn-primary" id="btnSalvarPerfil">
+              Salvar alterações
+            </button>
+          </div>
         </div>
 
-        <!-- FORM ALUNO -->
-        <div class="tab-pane active" id="tab-aluno">
-          <form id="formAluno">
-            <div class="form-grid">
+        <!-- CARD DE FORMULARIOS -->
+        <div class="card card-form" id="card-form">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="tab-aluno">
+              Criar novo aluno
+            </button>
+            <button class="tab-btn" data-tab="tab-professor">
+              Criar novo professor
+            </button>
+          </div>
 
-              <input class="input" id="alunoNome" placeholder="Nome" />
-              <input class="input" id="alunoSobrenome" placeholder="Sobrenome" />
-              <input class="input" id="alunoEmail" placeholder="Email (opcional)" />
+          <!-- FORM ALUNO -->
+          <div class="tab-pane active" id="tab-aluno">
+            <form id="formAluno">
+              <div class="form-grid">
+                <input class="input" id="alunoNome" placeholder="Nome" />
+                <input
+                  class="input"
+                  id="alunoSobrenome"
+                  placeholder="Sobrenome"
+                />
+                <input
+                  class="input"
+                  id="alunoEmail"
+                  placeholder="Email (opcional)"
+                />
 
-              <div style="grid-column: 1 / 3; font-size: 0.9rem; color: #555;">
-                <strong>RA será gerado automaticamente</strong>
+                <div style="grid-column: 1 / 3; font-size: 0.9rem; color: #555">
+                  <strong>RA será gerado automaticamente</strong>
+                </div>
+
+                <input
+                  type="password"
+                  class="input"
+                  id="alunoSenha"
+                  placeholder="Senha"
+                />
+                <input
+                  type="password"
+                  class="input"
+                  id="alunoSenhaConfirm"
+                  placeholder="Confirmar senha"
+                />
+
+                <select class="input" id="alunoAno">
+                  <option>Selecione o Ano</option>
+                  <option>1º Ano</option>
+                  <option>2º Ano</option>
+                  <option>3º Ano</option>
+                </select>
+
+                <select class="input" id="alunoSubSala">
+                  <option>Selecione a Sub-sala</option>
+                  <option>Sub 1</option>
+                  <option>Sub 2</option>
+                  <option>Sub 3</option>
+                </select>
               </div>
 
-              <input type="password" class="input" id="alunoSenha" placeholder="Senha" />
-              <input type="password" class="input" id="alunoSenhaConfirm" placeholder="Confirmar senha" />
+              <div class="form-actions">
+                <button type="reset" class="btn btn-neutral">Limpar</button>
+                <button type="submit" class="btn btn-primary">
+                  Criar aluno
+                </button>
+              </div>
+            </form>
+          </div>
 
-              <select class="input" id="alunoAno">
-                <option>Selecione o Ano</option>
-                <option>1º Ano</option>
-                <option>2º Ano</option>
-                <option>3º Ano</option>
-              </select>
+          <!-- FORM PROFESSOR -->
+          <div class="tab-pane" id="tab-professor">
+            <form id="formProfessor">
+              <div class="form-grid">
+                <input
+                  class="input"
+                  id="profNome"
+                  placeholder="Nome completo"
+                />
+                <input class="input" id="profEmail" placeholder="Email" />
+                <input
+                  type="password"
+                  class="input"
+                  id="profSenha"
+                  placeholder="Senha"
+                />
+                <input
+                  type="password"
+                  class="input"
+                  id="profSenhaConfirm"
+                  placeholder="Confirmar senha"
+                />
 
-              <select class="input" id="alunoSubSala">
-                <option>Selecione a Sub-sala</option>
-                <option>Sub 1</option>
-                <option>Sub 2</option>
-                <option>Sub 3</option>
-              </select>
-            </div>
+                <select class="input" id="profMateria">
+                  <option>Selecione a matéria</option>
+                  <option>Matemática</option>
+                  <option>Português</option>
+                  <option>Física</option>
+                  <option>Química</option>
+                  <option>Biologia</option>
+                  <option>História</option>
+                  <option>Geografia</option>
+                  <option>Inglês</option>
+                  <option>Artes</option>
+                  <option>Filosofia</option>
+                  <option>Sociologia</option>
+                  <option>Educação Física</option>
+                </select>
+              </div>
 
-            <div class="form-actions">
-              <button type="reset" class="btn btn-neutral">Limpar</button>
-              <button type="submit" class="btn btn-primary">Criar aluno</button>
-            </div>
-          </form>
-        </div>
-
-        <!-- FORM PROFESSOR -->
-        <div class="tab-pane" id="tab-professor">
-          <form id="formProfessor">
-            <div class="form-grid">
-              <input class="input" id="profNome" placeholder="Nome completo" />
-              <input class="input" id="profEmail" placeholder="Email" />
-              <input type="password" class="input" id="profSenha" placeholder="Senha" />
-              <input type="password" class="input" id="profSenhaConfirm" placeholder="Confirmar senha" />
-
-              <select class="input" id="profMateria">
-                <option>Selecione a matéria</option>
-                <option>Matemática</option>
-                <option>Português</option>
-                <option>Física</option>
-                <option>Química</option>
-                <option>Biologia</option>
-                <option>História</option>
-                <option>Geografia</option>
-                <option>Inglês</option>
-                <option>Artes</option>
-                <option>Filosofia</option>
-                <option>Sociologia</option>
-                <option>Educação Física</option>
-              </select>
-            </div>
-
-            <div class="form-actions">
-              <button type="reset" class="btn btn-neutral">Limpar</button>
-              <button type="submit" class="btn btn-primary">Criar professor</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!--DOIS CARDS LADO A LADO (ALUNOS + PROFESSORES) -->
-    <div class="list-two-grid">
-
-      <!-- ALUNOS -->
-      <div class="card card-list">
-        <h2 class="list-title">Lista de Alunos</h2>
-
-        <div class="filters">
-          <select id="filtro-ano">
-            <option value="todas">Ano - Todos</option>
-            <option value="1">1º Ano</option>
-            <option value="2">2º Ano</option>
-            <option value="3">3º Ano</option>
-          </select>
-
-          <select id="filtro-sub">
-            <option value="todas">Sub-sala - Todas</option>
-            <option value="Sub 1">Sub 1</option>
-            <option value="Sub 2">Sub 2</option>
-            <option value="Sub 3">Sub 3</option>
-          </select>
-        </div>
-
-        <div class="list-scroll">
-          <ul id="lista-alunos" class="list-inner"></ul>
+              <div class="form-actions">
+                <button type="reset" class="btn btn-neutral">Limpar</button>
+                <button type="submit" class="btn btn-primary">
+                  Criar professor
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
 
-      <!-- PROFESSORES -->
-      <div class="card card-list">
-        <h2 class="list-title">Lista de Professores</h2>
+      <!--DOIS CARDS LADO A LADO (ALUNOS + PROFESSORES) -->
+      <div class="list-two-grid">
+        <!-- ALUNOS -->
+        <div class="card card-list" id="card-alunos">
+          <h2 class="list-title">Lista de Alunos</h2>
 
-        <div class="list-scroll">
-          <ul id="lista-professores" class="list-inner"></ul>
+          <div class="filters">
+            <select id="filtro-ano">
+              <option value="todas">Ano - Todos</option>
+              <option value="1">1º Ano</option>
+              <option value="2">2º Ano</option>
+              <option value="3">3º Ano</option>
+            </select>
+
+            <select id="filtro-sub">
+              <option value="todas">Sub-sala - Todas</option>
+              <option value="Sub 1">Sub 1</option>
+              <option value="Sub 2">Sub 2</option>
+              <option value="Sub 3">Sub 3</option>
+            </select>
+          </div>
+
+          <div class="list-scroll">
+            <ul id="lista-alunos" class="list-inner"></ul>
+          </div>
+        </div>
+
+        <!-- PROFESSORES -->
+        <div class="card card-list" id="card-professores">
+          <h2 class="list-title">Lista de Professores</h2>
+
+          <div class="list-scroll">
+            <ul id="lista-professores" class="list-inner"></ul>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
 
-  </main>
+    <footer>
+      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+    </footer>
 
-  <footer>
-    <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
-  </footer>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const tabs = document.querySelectorAll(".tab-btn");
-      const panes = document.querySelectorAll(".tab-pane");
+    <script>
+      // TABS (mantive seu script e adicionei isolação)
+      document.addEventListener("DOMContentLoaded", () => {
+        const tabs = document.querySelectorAll(".tab-btn");
+        const panes = document.querySelectorAll(".tab-pane");
 
-      tabs.forEach(btn => {
-        btn.addEventListener("click", () => {
-          const tab = btn.dataset.tab;
+        tabs.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const tab = btn.dataset.tab;
 
-          tabs.forEach(b => b.classList.remove("active"));
-          btn.classList.add("active");
+            tabs.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
 
-          panes.forEach(p => {
-            p.classList.remove("active");
-            if (p.id === tab) p.classList.add("active");
+            panes.forEach((p) => {
+              p.classList.remove("active");
+              if (p.id === tab) p.classList.add("active");
+            });
           });
         });
       });
-    });
-  </script>
+    </script>
 
+    <script src="front/Scripts/perfilProfessor.js"></script>
+    <script src="front/Scripts/header.js"></script>
 
-  <script src="front/Scripts/perfilProfessor.js"></script>
-  <script src="front/Scripts/header.js"></script>
+    <script>
+      (function () {
+        // ELEMENTS
+        const header = document.getElementById("site-header");
+        const menuToggle = document.getElementById("menu-toggle"); // may be absent in this page
+        const sidebar = document.getElementById("sidebar"); // may be absent in this page
+        const pageCards = Array.from(document.querySelectorAll(".card"));
+        const footer = document.querySelector("footer");
 
-</body>
+        // Header fade on scroll (rAF optimized)
+        const SCROLL_THRESHOLD = 8;
+        let ticking = false;
+        function updateHeader() {
+          if (!header) return;
+          const y = window.scrollY || window.pageYOffset;
+          if (y > SCROLL_THRESHOLD) header.classList.add("scrolled");
+          else header.classList.remove("scrolled");
+        }
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+              updateHeader();
+              ticking = false;
+            });
+          },
+          { passive: true }
+        );
+        updateHeader();
 
+        // If there is a sidebar/hamburger on this page, keep behavior consistent
+        if (menuToggle && sidebar) {
+          const mo = new MutationObserver(() => {
+            const open = sidebar.classList.contains("open");
+            menuToggle.classList.toggle("is-open", open);
+            sidebar.setAttribute("aria-hidden", open ? "false" : "true");
+          });
+          mo.observe(sidebar, { attributes: true, attributeFilter: ["class"] });
+
+          menuToggle.addEventListener("click", () => {
+            const open = !sidebar.classList.contains("open");
+            sidebar.classList.toggle("open", open);
+            sidebar.setAttribute("aria-hidden", open ? "false" : "true");
+            if (open) {
+              const closeBtn = document.getElementById("menu-close");
+              if (closeBtn) closeBtn.focus();
+            }
+          });
+
+          const menuClose = document.getElementById("menu-close");
+          if (menuClose) {
+            menuClose.addEventListener("click", () => {
+              sidebar.classList.remove("open");
+              sidebar.setAttribute("aria-hidden", "true");
+              menuToggle.focus();
+            });
+          }
+
+          // click outside closes
+          window.addEventListener("click", (e) => {
+            if (!sidebar.classList.contains("open")) return;
+            if (sidebar.contains(e.target) || menuToggle.contains(e.target))
+              return;
+            sidebar.classList.remove("open");
+            sidebar.setAttribute("aria-hidden", "true");
+          });
+
+          // escape closes
+          window.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+              if (sidebar.classList.contains("open")) {
+                sidebar.classList.remove("open");
+                sidebar.setAttribute("aria-hidden", "true");
+                menuToggle.focus();
+              }
+            }
+          });
+        }
+
+        // Entrance animations using IntersectionObserver
+        if ("IntersectionObserver" in window) {
+          const io = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("in-view");
+                  obs.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.08 }
+          );
+
+          pageCards.forEach((c) => io.observe(c));
+        } else {
+          pageCards.forEach((c) => c.classList.add("in-view"));
+        }
+
+        // Accessibility nicety: ensure footer isn't covering focusable elements
+        // (we already reserved padding-bottom in .page-wrap)
+      })();
+    </script>
+    <!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper></div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget("https://vlibras.gov.br/app");
+</script>
+
+  </body>
 </html>
