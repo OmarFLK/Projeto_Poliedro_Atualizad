@@ -18,7 +18,6 @@
       justify-content: flex-end;
       gap: 8px;
       flex-wrap: nowrap;
-      /* mantem os ícones em uma fileira */
     }
 
     .top-icons a,
@@ -60,25 +59,25 @@
 
     /* barra lateral do menu hamburguer */
     .menu-sidebar {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #1a4e9b;
-  overflow-x: hidden;
-  padding-top: 60px;
-  transition: 0.3s;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  pointer-events: none;
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #1a4e9b;
+      overflow-x: hidden;
+      padding-top: 60px;
+      transition: 0.3s;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      pointer-events: none;
     }
 
     .menu-sidebar.open {
-  width: 250px;
-  pointer-events: auto;
+      width: 250px;
+      pointer-events: auto;
     }
 
     .sidebar-link {
@@ -114,7 +113,6 @@
       color: #163f7a;
       cursor: pointer;
       display: none;
-      /* só aparece no mobile */
       margin-left: 15px;
       align-self: center;
     }
@@ -142,7 +140,6 @@
       color: white;
       cursor: pointer;
       display: none;
-      /* só aparece no mobile */
     }
 
     .header-profile-img {
@@ -158,7 +155,6 @@
         display: inline-block;
       }
 
-      /* mantém logo, menu e perfil na mesma linha */
       .header-aluno {
         justify-content: space-between;
       }
@@ -178,7 +174,7 @@
       border: none;
     }
 
-    /* Responsividade */
+    /* Responsividade - problema original */
     @media (min-width: 992px) {
       .menu-toggle {
         display: none;
@@ -205,19 +201,14 @@
   </style>
 
 </head>
-
 <body>
 
   <header>
     <div class="header-aluno">
       <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
 
-      <!-- Botão hamburguer para mobile -->
-      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
-        &#9776;
-      </button>
+      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">&#9776;</button>
 
-      <!-- Navegação tradicional (desktop) -->
       <nav class="header-nav">
         <a href="HomeAluno.html" class="header-link">Home</a>
         <a href="ItinerarioAluno.html" class="header-link">Itinerário</a>
@@ -225,8 +216,6 @@
         <a href="NotasAluno.html" class="header-link">Notas</a>
         <a href="MensagensAluno.html" class="header-link active">Mensagens</a>
         <a href="eventosAlunos.html" class="header-link">Eventos</a>
-
-
       </nav>
 
       <a href="PerfilAluno.html">
@@ -234,11 +223,9 @@
       </a>
     </div>
 
-    <!-- Sidebar para mobile -->
+    <!-- Sidebar mobile -->
     <nav id="menu-sidebar" class="menu-sidebar" aria-label="Menu lateral">
-      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
-        &times;
-      </button>
+      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">&times;</button>
       <a href="HomeAluno.html" class="sidebar-link">Home</a>
       <a href="ItinerarioAluno.html" class="sidebar-link">Itinerário</a>
       <a href="AtividadesAluno.html" class="sidebar-link">Atividades</a>
@@ -248,10 +235,8 @@
     </nav>
   </header>
 
-  <!-- LAYOUT PRINCIPAL -->
   <div class="page-wrap">
 
-    <!-- SIDEBAR: MURAL + PROFESSORES -->
     <aside id="sidebar" class="sidebar">
       <h2 class="sidebar-title">Conversas</h2>
 
@@ -266,9 +251,7 @@
       </div>
     </aside>
 
-    <!-- CHAT -->
     <main class="chat-main">
-
       <header class="chat-header">
         <div class="chat-header-left">
           <button id="chat-menu-toggle" class="btn-menu">☰</button>
@@ -281,9 +264,7 @@
       </header>
 
       <section id="chat-mensagens" class="chat-mensagens">
-        <div id="placeholder" class="chat-placeholder">
-          Selecione uma conversa
-        </div>
+        <div id="placeholder" class="chat-placeholder">Selecione uma conversa</div>
       </section>
 
       <div class="chat-footer">
@@ -303,32 +284,5 @@
   <script src="front/Scripts/MensagensAluno.js"></script>
   <script src="front/Scripts/header.js"></script>
 
-  <script>
-    // Sidebar hamburguer toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const menuSidebar = document.getElementById("menu-sidebar");
-    const menuClose = document.getElementById("menu-close");
-
-    menuToggle.addEventListener("click", () => {
-      menuSidebar.classList.add("open");
-      menuClose.focus();
-    });
-
-    menuClose.addEventListener("click", () => {
-      menuSidebar.classList.remove("open");
-    });
-
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
-    window.addEventListener("click", (e) => {
-      if (
-        menuSidebar.classList.contains("open") &&
-        !menuSidebar.contains(e.target) &&
-        !menuToggle.contains(e.target)
-      ) {
-        menuSidebar.classList.remove("open");
-      }
-    });
-  </script>
 </body>
-
 </html>

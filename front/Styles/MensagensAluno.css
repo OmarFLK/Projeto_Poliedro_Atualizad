@@ -8,11 +8,9 @@
     --sidebar-w: 320px;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-body, html {
+html, body {
     margin: 0;
     height: 100%;
     font-family: Inter, Segoe UI, Roboto, Arial;
@@ -132,6 +130,7 @@ body, html {
     text-align: center;
 }
 
+/* CHAT MENSAGENS */
 .chat-mensagens {
     flex: 1;
     padding: 20px;
@@ -165,9 +164,8 @@ body, html {
     margin-bottom: 14px;
     display: flex;
     flex-direction: column;
-    width: 100%; /* importante para permitir alinhamento */
+    width: 100%;
 }
-
 
 .msg-left {
     align-items: flex-start;
@@ -185,7 +183,7 @@ body, html {
     background: var(--poliedro-amarelo);
     padding: 10px 14px;
     border-radius: 18px;
-    max-width: 60%;  /* reduzido p/ ficar igual apps reais */
+    max-width: 60%;
     border: 1px solid rgba(0,0,0,.06);
     word-break: break-word;
     white-space: pre-wrap;
@@ -196,7 +194,6 @@ body, html {
     color: #fff;
 }
 
-
 .msg-ts {
     font-size: 11px;
     color: var(--muted);
@@ -204,7 +201,7 @@ body, html {
     text-align: right;
 }
 
-/* INPUT */
+/* CHAT INPUT */
 .chat-footer {
     position: sticky;
     bottom: 0;
@@ -262,50 +259,40 @@ body, html {
     }
 }
 
-/* FOOTER PADRONIZADO */
+/* FOOTER */
 footer {
     background: #163f7a;
     color: white;
     text-align: center;
     padding: 15px;
 }
-/* ====== FIX DO SCROLL (SÓ A SIDEBAR ROLA) ====== */
 
-/* Impede que a página inteira role */
+/* FIX SCROLL */
 html, body {
     height: 100%;
     overflow: hidden;
 }
 
-/* A página vira uma divisão fixada: esquerda rolável, direita fixa */
 .page-wrap {
-    height: calc(100vh - 64px - 56px); /* header + footer */
+    height: calc(100vh - 64px - 56px);
     overflow: hidden;
 }
 
-/* Sidebar rola sozinha */
 .sidebar {
     overflow-y: auto;
-    overflow-x: hidden;
 }
 
-/* Chat ocupa sempre 100% da altura e NÃO rola externamente */
 .chat-main {
     overflow: hidden;
     height: calc(100vh - 64px - 56px);
-    display: flex;
-    flex-direction: column;
 }
 
-/* Área das mensagens tem scroll interno */
 .chat-mensagens {
-    flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-bottom: 160px; /* espaço para o input */
+    padding-bottom: 160px;
 }
 
-/* Footer sempre fixo no fim do chat */
 .chat-footer {
     position: sticky;
     bottom: 0;
