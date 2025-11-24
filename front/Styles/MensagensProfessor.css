@@ -160,6 +160,8 @@ html, body {
     padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
+    position: relative;
+    z-index: 100020; /* keep menu button above overlapping header elements */
 }
 
 /* ======== ÁREA DE MENSAGENS ======== */
@@ -268,19 +270,22 @@ html, body {
         display: inline-block;
     }
 
+    /* Mobile: use transform for slide-in so JS that manipulates
+       `style.transform` and the `.open` class both work reliably */
     .sidebar {
         position: fixed;
-        left: -110%;
+        left: 0;
         top: 64px;
         height: calc(100vh - 64px);
         width: 300px;
         z-index: 2000;
         background: #fff;
-        transition: left .22s ease;
+        transform: translateX(-110%);
+        transition: transform .22s ease;
     }
 
     .sidebar.open {
-        left: 0;
+        transform: translateX(0);
     }
 }
 

@@ -140,6 +140,18 @@
       .sidebar.open {
         width: 250px;
       }
+
+      /* Forçar comportamento responsivo do header (evitar conflito com CSS global) */
+      @media (min-width: 992px) {
+        header .menu-toggle { display: none !important; }
+        header .header-nav { display: flex !important; }
+        .sidebar { display: none !important; }
+      }
+
+      @media (max-width: 991.98px) {
+        header .header-nav { display: none !important; }
+        header .menu-toggle { display: inline-flex !important; }
+      }
       .sidebar-link {
         padding: 12px 24px;
         text-decoration: none;

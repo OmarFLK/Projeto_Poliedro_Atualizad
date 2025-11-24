@@ -366,11 +366,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function setupChatSidebarMobileToggle() {
     if (!chatMenuToggle || !sidebar) return;
-
-    chatMenuToggle.addEventListener("click", () => {
-      sidebar.classList.toggle("open");
-    });
-
     window.addEventListener("resize", () => {
       if (window.innerWidth > 900) {
         sidebar.classList.remove("open");

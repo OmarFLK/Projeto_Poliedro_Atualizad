@@ -77,12 +77,13 @@
       padding-top: 60px;
       transition: 0.3s;
       z-index: 1000;
-      display: flex;
+      display: none; /* escondida por padrão, apenas abre quando a classe 'open' for aplicada */
       flex-direction: column;
       gap: 15px;
     }
 
     .sidebar.open {
+      display: flex;
       width: 250px;
     }
 
@@ -116,10 +117,9 @@
       font-size: 2rem;
       background: none;
       border: none;
-      color: #163f7a;
+      color: white;
       cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
+      display: none; /* só aparece no mobile via media query */
       margin-left: 15px;
       align-self: center;
     }
@@ -128,11 +128,12 @@
     .header-aluno {
       background-color: #163f7a;
       display: flex;
-      align-items: flex;
+      align-items: center;
       justify-content: space-between;
       padding: 10px 20px;
       flex-wrap: nowrap;
       gap: 10px;
+      z-index: 1100; /* garante que o header fique acima do conteúdo */
     }
 
     .poliedro-logo-header {
@@ -140,15 +141,8 @@
       cursor: pointer;
     }
 
-    .menu-toggle {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: none;
-      /* só aparece no mobile */
-    }
+    /* (removida duplicação de regras .menu-toggle acima)
+       manter apenas a definição única anterior */
 
     .header-profile-img {
       width: 40px;
@@ -158,7 +152,7 @@
       cursor: pointer;
     }
 
-    @media (max-width: 991px) {
+    @media (max-width: 991.98px) {
       .menu-toggle {
         display: inline-block;
       }
@@ -183,29 +177,17 @@
       border: none;
     }
 
-    /* Responsividade */
+    /* Responsividade: usar seletores com maior especificidade e !important
+       para sobrescrever regras carregadas em CSS externos */
     @media (min-width: 992px) {
-      .menu-toggle {
-        display: none;
-      }
-
-      .sidebar {
-        display: none !important;
-      }
-
-      .header-nav {
-        display: flex !important;
-      }
+      header .menu-toggle { display: none !important; }
+      .sidebar { display: none !important; }
+      header .header-nav { display: flex !important; }
     }
 
-    @media (max-width: 991px) {
-      .header-nav {
-        display: none !important;
-      }
-
-      .menu-toggle {
-        display: inline-block;
-      }
+    @media (max-width: 991.98px) {
+      header .header-nav { display: none !important; }
+      header .menu-toggle { display: inline-block !important; }
     }
   </style>
 </head>
@@ -316,18 +298,25 @@
   <script src="front/Scripts/header.js"></script>
 
 <script>
-    // Sidebar toggle
+  (function () {
+    // Sidebar toggle - proteção contra elementos ausentes
     const menuToggle = document.getElementById("menu-toggle");
     const sidebar = document.getElementById("sidebar");
     const menuClose = document.getElementById("menu-close");
 
-    menuToggle.addEventListener("click", () => {
+    if (!menuToggle || !sidebar || !menuClose) return;
+
+    // Abre/fecha com toggle para evitar estados incoerentes
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
       sidebar.classList.add("open");
       menuClose.focus();
     });
 
-    menuClose.addEventListener("click", () => {
+    menuClose.addEventListener("click", (e) => {
+      e.stopPropagation();
       sidebar.classList.remove("open");
+      menuToggle.focus();
     });
 
     // Fecha sidebar clicando fora dela e fora do botão hamburguer
@@ -340,7 +329,16 @@
         sidebar.classList.remove("open");
       }
     });
-  </script>
+
+    // Fecha com ESC
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && sidebar.classList.contains("open")) {
+        sidebar.classList.remove("open");
+        menuToggle.focus();
+      }
+    });
+  })();
+</script>
 </body>
 
 </html>

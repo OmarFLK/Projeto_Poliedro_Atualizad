@@ -152,6 +152,18 @@
         width: 250px;
       }
 
+      /* Forçar comportamento responsivo do header (evitar conflito com CSS global) */
+      @media (min-width: 992px) {
+        header .menu-toggle { display: none !important; }
+        header .header-nav { display: flex !important; }
+        .sidebar { display: none !important; }
+      }
+
+      @media (max-width: 991.98px) {
+        header .header-nav { display: none !important; }
+        header .menu-toggle { display: inline-flex !important; }
+      }
+
       .sidebar-link {
         padding: 12px 24px;
         font-size: 1.05rem;
@@ -262,6 +274,45 @@
         .filtros-itinerario {
           flex-direction: column;
           align-items: stretch;
+        }
+        /* Posicionamento responsivo do header:
+           - logo à esquerda
+           - botão hamburguer centralizado
+           - foto do usuário à direita
+        */
+        .header-aluno {
+          position: relative;
+        }
+
+        .poliedro-logo-header {
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 100006;
+        }
+
+        .menu-toggle {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          margin: 0;
+        }
+
+        /* Garantir que o link do perfil e a imagem fiquem à direita */
+        a[aria-label="Perfil"] {
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 100006;
+        }
+
+        /* Ajustes menores para que o ícone do usuário não quebre em telas pequenas */
+        .header-profile-img {
+          width: 36px;
+          height: 36px;
         }
       }
     </style>
