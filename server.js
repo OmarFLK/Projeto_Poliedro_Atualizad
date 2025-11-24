@@ -15,17 +15,23 @@ const notasalunosRoutes = require('./rotas/notasalunos');
 const itinerarioRoutes = require('./rotas/itinerario');
 const alunosRoutes = require('./rotas/alunos');
 const professoresRoutes = require('./rotas/professores');
-const mensagensRoutes = require('./rotas/mensagens'); // <--- rota de mensagens
+const mensagensRoutes = require('./rotas/mensagens');
 
 const app = express();
 
-//CORS COM COOKIES (ajuste origin se necessário)
+/* ============================
+   🔓 CORS AJUSTADO PARA CELULAR
+   ============================ */
 app.use(cors({
-  origin: "http://127.0.0.1:5500",
+  origin: [
+    "http://127.0.0.1:5500",              // PC local
+    "http://localhost:5500",              // fallback
+    "http://192.168.15.172:5500"          // IP do PC na rede → celular acessa aqui
+  ],
   credentials: true
 }));
 
-// MIDDLEWARES ESSENCIAIS
+// MIDDLEWARES
 app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
@@ -41,7 +47,9 @@ app.get("/teste", (req, res) => {
   res.send("Rota teste funcionando corretamente");
 });
 
-// MongoDB
+/* ============================
+   🔌 CONEXÃO MONGODB
+   ============================ */
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -49,7 +57,9 @@ mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI, {
 .then(() => console.log("MongoDB conectado com sucesso"))
 .catch((err) => console.error("Erro ao conectar MongoDB:", err));
 
-// Registro das rotas
+/* ============================
+   📌 REGISTRO DAS ROTAS
+   ============================ */
 app.use("/auth", authRoutes);
 app.use("/api/atividades", atividadesRoutes);
 app.use("/api/resolucoes", resolucoesRoutes);
@@ -59,11 +69,9 @@ app.use('/api/professores', professoresRoutes);
 app.use('/api/notasalunos', notasalunosRoutes);
 app.use('/api/alunos', alunosRoutes);
 app.use("/api/itinerario", itinerarioRoutes);
-
-// rota de mensagens adicionada
 app.use("/api/mensagens", mensagensRoutes);
 
-// página inicial (login)
+// LOGIN (página inicial)
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "front", "Login.html"));
 });
@@ -73,6 +81,15 @@ app.use((req, res) => {
   res.status(404).json({ error: "Rota não encontrada" });
 });
 
-// SERVER
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+
+app.listen(PORT, "0.0.0.0", () =>
+  console.log(`
+
+Servidor rodando!
+Projeto Poliedro
+Servidor iniciado com sucesso!
+
+`)
+);

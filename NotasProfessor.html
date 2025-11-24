@@ -1,494 +1,345 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Atividades Professor</title>
-    <link rel="stylesheet" href="front/Styles/Login.css" />
-    <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
-    <link rel="stylesheet" href="front/Styles/AtividadesProfessor.css" />
-    <style>
-      :root {
-        --header-h: 64px;
-        --footer-h: 56px;
-        --blue: #163f7a;
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notas do Professor</title>
+
+  <!-- CSS globais do projeto -->
+  <link rel="stylesheet" href="front/Styles/Login.css">
+  <link rel="stylesheet" href="front/Styles/StyleAlunos.css">
+
+  <!-- CSS específico da página -->
+  <link rel="stylesheet" href="front/Styles/NotasProfessor.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* Top icons (ajusta como q empilha no mobile) */
+    .top-icons {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: nowrap;
+      /* mantem os ícones em uma fileira */
+    }
+
+    .top-icons a,
+    .top-icons button,
+    .top-icons img,
+    .top-icons i {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      min-height: 36px;
+      max-width: 48px;
+      max-height: 48px;
+      padding: 4px;
+      box-sizing: border-box;
+    }
+
+    .top-icons img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    @media (max-width: 420px) {
+      .top-icons {
+        gap: 6px;
       }
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        background: #f4f6f9;
-        overflow-x: hidden;
+
+      .top-icons a,
+      .top-icons button,
+      .top-icons img,
+      .top-icons i {
+        min-width: 32px;
+        min-height: 32px;
+        max-width: 40px;
+        max-height: 40px;
       }
-      .header-aluno {
-        background: var(--blue);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 20px;
-        gap: 10px;
-        height: var(--header-h);
-        box-sizing: border-box;
-        transition: opacity 0.28s ease, backdrop-filter 0.28s ease;
-      }
-      .header-aluno.scrolled {
-        opacity: 0.72;
-        backdrop-filter: blur(2px);
-      }
-      .poliedro-logo-header {
-        height: 40px;
-        cursor: pointer;
-      }
-      .header-profile-img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 2px solid #fff;
-        object-fit: cover;
-      }
+    }
+
+    /* barra lateral */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #1a4e9b;
+      overflow-x: hidden;
+      padding-top: 60px;
+      transition: 0.3s;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .sidebar.open {
+      width: 250px;
+    }
+
+    .sidebar-link {
+      padding: 12px 24px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      color: white;
+      display: block;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+      background-color: #6a9bd1;
+      color: white;
+    }
+
+    .menu-close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Botão hamburguer */
+    .menu-toggle {
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: #163f7a;
+      cursor: pointer;
+      display: none;
+      /* só aparece no mobile */
+      margin-left: 15px;
+      align-self: center;
+    }
+
+    /* Nav header */
+    .header-aluno {
+      background-color: #163f7a;
+      display: flex;
+      align-items: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      flex-wrap: nowrap;
+      gap: 10px;
+    }
+
+    .poliedro-logo-header {
+      height: 40px;
+      cursor: pointer;
+    }
+
+    .menu-toggle {
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: none;
+      /* só aparece no mobile */
+    }
+
+    .header-profile-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+    }
+
+    @media (max-width: 991px) {
       .menu-toggle {
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        width: 48px;
-        height: 40px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 6px;
-        box-sizing: border-box;
-        z-index: 100005;
-      }
-      .menu-toggle .burger {
-        width: 24px;
-        height: 18px;
-        position: relative;
         display: inline-block;
       }
-      .menu-toggle .burger span {
-        position: absolute;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: #fff;
-        border-radius: 2px;
-        transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1),
-          opacity 0.18s ease, top 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
+
+      /* mantém logo, menu e perfil na mesma linha */
+      .header-aluno {
+        justify-content: space-between;
       }
-      .menu-toggle .burger span:nth-child(1) {
-        top: 0;
+    }
+
+    #daltonismo-select {
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .daltonismo-select-sidebar {
+      margin: 0 24px 12px 24px;
+      padding: 6px;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: none;
+    }
+
+    /* Responsividade */
+    @media (min-width: 992px) {
+      .menu-toggle {
+        display: none;
       }
-      .menu-toggle .burger span:nth-child(2) {
-        top: 8px;
-      }
-      .menu-toggle .burger span:nth-child(3) {
-        top: 16px;
-      }
-      .menu-toggle.is-open .burger span:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-        top: 8px;
-      }
-      .menu-toggle.is-open .burger span:nth-child(2) {
-        opacity: 0;
-        transform: scaleX(0.8);
-      }
-      .menu-toggle.is-open .burger span:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-        top: 8px;
-      }
-      .header-nav {
-        display: flex;
-        gap: 22px;
-        align-items: center;
-      }
-      .header-link {
-        color: #fff;
-        text-decoration: none;
-        padding: 8px 14px;
-        border-radius: 6px;
-        font-size: 16px;
-      }
-      .header-link.active {
-        background: #fff;
-        color: var(--blue);
-      }
+
       .sidebar {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background: #1a4e9b;
-        overflow-x: hidden;
-        padding-top: 60px;
-        transition: width 0.28s ease;
-        z-index: 100004;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        box-sizing: border-box;
+        display: none !important;
       }
-      .sidebar.open {
-        width: 250px;
+
+      .header-nav {
+        display: flex !important;
       }
-      .sidebar-link {
-        padding: 12px 24px;
-        font-size: 1.05rem;
-        text-decoration: none;
-        color: #fff;
+    }
+
+    @media (max-width: 991px) {
+      .header-nav {
+        display: none !important;
       }
-      .menu-close {
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 2rem;
-        cursor: pointer;
+
+      .menu-toggle {
+        display: inline-block;
       }
-      .atividades-grid {
-        max-width: 1200px;
-        margin: 18px auto;
-        padding: 20px;
-        display: grid;
-        grid-template-columns: 1fr 420px;
-        gap: 20px;
-        box-sizing: border-box;
-        min-height: calc(100vh - var(--header-h) - var(--footer-h));
-      }
-      .card {
-        background: #fff;
-        border-radius: 14px;
-        padding: 18px;
-        box-shadow: 0 12px 30px rgba(17, 24, 39, 0.06);
-        box-sizing: border-box;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.56s ease, transform 0.56s ease;
-      }
-      .card.in-view {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .card.formulario h1 {
-        font-size: 1.6rem;
-        margin: 0 0 12px;
-        opacity: 0;
-        transform: translateY(10px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
-      }
-      .card.formulario.in-view h1 {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      form#form-tarefa {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      form#form-tarefa select,
-      form#form-tarefa input[type="text"],
-      form#form-tarefa textarea {
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #e6eef8;
-        background: #fff;
-        font-size: 14px;
-      }
-      form#form-tarefa input[type="file"] {
-        padding: 6px;
-      }
-      form#form-tarefa button {
-        padding: 12px;
-        border-radius: 10px;
-        border: none;
-        background: var(--blue);
-        color: #fff;
-        font-weight: 700;
-        cursor: pointer;
-      }
-      .atividades-card h2,
-      .resolucoes-card h2 {
-        margin: 0 0 12px;
-        font-size: 1.25rem;
-      }
-      #lista-tarefas {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .tarefa {
-        padding: 12px;
-        border-radius: 10px;
-        border: 1px solid #eef4fb;
-        background: #fcfdff;
-      }
-      .tarefa .t-title {
-        font-weight: 700;
-        margin-bottom: 6px;
-      }
-      .resolucoes-card {
-        grid-column: 1 / -1;
-      }
-      .resolucoes-card p {
-        margin: 0;
-      }
-      @media (max-width: 1000px) {
-        .atividades-grid {
-          grid-template-columns: 1fr;
-          gap: 16px;
-          padding: 14px;
-        }
-        .sidebar {
-          z-index: 100006;
-        }
-      }
-      footer {
-        background: var(--blue);
-        color: #fff;
-        padding: 12px 0;
-        text-align: center;
-      }
-      @media (prefers-reduced-motion: reduce) {
-        * {
-          transition: none !important;
-        }
-      }
-      main {
-        box-sizing: border-box;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="header-aluno" id="site-header">
-        <img
-          src="Assets/poliedro.png"
-          alt="Logo Poliedro"
-          class="poliedro-logo-header"
-        />
-        <button
-          id="menu-toggle"
-          aria-label="Abrir menu"
-          class="menu-toggle"
-          type="button"
-        >
-          <span class="burger" aria-hidden="true"
-            ><span></span><span></span><span></span
-          ></span>
-        </button>
-        <nav class="header-nav">
-          <a href="HomeProfessor.html" class="header-link">Home</a>
-          <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
-          <a href="AtividadesProfessor.html" class="header-link active"
-            >Atividades</a
-          >
-          <a href="NotasProfessor.html" class="header-link">Notas</a>
-          <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
-          <a href="EventosProfessores.html" class="header-link">Eventos</a>
-        </nav>
-        <a href="PerfilProfessor.html"
-          ><img
-            src="Assets/LogoUsuario.png"
-            alt="Meu cadastro"
-            class="header-profile-img"
-        /></a>
-      </div>
-      <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
-        <button
-          id="menu-close"
-          aria-label="Fechar menu"
-          class="menu-close"
-          type="button"
-        >
-          &times;
-        </button>
-        <a href="HomeProfessor.html" class="sidebar-link">Home</a>
-        <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
-        <a href="AtividadesProfessor.html" class="sidebar-link active"
-          >Atividades</a
-        >
-        <a href="NotasProfessor.html" class="sidebar-link">Notas</a>
-        <a href="MensagensProfessor.html" class="sidebar-link">Mensagens</a>
-        <a href="EventosProfessores.html" class="sidebar-link">Eventos</a>
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-aluno">
+      <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
+
+      <!-- Botão hamburguer para mobile -->
+      <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
+        &#9776;
+      </button>
+
+      <!-- Navegação tradicional (desktop) -->
+      <nav class="header-nav">
+        <a href="HomeProfessor.html" class="header-link">Home</a>
+        <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
+        <a href="AtividadesProfessor.html" class="header-link">Atividades</a>
+        <a href="NotasProfessor.html" class="header-link active">Notas</a>
+        <a href="MensagensProfessor.html" class="header-link">Mensagens</a>
+        <a href="EventosProfessores.html" class="header-link">Eventos</a>
+
       </nav>
-    </header>
 
-    <main class="atividades-grid">
-      <section class="card formulario" id="form-card">
-        <h1 id="ativ-title">Atividades do Professor</h1>
-        <form id="form-tarefa">
-          <select id="turma" required>
-            <option value="">Selecione o ano</option>
-            <option value="1º Ano">1º Ano</option>
-            <option value="2º Ano">2º Ano</option>
-            <option value="3º Ano">3º Ano</option>
-          </select>
-          <select id="subSala" required>
-            <option value="">Selecione a sub-sala</option>
-            <option value="Sub 1">Sub 1</option>
-            <option value="Sub 2">Sub 2</option>
-            <option value="Sub 3">Sub 3</option>
-          </select>
-          <select id="materia" required>
-            <option value="">Selecione a matéria</option>
-            <option value="Português">Português</option>
-            <option value="Matemática">Matemática</option>
-            <option value="Biologia">Biologia</option>
-            <option value="Física">Física</option>
-            <option value="Química">Química</option>
-            <option value="Geografia">Geografia</option>
-            <option value="História">História</option>
-            <option value="Filosofia">Filosofia</option>
-            <option value="Sociologia">Sociologia</option>
-            <option value="Artes">Artes</option>
-            <option value="Educação Física">Educação Física</option>
-            <option value="Inglês">Inglês</option>
-          </select>
-          <input
-            type="text"
-            id="titulo"
-            placeholder="Título da tarefa"
-            required
-          />
-          <textarea
-            id="descricao"
-            placeholder="Descrição da tarefa"
-            rows="3"
-          ></textarea>
-          <input type="file" id="arquivo" />
-          <button type="submit">Postar Tarefa</button>
-        </form>
-      </section>
+      <a href="PerfilProfessor.html">
+        <img src="Assets/LogoUsuario.png" alt="Meu cadastro" class="header-profile-img" />
+      </a>
+    </div>
 
-      <section class="card atividades-card" id="atividades-card">
-        <h2>Atividades Criadas</h2>
-        <div id="lista-tarefas"></div>
-      </section>
+    <!-- Sidebar para mobile -->
+    <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
+      <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
+        &times;
+      </button>
+      <a href="HomeProfessor.html" class="sidebar-link">Home</a>
+      <a href="ItinerarioProfessor.html" class="sidebar-link">Itinerário</a>
+      <a href="AtividadesProfessor.html" class="sidebar-link">Atividades</a>
+      <a href="NotasProfessor.html" class="sidebar-link active">Notas</a>
+      <a href="MensagensProfessor.html" class="sidebar-link">Mensagens</a>
+      <a href="EventosProfessores.html" class="sidebar-link">Eventos</a>
 
-      <section class="card resolucoes-card" id="painel-resolucoes">
-        <h2>Resoluções Enviadas</h2>
-        <div id="lista-resolucoes">
-          <p>Selecione uma atividade para visualizar as resoluções.</p>
-        </div>
-      </section>
-    </main>
+    </nav>
+  </header>
 
-    <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-    </footer>
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="container-notas">
 
-    <script src="front/Scripts/header.js"></script>
-    <script src="front/Scripts/atividades.Professor.js"></script>
+    <h2>Editar Notas por Sala</h2>
 
-    <script>
-      (function () {
-        const menuToggle = document.getElementById("menu-toggle"),
-          sidebar = document.getElementById("sidebar"),
-          menuClose = document.getElementById("menu-close");
-        if (menuToggle && sidebar) {
-          const obs = new MutationObserver(() => {
-            if (sidebar.classList.contains("open"))
-              menuToggle.classList.add("is-open");
-            else menuToggle.classList.remove("is-open");
-          });
-          obs.observe(sidebar, {
-            attributes: true,
-            attributeFilter: ["class"],
-          });
-          menuToggle.addEventListener("click", () => {
-            const open = !menuToggle.classList.contains("is-open");
-            menuToggle.classList.toggle("is-open", open);
-            sidebar.classList.toggle("open", open);
-            if (open) {
-              menuClose.focus();
-            }
-          });
-          if (menuClose)
-            menuClose.addEventListener("click", () => {
-              sidebar.classList.remove("open");
-              menuToggle.classList.remove("is-open");
-            });
-          window.addEventListener("click", (e) => {
-            if (!sidebar.classList.contains("open")) return;
-            if (sidebar.contains(e.target) || menuToggle.contains(e.target))
-              return;
-            sidebar.classList.remove("open");
-            menuToggle.classList.remove("is-open");
-          });
-        }
+    <div class="filtros-sala">
 
-        const header = document.getElementById("site-header");
-        const SCROLL_THRESHOLD = 8;
-        let ticking = false;
-        function onScroll() {
-          const y = window.scrollY || window.pageYOffset;
-          if (y > SCROLL_THRESHOLD) header.classList.add("scrolled");
-          else header.classList.remove("scrolled");
-        }
-        window.addEventListener(
-          "scroll",
-          () => {
-            if (ticking) return;
-            ticking = true;
-            requestAnimationFrame(() => {
-              onScroll();
-              ticking = false;
-            });
-          },
-          { passive: true }
-        );
+      <select id="anoSelect" class="select-filtro">
+        <option value="">Ano</option>
+        <option>1º Ano</option>
+        <option>2º Ano</option>
+        <option>3º Ano</option>
+      </select>
 
-        const title = document.getElementById("ativ-title"),
-          formCard = document.getElementById("form-card"),
-          ativCard = document.getElementById("atividades-card"),
-          resCard = document.getElementById("painel-resolucoes");
-        if ("IntersectionObserver" in window) {
-          const tIo = new IntersectionObserver((entries) => {
-            entries.forEach((ent) => {
-              if (ent.isIntersecting) {
-                title.style.opacity = 1;
-                title.style.transform = "translateY(0)";
-                tIo.unobserve(ent.target);
-              }
-            }),
-              { threshold: 0.1 };
-          });
-          tIo.observe(title);
-          const io = new IntersectionObserver((entries, obs) => {
-            entries.forEach((e) => {
-              if (e.isIntersecting) {
-                e.target.classList.add("in-view");
-                obs.unobserve(e.target);
-              }
-            }),
-              { threshold: 0.08 };
-          });
-          [formCard, ativCard, resCard].forEach((c) => {
-            if (c) io.observe(c);
-          });
-        } else {
-          [formCard, ativCard, resCard].forEach(
-            (c) => c && c.classList.add("in-view")
-          );
-          if (title) {
-            title.style.opacity = 1;
-            title.style.transform = "translateY(0)";
-          }
-        }
-      })();
-    </script>
-    <!-- VLibras -->
-<div vw class="enabled">
-  <div vw-access-button class="active"></div>
-  <div vw-plugin-wrapper></div>
-</div>
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+      <select id="subSelect" class="select-filtro">
+        <option value="">Sub-sala</option>
+        <option>Sub 1</option>
+        <option>Sub 2</option>
+        <option>Sub 3</option>
+      </select>
+
+      <select id="materiaSelect" class="select-filtro">
+        <option value="">Matemática</option>
+      </select>
+
+      <select id="semestreSelect" class="select-filtro">
+        <option value="">Selecione o Semestre</option>
+        <option>1º Semestre</option>
+        <option>2º Semestre</option>
+      </select>
+
+      <button id="btnBuscarSala" class="btn-acao btn-azul">Buscar</button>
+      <button id="btnSalvarLote" class="btn-acao btn-verde">Salvar em lote</button>
+
+    </div>
+
+    <div id="tabelaSala"></div>
+
+    <h2 class="mt-4">Gráficos</h2>
+
+    <div class="chart-area">
+      <div class="chart-card">
+        <h3>Média por Sub-sala</h3>
+        <canvas id="chartSub"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h3>Média do Ano</h3>
+        <canvas id="chartAno"></canvas>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="front/Scripts/notas.professor.js"></script>
+  <script src="front/Scripts/header.js"></script>
+
 <script>
-  new window.VLibras.Widget("https://vlibras.gov.br/app");
-</script>
+    // Sidebar toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const sidebar = document.getElementById("sidebar");
+    const menuClose = document.getElementById("menu-close");
 
-  </body>
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.add("open");
+      menuClose.focus();
+    });
+
+    menuClose.addEventListener("click", () => {
+      sidebar.classList.remove("open");
+    });
+
+    // Fecha sidebar clicando fora dela e fora do botão hamburguer
+    window.addEventListener("click", (e) => {
+      if (
+        sidebar.classList.contains("open") &&
+        !sidebar.contains(e.target) &&
+        !menuToggle.contains(e.target)
+      ) {
+        sidebar.classList.remove("open");
+      }
+    });
+  </script>
+</body>
+
 </html>

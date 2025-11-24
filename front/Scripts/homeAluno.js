@@ -178,7 +178,7 @@ async function carregarUltimoEventoAluno() {
 async function carregarUltimaMensagemAluno() {
   try {
     const req = await fetch(
-      `${API}/api/mensagens?tipo=aluno&toUser=${user.id}`
+      `${API}/api/mensagens/ultimas?userId=${user.id}`
     );
 
     const msgs = await req.json();
@@ -188,10 +188,7 @@ async function carregarUltimaMensagemAluno() {
       return;
     }
 
-    const ultima = msgs.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    )[0];
-
+    const ultima = msgs[0];
     let remetente = "Usuário";
 
     try {
@@ -204,9 +201,7 @@ async function carregarUltimaMensagemAluno() {
         const dados = await r.json();
         remetente = dados.nome || "Professor";
       }
-    } catch (err) {
-      console.warn("Erro ao buscar remetente:", err);
-    }
+    } catch {}
 
     setCardHtml(
       "mensagem-body",
@@ -215,16 +210,17 @@ async function carregarUltimaMensagemAluno() {
         <p class="card-info">De: <strong>${escapeHtml(remetente)}</strong></p>
         
         <p class="card-title" style="font-size:1rem; line-height:1.4; margin-top: 8px;">
-          ${escapeHtml(ultima.texto || ultima.conteudo || "Mensagem sem texto.")}
+          ${escapeHtml(ultima.texto || "Mensagem sem texto.")}
         </p>
       `
     );
 
   } catch (err) {
-    console.error("Erro mensagem aluno:", err);
+    console.error("Erro msg:", err);
     setCardHtml("mensagem-body", "", "Erro ao carregar mensagem.");
   }
 }
+
 
 /*INICIAR */
 document.addEventListener("DOMContentLoaded", () => {

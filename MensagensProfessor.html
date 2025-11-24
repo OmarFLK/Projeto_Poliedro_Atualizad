@@ -170,207 +170,6 @@
           justify-content: space-between;
         }
       }
-
-      /* area principal layout */
-      .page-wrap {
-        display: grid;
-        grid-template-columns: 320px 1fr;
-        gap: 20px;
-        max-width: 1200px;
-        margin: 18px auto;
-        padding: 12px 18px;
-        box-sizing: border-box;
-        /* reserve espaço para footer fixo */
-        padding-bottom: calc(var(--footer-h) + 20px);
-        min-height: calc(100vh - var(--header-h) - var(--footer-h));
-        align-items: start;
-      }
-
-      /* Responsive: collapse to single column on small screens */
-      @media (max-width: 920px) {
-        .page-wrap {
-          grid-template-columns: 1fr;
-          padding-left: 12px;
-          padding-right: 12px;
-        }
-        aside#sidebar {
-          order: 2;
-        }
-        main.chat-main {
-          order: 1;
-        }
-      }
-
-      /* SIDEBAR (conversas) */
-      aside.sidebar {
-        background: #fff;
-        border-radius: 12px;
-        padding: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-        height: calc(100vh - var(--header-h) - var(--footer-h) - 48px);
-        overflow: auto;
-        box-sizing: border-box;
-        opacity: 0;
-        transform: translateY(14px);
-        transition: opacity 0.5s ease, transform 0.5s ease;
-      }
-      aside.sidebar.in-view {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .sidebar-title {
-        margin: 0 0 8px;
-        font-size: 1.15rem;
-      }
-      .mural-list,
-      .alunos-list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      /* CHAT */
-      .chat-main {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-        display: flex;
-        flex-direction: column;
-        min-height: calc(100vh - var(--header-h) - var(--footer-h) - 48px);
-        overflow: hidden;
-        box-sizing: border-box;
-        opacity: 0;
-        transform: translateY(14px);
-        transition: opacity 0.5s ease, transform 0.5s ease;
-      }
-      .chat-main.in-view {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .chat-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 18px;
-        border-bottom: 1px solid #eef2f7;
-        gap: 12px;
-        background: linear-gradient(
-          0deg,
-          rgba(255, 255, 255, 0.02),
-          rgba(255, 255, 255, 0)
-        );
-      }
-      .btn-menu {
-        display: none;
-        background: none;
-        border: none;
-        font-size: 1.2rem;
-        cursor: pointer;
-      }
-      @media (max-width: 920px) {
-        .btn-menu {
-          display: inline-block;
-        }
-      }
-
-      .chat-header-left h2 {
-        margin: 0;
-        font-size: 1.15rem;
-        opacity: 0;
-        transform: translateY(8px);
-        transition: opacity 0.42s ease, transform 0.42s ease;
-      }
-      .chat-header-left h2.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .chat-subtitle {
-        margin: 0;
-        color: #6b7280;
-        font-size: 0.95rem;
-        opacity: 0;
-        transform: translateY(8px);
-        transition: opacity 0.42s ease 0.06s, transform 0.42s ease 0.06s;
-      }
-      .chat-subtitle.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .chat-mensagens {
-        flex: 1;
-        padding: 18px;
-        overflow: auto;
-      }
-      .chat-placeholder {
-        color: #9aa4b2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        font-size: 1rem;
-        opacity: 0;
-        transform: translateY(8px);
-        transition: opacity 0.48s ease, transform 0.48s ease;
-      }
-      .chat-placeholder.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .chat-footer {
-        border-top: 1px solid #eef2f7;
-        padding: 10px 12px;
-        background: #fff;
-      }
-      .input-wrap {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-      }
-      .input-wrap input[type="text"] {
-        flex: 1;
-        padding: 10px 12px;
-        border-radius: 8px;
-        border: 1px solid #e6eef8;
-      }
-      .btn-send {
-        padding: 10px 12px;
-        border-radius: 8px;
-        background: var(--blue);
-        color: #fff;
-        border: none;
-        cursor: pointer;
-      }
-
-      /* footer fixo */
-      footer {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: var(--footer-h);
-        background: var(--blue);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 100006;
-        box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.06);
-        box-sizing: border-box;
-      }
-
-      /* reduce motion */
-      @media (prefers-reduced-motion: reduce) {
-        * {
-          transition: none !important;
-          animation: none !important;
-        }
-      }
     </style>
   </head>
 
@@ -537,7 +336,6 @@
 
     <script>
       (function () {
-        // Elements
         const menuToggle = document.getElementById("menu-toggle");
         const menuSidebar = document.getElementById("menu-sidebar");
         const menuClose = document.getElementById("menu-close");
@@ -549,9 +347,7 @@
         const chatPlaceholder = document.getElementById("placeholder");
         const chatMenuToggle = document.getElementById("chat-menu-toggle");
 
-        // --- Menu mobile (menu-sidebar) behavior & accessibility ---
         if (menuToggle && menuSidebar) {
-          // keep button state synced with sidebar class
           const mo = new MutationObserver(() => {
             const open = menuSidebar.classList.contains("open");
             menuToggle.classList.toggle("is-open", open);
@@ -587,20 +383,17 @@
           });
         }
 
-        // --- Chat sidebar toggle (small screens) ---
         if (chatMenuToggle && pageSidebar) {
           chatMenuToggle.addEventListener("click", () => {
             const open = !pageSidebar.classList.contains("open");
             pageSidebar.classList.toggle("open", open);
             pageSidebar.style.transform = open ? "translateX(0)" : "";
-            // on small screens we can focus first item if present
+
             if (open) {
               const first = pageSidebar.querySelector(".sidebar-link");
               if (first) first.focus();
             }
           });
-
-          // close on click outside (for the chat sidebar)
           window.addEventListener("click", (e) => {
             if (!pageSidebar.classList.contains("open")) return;
             if (
@@ -612,7 +405,6 @@
           });
         }
 
-        // close menu or sidebar with Escape key
         window.addEventListener("keydown", (e) => {
           if (e.key === "Escape") {
             if (menuSidebar && menuSidebar.classList.contains("open")) {
@@ -626,7 +418,6 @@
           }
         });
 
-        // --- Header fade on scroll (rAF optimized) ---
         const SCROLL_THRESHOLD = 8;
         let ticking = false;
         function updateHeaderOnScroll() {
@@ -648,10 +439,8 @@
           { passive: true }
         );
 
-        // initialize header state (in case page loaded scrolled)
         updateHeaderOnScroll();
 
-        // --- Simple IntersectionObservers for entrance animations ---
         const ioOptions = { threshold: 0.08 };
         if ("IntersectionObserver" in window) {
           const io = new IntersectionObserver((entries, obs) => {
@@ -670,8 +459,6 @@
           if (pageSidebar) pageSidebar.classList.add("in-view");
           if (chatMain) chatMain.classList.add("in-view");
         }
-
-        // Title + placeholder animation
         const titleObserver =
           "IntersectionObserver" in window
             ? new IntersectionObserver(
@@ -697,7 +484,6 @@
           if (chatPlaceholder) chatPlaceholder.classList.add("visible");
         }
 
-        // small accessibility: mark the menu button as expanded when open (optional)
         if (menuToggle && menuSidebar) {
           const updateAria = () =>
             menuToggle.setAttribute(

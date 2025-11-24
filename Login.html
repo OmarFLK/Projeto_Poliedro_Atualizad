@@ -1,708 +1,227 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Página de Login — Poliedro</title>
 
-    <link rel="stylesheet" href="front/Styles/Login.css" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Página de Login — Poliedro</title>
 
-    <style>
-      /* Base */
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        background: #f4f6f9;
-        font-family: Inter, system-ui, Roboto, Arial;
-        color: #111;
-        box-sizing: border-box;
-      }
-      *,
-      *::before,
-      *::after {
-        box-sizing: inherit;
-      }
+  <link rel="stylesheet" href="front/Styles/Login.css" />
+  <link rel="stylesheet" href="front/Styles/acesso.css">
 
-      /* garante que pageContent ocupe a tela menos o footer */
-      #pageContent {
-        min-height: calc(100vh - 56px);
-        display: flex;
-        flex-direction: column;
-      }
+</head>
 
-      /* main cresce empurrando footer */
-      .login-container {
-        flex: 1 1 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-      }
+<body>
+  <div id="pageContent">
+    <main class="login-container" id="loginRoot">
+      <section class="login-box" role="region" aria-label="Área de login" aria-labelledby="loginTitle">
+        <img src="Assets/poliedro02.png" alt="Poliedro" class="logo" />
 
-      /* caixa login */
-      .login-box {
-        width: 100%;
-        max-width: 560px;
-        background: #fff;
-        border-radius: 12px;
-        padding: 26px;
-        box-shadow: 0 14px 34px rgba(17, 24, 39, 0.08);
-        opacity: 0;
-        transform: translateY(15px);
-        transition: opacity 0.48s cubic-bezier(0.22, 0.9, 0.32, 1),
-          transform 0.48s cubic-bezier(0.22, 0.9, 0.32, 1);
-        will-change: opacity, transform;
-      }
-      .login-box.enter {
-        opacity: 1;
-        transform: none;
-      }
-
-      .logo {
-        display: block;
-        margin: 0 auto 18px;
-        max-width: 220px;
-        height: auto;
-      }
-      .toggle-buttons {
-        display: flex;
-        gap: 8px;
-        justify-content: center;
-        margin-bottom: 14px;
-      }
-      .toggle {
-        padding: 8px 14px;
-        border-radius: 8px;
-        border: 1px solid #e6eef8;
-        background: #fff;
-        cursor: pointer;
-      }
-      .toggle.active {
-        background: #163f7a;
-        color: #fff;
-        border-color: transparent;
-      }
-
-      form#loginForm {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      label {
-        font-size: 0.95rem;
-        color: #374151;
-        margin-top: 6px;
-      }
-      input[type="email"],
-      input[type="password"] {
-        padding: 12px 14px;
-        border-radius: 10px;
-        border: 1px solid #e6eef8;
-        background: #fff;
-        font-size: 1rem;
-        outline: none;
-      }
-      input:focus {
-        box-shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
-        border-color: #cbd5e1;
-      }
-      .actions {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-top: 6px;
-      }
-      .terms-inline {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .terms-link {
-        background: none;
-        border: none;
-        color: #163f7a;
-        text-decoration: underline;
-        cursor: pointer;
-        padding: 0;
-        font-size: 0.95rem;
-      }
-      .recover-text {
-        color: #163f7a;
-        text-decoration: none;
-        font-size: 0.95rem;
-      }
-      .action-center {
-        display: flex;
-        justify-content: center;
-      }
-      .primary-access {
-        padding: 12px 18px;
-        border-radius: 10px;
-        border: none;
-        background: #163f7a;
-        color: #fff;
-        font-weight: 700;
-        cursor: pointer;
-        font-size: 1rem;
-        width: 100%;
-      }
-      .primary-access[disabled] {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-
-      footer {
-        height: 56px;
-        background: #163f7a;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 50;
-      }
-
-      /* OVERLAY */
-      #termsOverlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(3px);
-        z-index: 2000;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-      }
-
-      /* MODAL - IMPORTANT: flex column so actions stay visible */
-      .terms-modal {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        max-width: 920px;
-        max-height: calc(100vh - 80px); /* room for margins + footer */
-        background: #fff;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 28px 68px rgba(2, 6, 23, 0.3);
-        transform: translateY(8px);
-        opacity: 0;
-        transition: transform 0.28s ease, opacity 0.28s ease;
-      }
-      .terms-modal.show {
-        transform: none;
-        opacity: 1;
-      }
-
-      .terms-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 18px;
-        border-bottom: 1px solid #f1f5f9;
-      }
-      .terms-content {
-        padding: 16px 18px;
-        overflow: auto;
-        line-height: 1.5;
-        font-size: 0.95rem;
-        flex: 1 1 auto; /* <-- ensures content area takes available space and scrolls */
-        box-sizing: border-box;
-        /* leave bottom padding so last lines never hide behind actions */
-        padding-bottom: 28px;
-      }
-
-      .terms-actions {
-        display: flex;
-        gap: 12px;
-        justify-content: flex-end;
-        padding: 12px 18px;
-        border-top: 1px solid #f1f5f9;
-        /* keep actions visible (flex-none) */
-        flex: 0 0 auto;
-        background: linear-gradient(
-          0deg,
-          rgba(255, 255, 255, 0.8),
-          rgba(255, 255, 255, 0)
-        );
-      }
-      .terms-btn {
-        padding: 10px 12px;
-        border-radius: 8px;
-        border: 1px solid #e6eef8;
-        background: #fff;
-        cursor: pointer;
-      }
-      .terms-accept {
-        background: #163f7a;
-        color: #fff;
-        border-color: transparent;
-        font-weight: 700;
-      }
-      .terms-close {
-        background: none;
-        border: none;
-        font-size: 1.05rem;
-        cursor: pointer;
-      }
-
-      /* make sure modal sits above footer and is fully visible on small screens */
-      @media (max-width: 520px) {
-        .login-box {
-          padding: 18px;
-          border-radius: 10px;
-        }
-        .terms-modal {
-          max-width: 100%;
-          max-height: calc(100vh - 60px);
-          border-radius: 10px;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .login-box,
-        .terms-modal {
-          transition: none !important;
-          transform: none !important;
-          opacity: 1 !important;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div id="pageContent">
-      <main class="login-container" id="loginRoot">
-        <section
-          class="login-box"
-          role="region"
-          aria-label="Área de login"
-          aria-labelledby="loginTitle"
-        >
-          <img src="Assets/poliedro02.png" alt="Poliedro" class="logo" />
-
-          <nav class="toggle-buttons" aria-label="Tipo de login">
-            <button
-              type="button"
-              id="btnAluno"
-              class="toggle active"
-              aria-pressed="true"
-            >
-              Aluno
-            </button>
-            <button
-              type="button"
-              id="btnProfessor"
-              class="toggle"
-              aria-pressed="false"
-            >
-              Professor
-            </button>
-          </nav>
-
-          <form id="loginForm" autocomplete="off" novalidate>
-            <h1 id="loginTitle" style="margin: 0 0 6px; font-size: 1.15rem">
-              Entrar
-            </h1>
-
-            <label for="email">E-mail</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Digite seu e-mail"
-              required
-            />
-
-            <label for="senha">Senha</label>
-            <input
-              type="password"
-              id="senha"
-              name="senha"
-              placeholder="Digite sua senha"
-              required
-            />
-
-            <div class="actions" role="group" aria-label="Ações de login">
-              <div class="terms-inline">
-                <input
-                  type="checkbox"
-                  id="aceitarTermos"
-                  aria-label="Aceito os termos"
-                />
-                <label for="aceitarTermos" class="terms-label-text">
-                  Li e aceito os
-                  <button type="button" id="openTermsLink" class="terms-link">
-                    Termos de Uso
-                  </button>
-                </label>
-              </div>
-
-              <div class="recover-row">
-                <a
-                  href="LoginRecover.html"
-                  id="recoverLink"
-                  class="recover-text"
-                  >Recuperar a senha</a
-                >
-              </div>
-
-              <div class="action-center">
-                <button
-                  id="btnLogin"
-                  type="submit"
-                  disabled
-                  class="primary-access"
-                  aria-disabled="true"
-                >
-                  Acessar
-                </button>
-              </div>
-            </div>
-          </form>
-        </section>
-      </main>
-    </div>
-
-    <!-- MODAL DOS TERMOS -->
-    <div id="termsOverlay" aria-hidden="true" role="dialog" aria-modal="true">
-      <div
-        class="terms-modal"
-        role="document"
-        tabindex="-1"
-        aria-labelledby="termsTitle"
-      >
-        <header class="terms-header">
-          <h2 id="termsTitle" style="margin: 0; font-size: 1.05rem">
-            Termos de Uso do Site
-          </h2>
-          <button class="terms-close" aria-label="Fechar termos">✖</button>
-        </header>
-
-        <!-- content area: flex:1 so it scrolls inside modal -->
-        <div
-          class="terms-content"
-          id="termsContent"
-          tabindex="0"
-          role="region"
-          aria-label="Conteúdo dos termos"
-        >
-          <!-- COLE AQUI O SEU TEXTO COMPLETO DOS TERMOS (já incluí um exemplo) -->
-          <article>
-            <header>
-              <p>
-                <strong>Bem-vindo ao site do Poliedro</strong>. Leia os termos
-                abaixo.
-              </p>
-            </header>
-
-            <section>
-              <h3>1. Definições</h3>
-              <p>Usuário: qualquer pessoa que acesse ou utilize o site.</p>
-            </section>
-
-            <section>
-              <h3>2. Aceitação</h3>
-              <p>
-                Ao acessar o site, o usuário declara que leu, compreendeu e
-                concorda com estes Termos.
-              </p>
-            </section>
-
-            <section>
-              <h3>3. Proteção de Dados</h3>
-              <p>Tratamos dados pessoais conforme a LGPD.</p>
-            </section>
-
-            <section>
-              <h3>4. Conteúdo</h3>
-              <p>
-                ... (cole aqui todo o conteúdo que quiser; a área é rolável) ...
-              </p>
-
-              <!-- repetição pra garantir scroll durante teste - apague quando colar os termos reais -->
-              <p style="margin-top: 12px">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Reprehenderit...
-              </p>
-              <p style="margin-top: 12px">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Reprehenderit...
-              </p>
-              <p style="margin-top: 12px">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Reprehenderit...
-              </p>
-              <p style="margin-top: 12px">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Reprehenderit...
-              </p>
-              <p style="margin-top: 12px">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Reprehenderit...
-              </p>
-            </section>
-
-            <footer style="margin-top: 12px">
-              <p><strong>Última atualização:</strong> 14 de outubro de 2025</p>
-              <p>
-                <strong>Contato:</strong>
-                <a href="mailto:contato@poliedro.com.br"
-                  >contato@poliedro.com.br</a
-                >
-              </p>
-            </footer>
-          </article>
-        </div>
-
-        <!-- actions always visible at bottom of modal -->
-        <div class="terms-actions">
-          <button class="terms-btn terms-close">Fechar</button>
-          <button id="termsBtnAccept" class="terms-btn terms-accept" disabled>
-            Aceitar
+        <nav class="toggle-buttons" aria-label="Tipo de login">
+          <button type="button" id="btnAluno" class="toggle active" aria-pressed="true">
+            Aluno
           </button>
-        </div>
+          <button type="button" id="btnProfessor" class="toggle" aria-pressed="false">
+            Professor
+          </button>
+        </nav>
+
+        <form id="loginForm" autocomplete="off" novalidate>
+          <h1 id="loginTitle" style="margin: 0 0 6px; font-size: 1.15rem">
+            Entrar
+          </h1>
+
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required />
+
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required />
+
+          <div class="actions" role="group" aria-label="Ações de login">
+            <div class="terms-inline">
+              <input type="checkbox" id="aceitarTermos" aria-label="Aceito os termos" />
+              <label for="aceitarTermos" class="terms-label-text">
+                Li e aceito os
+                <button type="button" id="openTermsLink" class="terms-link">
+                  Termos de Uso
+                </button>
+              </label>
+            </div>
+
+            <div class="recover-row">
+              <a href="LoginRecover.html" id="recoverLink" class="recover-text">Recuperar a senha</a>
+            </div>
+
+            <div class="action-center">
+              <button id="btnLogin" type="submit" disabled class="primary-access" aria-disabled="true">
+                Acessar
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL DOS TERMOS -->
+  <div id="termsOverlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="terms-modal" role="document" tabindex="-1" aria-labelledby="termsTitle">
+
+      <header class="terms-header">
+        <h2 id="termsTitle" style="margin: 0; font-size: 1.05rem">
+          Termos de Uso do Site
+        </h2>
+        <button class="terms-close" aria-label="Fechar termos">✖</button>
+      </header>
+
+      <div class="terms-content" id="termsContent" tabindex="0" role="region" aria-label="Conteúdo dos termos">
+
+        <article>
+
+          <header>
+            <h1>Termos de Uso do Site Poliedro</h1>
+            <p>Bem-vindo ao site do <strong>Poliedro</strong>. Leia atentamente os Termos abaixo.</p>
+          </header>
+
+          <section>
+            <h2>1. Definições</h2>
+            <ul>
+              <li><strong>Usuário:</strong> qualquer pessoa que acesse ou utilize o site.</li>
+              <li><strong>Site:</strong> ambiente digital oficial do Poliedro.</li>
+              <li><strong>Conteúdo:</strong> materiais, informações e recursos disponibilizados.</li>
+              <li><strong>Dados Pessoais:</strong> informações identificáveis conforme a LGPD.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>2. Aceitação dos Termos</h2>
+            <p>Ao acessar o site, o usuário declara que leu, compreendeu e concorda com estes Termos.</p>
+            <ul>
+              <li>Os termos podem ser alterados a qualquer momento.</li>
+              <li>Usuários menores de idade devem estar autorizados por responsáveis legais.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>3. Finalidade do Site</h2>
+            <ul>
+              <li>Exibir informações institucionais.</li>
+              <li>Disponibilizar materiais pedagógicos.</li>
+              <li>Realizar matrículas e inscrições.</li>
+              <li>Divulgar eventos e comunicados.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>4. Cadastro e Acesso</h2>
+            <p>Algumas funcionalidades exigem cadastro prévio.</p>
+
+            <h3>4.1 Responsabilidades do Usuário</h3>
+            <ul>
+              <li>Fornecer dados verídicos.</li>
+              <li>Preservar sigilo de login e senha.</li>
+              <li>Notificar acessos indevidos.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>5. Propriedade Intelectual</h2>
+            <p>Todo o conteúdo pertence ao Poliedro ou parceiros autorizados.</p>
+            <ul>
+              <li>É proibida reprodução sem permissão.</li>
+              <li>Uso indevido pode gerar penalidades legais.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>6. Conduta do Usuário</h2>
+            <ul>
+              <li>Não publicar conteúdos ofensivos ou ilegais.</li>
+              <li>Não tentar invadir sistemas.</li>
+              <li>Não utilizar o site para fins comerciais sem autorização.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>7. Proteção de Dados</h2>
+            <p>Tratamento conforme a LGPD.</p>
+
+            <h3>7.1 Dados Coletados</h3>
+            <ul>
+              <li>Formulários de contato/matrícula.</li>
+              <li>Cookies e ferramentas de análise.</li>
+              <li>Interações em áreas restritas.</li>
+            </ul>
+
+            <h3>7.2 Compartilhamento</h3>
+            <p>Apenas com parceiros autorizados, sob contrato de confidencialidade.</p>
+
+            <h3>7.3 Direitos do Usuário</h3>
+            <ul>
+              <li>Acesso, correção ou exclusão de dados.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>8. Links Externos</h2>
+            <p>O Poliedro não se responsabiliza por conteúdos de terceiros.</p>
+          </section>
+
+          <section>
+            <h2>9. Disponibilidade e Atualizações</h2>
+            <ul>
+              <li>Podem existir falhas ou interrupções.</li>
+              <li>Conteúdos podem ser alterados sem aviso prévio.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>10. Isenção de Responsabilidade</h2>
+            <ul>
+              <li>Perdas causadas pelo uso do site.</li>
+              <li>Erros do dispositivo ou conexão do usuário.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>11. Modificações</h2>
+            <p>Termos podem ser atualizados periodicamente.</p>
+          </section>
+
+          <section>
+            <h2>12. Legislação e Foro</h2>
+            <p>Regido pelas leis brasileiras. Foro: São José dos Campos – SP.</p>
+          </section>
+
+          <footer style="margin-top: 14px">
+            <p><strong>Última atualização:</strong> 14 de outubro de 2025</p>
+            <p><strong>Contato: </strong><a href="mailto:contato@poliedro.com.br">contato@poliedro.com.br</a></p>
+          </footer>
+
+        </article>
+
       </div>
+
+      <div class="terms-actions">
+        <button class="terms-btn terms-close">Fechar</button>
+        <button id="termsBtnAccept" class="terms-btn terms-accept" disabled>Aceitar</button>
+      </div>
+
     </div>
+  </div>
+  
+  <script src="front/Scripts/login.js"></script>
 
-    <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
-    </footer>
+  <!-- VLibras -->
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper></div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget("https://vlibras.gov.br/app");
+  </script>
 
-    <!-- seu script local (se houver) -->
-    <script src="front/Scripts/login.js"></script>
+</body>
 
-    <!-- Inline JS: animação, modal robusto, binding checkbox/login -->
-    <script>
-      (function () {
-        // Ajuste min-height
-        function adjustPageMinHeight() {
-          const page = document.getElementById("pageContent");
-          const footer = document.querySelector("footer");
-          if (!page || !footer) return;
-          const fh = footer.offsetHeight || 56;
-          page.style.minHeight = `calc(100vh - ${fh}px)`;
-        }
-
-        // animação
-        function animateLoginBox() {
-          const box = document.querySelector(".login-box");
-          if (!box) return;
-          requestAnimationFrame(() => box.classList.add("enter"));
-        }
-
-        // modal
-        const openBtn = document.getElementById("openTermsLink");
-        const overlay = document.getElementById("termsOverlay");
-        const modal = overlay ? overlay.querySelector(".terms-modal") : null;
-        const closeBtns = overlay
-          ? overlay.querySelectorAll(".terms-close")
-          : [];
-        const acceptBtn = document.getElementById("termsBtnAccept");
-        const termsContent = document.getElementById("termsContent");
-        const aceitarCheckbox = document.getElementById("aceitarTermos");
-        const loginBtn = document.getElementById("btnLogin");
-        let lastFocus = null;
-
-        function openModal(e) {
-          if (e) e.preventDefault();
-          if (!overlay || !modal) return;
-          lastFocus = document.activeElement;
-          overlay.style.display = "flex";
-          overlay.setAttribute("aria-hidden", "false");
-          modal.classList.add("show");
-          document.documentElement.style.overflow = "hidden";
-          if (termsContent) termsContent.scrollTop = 0;
-          if (acceptBtn) acceptBtn.disabled = true;
-          // small delay then focus modal for accessibility
-          setTimeout(() => modal.focus(), 40);
-          // recalc accept state (in case content short)
-          setTimeout(() => checkTermsScroll(), 80);
-        }
-
-        function closeModal() {
-          if (!overlay || !modal) return;
-          modal.classList.remove("show");
-          overlay.style.display = "none";
-          overlay.setAttribute("aria-hidden", "true");
-          document.documentElement.style.overflow = "";
-          if (lastFocus && typeof lastFocus.focus === "function")
-            lastFocus.focus();
-        }
-
-        function checkTermsScroll() {
-          if (!termsContent || !acceptBtn) return;
-          const atBottom =
-            Math.ceil(termsContent.scrollTop + termsContent.clientHeight) >=
-            Math.floor(termsContent.scrollHeight - 6);
-          // if content fits (no scrollbar) allow accept immediately
-          const fits =
-            termsContent.scrollHeight <= termsContent.clientHeight + 2;
-          acceptBtn.disabled = !(atBottom || fits);
-        }
-
-        function setupModal() {
-          if (!openBtn || !overlay || !termsContent || !acceptBtn) return;
-          openBtn.addEventListener("click", openModal);
-          closeBtns.forEach((b) =>
-            b.addEventListener("click", (ev) => {
-              ev.preventDefault();
-              closeModal();
-            })
-          );
-          overlay.addEventListener("click", (ev) => {
-            if (ev.target === overlay) closeModal();
-          });
-          window.addEventListener("keydown", (ev) => {
-            if (
-              ev.key === "Escape" &&
-              overlay.getAttribute("aria-hidden") === "false"
-            )
-              closeModal();
-          });
-
-          termsContent.addEventListener("scroll", checkTermsScroll, {
-            passive: true,
-          });
-          window.addEventListener("resize", checkTermsScroll);
-          // initial check
-          requestAnimationFrame(checkTermsScroll);
-
-          acceptBtn.addEventListener("click", () => {
-            if (acceptBtn.disabled) return;
-            if (aceitarCheckbox) {
-              aceitarCheckbox.checked = true;
-              aceitarCheckbox.dispatchEvent(
-                new Event("change", { bubbles: true })
-              );
-            }
-            closeModal();
-          });
-
-          // focus trap
-          overlay.addEventListener("keydown", (e) => {
-            if (e.key !== "Tab") return;
-            const focusable = Array.from(
-              overlay.querySelectorAll(
-                'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-              )
-            ).filter((el) => el.offsetParent !== null);
-            if (focusable.length === 0) return;
-            const first = focusable[0];
-            const last = focusable[focusable.length - 1];
-            if (e.shiftKey) {
-              if (document.activeElement === first) {
-                e.preventDefault();
-                last.focus();
-              }
-            } else {
-              if (document.activeElement === last) {
-                e.preventDefault();
-                first.focus();
-              }
-            }
-          });
-        }
-
-        // checkbox -> login button binding
-        function setupCheckboxBinding() {
-          if (!aceitarCheckbox || !loginBtn) return;
-          aceitarCheckbox.addEventListener("change", () => {
-            loginBtn.disabled = !aceitarCheckbox.checked;
-            loginBtn.setAttribute(
-              "aria-disabled",
-              String(!aceitarCheckbox.checked)
-            );
-          });
-          // initial
-          loginBtn.disabled = !aceitarCheckbox.checked;
-          loginBtn.setAttribute(
-            "aria-disabled",
-            String(!aceitarCheckbox.checked)
-          );
-        }
-
-        // toggle UI
-        function setupToggle() {
-          const btnAluno = document.getElementById("btnAluno");
-          const btnProfessor = document.getElementById("btnProfessor");
-          if (!btnAluno || !btnProfessor) return;
-          [btnAluno, btnProfessor].forEach((b) =>
-            b.addEventListener("click", () => {
-              btnAluno.classList.toggle("active", b === btnAluno);
-              btnProfessor.classList.toggle("active", b === btnProfessor);
-              btnAluno.setAttribute(
-                "aria-pressed",
-                String(btnAluno.classList.contains("active"))
-              );
-              btnProfessor.setAttribute(
-                "aria-pressed",
-                String(btnProfessor.classList.contains("active"))
-              );
-            })
-          );
-        }
-
-        // form submit UX
-        function setupForm() {
-          const form = document.getElementById("loginForm");
-          if (!form || !loginBtn) return;
-          form.addEventListener("submit", (e) => {
-            e.preventDefault();
-            if (loginBtn.disabled) return;
-            const original = loginBtn.textContent;
-            loginBtn.disabled = true;
-            loginBtn.textContent = "Entrando...";
-            setTimeout(() => {
-              loginBtn.textContent = original;
-              loginBtn.disabled = !aceitarCheckbox.checked;
-              // aqui você integra com seu backend
-            }, 900);
-          });
-        }
-
-        // init
-        document.addEventListener("DOMContentLoaded", () => {
-          adjustPageMinHeight();
-          animateLoginBox();
-          setupModal();
-          setupCheckboxBinding();
-          setupToggle();
-          setupForm();
-        });
-
-        // resize debounce
-        let to = null;
-        window.addEventListener("resize", () => {
-          if (to) clearTimeout(to);
-          to = setTimeout(() => {
-            adjustPageMinHeight();
-            checkTermsScroll();
-          }, 120);
-        });
-
-        // expose checkTermsScroll for inline calls (defensive)
-        function checkTermsScroll() {
-          /* placeholder so linter not complain */
-        }
-      })();
-    </script>
-    <!-- VLibras -->
-<div vw class="enabled">
-  <div vw-access-button class="active"></div>
-  <div vw-plugin-wrapper></div>
-</div>
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-<script>
-  new window.VLibras.Widget("https://vlibras.gov.br/app");
-</script>
-
-  </body>
 </html>

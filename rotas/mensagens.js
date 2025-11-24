@@ -174,5 +174,34 @@ router.post('/', upload.single('file'), async (req, res) => {
   }
 });
 
+// ======================================================
+// GET /api/mensagens/ultimas?userId=ID
+// Retorna a ÚLTIMA mensagem enviada PARA esse usuário
+// ======================================================
+
+router.get('/ultimas', async (req, res) => {
+  try {
+    const userId = req.query.userId;
+
+    if (!userId) {
+      return res.status(400).json({ error: "userId obrigatório" });
+    }
+
+    // Busca mensagens privadas onde userId é o DESTINO
+    const msgs = await Mensagem.find({
+      toType: 'aluno',
+      toUser: userId
+    })
+      .sort({ createdAt: -1 })
+      .limit(1)
+      .lean();
+
+    return res.json(msgs);
+
+  } catch (err) {
+    console.error("GET /api/mensagens/ultimas erro:", err);
+    return res.status(500).json({ error: "Erro ao buscar última mensagem" });
+  }
+});
 
 module.exports = router;

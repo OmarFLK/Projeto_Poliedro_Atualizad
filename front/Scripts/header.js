@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let usuario = null;
 
-  // Prioridade correta
+  // prioridade
   if (path.includes("professor")) {
     usuario = prof || aluno;
   } else if (path.includes("aluno")) {
@@ -22,11 +22,18 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!img) return;
 
   if (usuario && usuario.avatar) {
+
+    // 🔥 ajuste automático do caminho da foto
+    let avatarPath = usuario.avatar;
+    if (!avatarPath.startsWith("/uploads/")) {
+      avatarPath = "/uploads/" + avatarPath;
+    }
+
     img.style.transition = "opacity 150ms ease";
     img.style.opacity = 0;
 
     setTimeout(() => {
-      img.src = usuario.avatar;
+      img.src = avatarPath;
       img.style.opacity = 1;
     }, 120);
 

@@ -314,4 +314,14 @@ footer {
 .alunos-list {
     padding-top: 4px;
 }
+/* Espaçamento entre filtros e barra de busca */
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px; 
+}
+
+.search-box {
+    margin-bottom: 14px;
+}
 

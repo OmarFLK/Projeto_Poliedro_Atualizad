@@ -6,16 +6,24 @@ body {
   overflow-y: auto;
 }
 
+
 .painel-eventos {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1.3fr 1fr; 
   gap: 40px;
-  max-width: 1400px;
+  max-width: 1600px;                
   margin: 40px auto;
   padding: 0 40px;
   box-sizing: border-box;
   align-items: start;
 }
+
+/* deixar os cards mais largos dentro da coluna */
+.event-card {
+  width: 100%;
+  max-width: 95%;     
+}
+
 
 /* Card padrão */
 .section-card {
@@ -189,4 +197,28 @@ main {
 .event-card::-webkit-scrollbar-thumb {
   background: #c5c5c5;
   border-radius: 8px;
+}
+main.painel-eventos {
+  max-width: 1500px !important;
+  grid-template-columns: 1.3fr 1fr !important;
+  gap: 40px !important;
+  padding: 0 40px !important;
+}
+/* RESPONSIVIDADE REAL — sobrescreve o estilo interno */
+@media (max-width: 1050px) {
+  main.painel-eventos {
+    grid-template-columns: 1fr !important;
+    max-width: 100% !important;
+    padding: 0 20px !important;
+    gap: 24px !important;
+  }
+
+  .col-direita,
+  .col-esquerda {
+    width: 100% !important;
+  }
+
+  .section-card {
+    min-height: auto !important;
+  }
 }

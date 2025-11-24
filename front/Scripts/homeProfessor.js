@@ -35,9 +35,7 @@ function setCardHtml(id, html, fallback = "Nenhuma informação encontrada.") {
   el.innerHTML = html ? html : `<p class="card-title">${fallback}</p>`;
 }
 
-/* =======================================================
-   1) ÚLTIMA ATIVIDADE
-======================================================= */
+/*1) ÚLTIMA ATIVIDADE */
 async function carregarUltimaAtividade() {
   try {
     const req = await fetch(
@@ -84,9 +82,7 @@ async function carregarUltimaAtividade() {
   }
 }
 
-/* =======================================================
-   2) ÚLTIMO EVENTO (do professor)
-======================================================= */
+/* 2) ÚLTIMO EVENTO (do professor) */
 async function carregarUltimoEvento() {
   try {
     const req = await fetch(`${API}/api/eventos`, { credentials: "include" });
@@ -136,13 +132,11 @@ async function carregarUltimoEvento() {
 }
 
 
-/* =======================================================
-   3) ÚLTIMA MENSAGEM RECEBIDA (privado, com nome do remetente)
-======================================================= */
+/*3) ÚLTIMA MENSAGEM RECEBIDA (privado, com nome do remetente) */
 async function carregarUltimaMensagem() {
   try {
     const req = await fetch(
-      `${API}/api/mensagens?tipo=aluno&toUser=${user.id}`,
+      `${API}/api/mensagens/ultimas?userId=${user.id}`,
       { credentials: "include" }
     );
 
@@ -153,11 +147,8 @@ async function carregarUltimaMensagem() {
       return;
     }
 
-    const ultima = msgs.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    )[0];
+    const ultima = msgs[0];
 
-    // pegar info do remetente
     let remetente = "Usuário";
 
     try {
@@ -170,9 +161,7 @@ async function carregarUltimaMensagem() {
         const dados = await r.json();
         remetente = dados.nome || "Professor";
       }
-    } catch (err) {
-      console.warn("Erro ao buscar remetente:", err);
-    }
+    } catch {}
 
     setCardHtml(
       "mensagem-body",
@@ -192,9 +181,8 @@ async function carregarUltimaMensagem() {
   }
 }
 
-/* =======================================================
-   INICIAR
-======================================================= */
+
+/*INICIAR*/
 document.addEventListener("DOMContentLoaded", () => {
   carregarUltimaAtividade();
   carregarUltimoEvento();
