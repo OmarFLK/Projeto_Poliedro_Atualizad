@@ -545,7 +545,7 @@
     </main>
 
     <footer>
-      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+      <p class="footer-text">© Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa. </p>
     </footer>
 
     <script>
@@ -575,14 +575,12 @@
 
     <script>
       (function () {
-        // ELEMENTS
         const header = document.getElementById("site-header");
-        const menuToggle = document.getElementById("menu-toggle"); // may be absent in this page
-        const sidebar = document.getElementById("sidebar"); // may be absent in this page
+        const menuToggle = document.getElementById("menu-toggle");
+        const sidebar = document.getElementById("sidebar"); 
         const pageCards = Array.from(document.querySelectorAll(".card"));
         const footer = document.querySelector("footer");
 
-        // Header fade on scroll (rAF optimized)
         const SCROLL_THRESHOLD = 8;
         let ticking = false;
         function updateHeader() {
@@ -605,7 +603,6 @@
         );
         updateHeader();
 
-        // If there is a sidebar/hamburger on this page, keep behavior consistent
         if (menuToggle && sidebar) {
           const mo = new MutationObserver(() => {
             const open = sidebar.classList.contains("open");
@@ -633,7 +630,6 @@
             });
           }
 
-          // click outside closes
           window.addEventListener("click", (e) => {
             if (!sidebar.classList.contains("open")) return;
             if (sidebar.contains(e.target) || menuToggle.contains(e.target))
@@ -642,7 +638,6 @@
             sidebar.setAttribute("aria-hidden", "true");
           });
 
-          // escape closes
           window.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
               if (sidebar.classList.contains("open")) {
@@ -654,7 +649,6 @@
           });
         }
 
-        // Entrance animations using IntersectionObserver
         if ("IntersectionObserver" in window) {
           const io = new IntersectionObserver(
             (entries, obs) => {

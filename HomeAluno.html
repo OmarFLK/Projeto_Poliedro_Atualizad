@@ -16,7 +16,6 @@
         --blue: #163f7a;
       }
 
-      /* Full-height layout so footer sticks to bottom without fixed positioning */
       html,
       body {
         height: 100%;
@@ -42,13 +41,12 @@
       }
 
       main.home-main {
-        flex: 1 1 auto; /* takes remaining space so footer sits at bottom */
+        flex: 1 1 auto; 
         box-sizing: border-box;
         padding-bottom: 12px;
         min-height: calc(100vh - var(--header-h) - var(--footer-h));
       }
 
-      /* HEADER */
       .header-aluno {
         background-color: var(--blue);
         display: flex;
@@ -80,7 +78,6 @@
         cursor: pointer;
       }
 
-      /* MENU MOBILE */
       .menu-toggle {
         font-size: 1.4rem;
         color: white;
@@ -144,7 +141,6 @@
         cursor: pointer;
       }
 
-      /* TITULOS */
       #welcome-title {
         font-size: 2.3rem;
         font-weight: 900;
@@ -175,7 +171,6 @@
         padding: 0 20px;
       }
 
-      /* CARDS (centralizados) */
       .cards-wrapper {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -258,7 +253,6 @@
         display: block;
       }
 
-      /* FOOTER - static (not fixed) but body flex ensures it sticks bottom */
       footer {
         background: var(--blue);
         color: white;
@@ -267,7 +261,6 @@
         flex-shrink: 0;
       }
 
-      /* small responsive tweaks */
       @media (max-width: 640px) {
         #welcome-title {
           font-size: 1.6rem;
@@ -277,7 +270,6 @@
         }
       }
 
-      /* respects reduced motion */
       @media (prefers-reduced-motion: reduce) {
         .card,
         #welcome-title,
@@ -335,7 +327,6 @@
       </nav>
     </header>
 
-    <!-- MAIN -->
     <main class="home-main" id="home-main" role="main">
       <section class="welcome-row" aria-labelledby="welcome-title">
         <div class="welcome-left">
@@ -350,7 +341,6 @@
         role="region"
         aria-label="Resumo rápido"
       >
-        <!-- CARD 1 -->
         <div class="card" role="article" aria-labelledby="atividade-title">
           <div class="card-top">
             <h2 id="atividade-title">Última atividade</h2>
@@ -369,7 +359,6 @@
           >
         </div>
 
-        <!-- CARD 2 -->
         <div class="card" role="article" aria-labelledby="evento-title">
           <div class="card-top">
             <h2 id="evento-title">Último evento</h2>
@@ -389,7 +378,6 @@
           >
         </div>
 
-        <!-- CARD 3 -->
         <div class="card" role="article" aria-labelledby="mensagem-title">
           <div class="card-top">
             <h2 id="mensagem-title">Última mensagem recebida</h2>
@@ -408,15 +396,13 @@
     </main>
 
     <footer>
-      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+      <p class="footer-text">© Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa.</p>
     </footer>
 
-    <!-- SCRIPTS -->
     <script src="front/Scripts/homeAluno.js"></script>
     <script src="front/Scripts/header.js"></script>
 
     <script>
-      /* ==== Header fade ==== */
       (function () {
         const header = document.getElementById("site-header");
         if (!header) return;
@@ -439,7 +425,6 @@
         );
       })();
 
-      /* ==== Sidebar ==== */
       (function () {
         const menuToggle = document.getElementById("menu-toggle");
         const sidebar = document.getElementById("sidebar");
@@ -470,7 +455,6 @@
         }
       })();
 
-      /* ==== Intersection Observer for cards & titles ==== */
       (function () {
         if (!("IntersectionObserver" in window)) {
           document
@@ -527,7 +511,7 @@
         }
       })();
     </script>
-    <!-- VLibras -->
+ 
 <div vw class="enabled">
   <div vw-access-button class="active"></div>
   <div vw-plugin-wrapper></div>

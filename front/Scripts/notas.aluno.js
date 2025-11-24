@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function carregarNotas() {
     try {
-      // CORREÇÃO AQUI ↓↓↓
-      const res = await fetch(`${baseUrl}/api/notasalunos/aluno/${aluno.id}`);
+      const res = await fetch(`${baseUrl}/api/notas/aluno/${aluno.id}`);
+
 
       const notas = await res.json();
 
@@ -34,6 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       montarTabela("tabelaSem1", sem1);
       montarTabela("tabelaSem2", sem2);
+
+
+      setTimeout(() => {
+        montarGrafico("chartSem1", sem1, 1);
+        montarGrafico("chartSem2", sem2, 2);
+      }, 50);
 
       montarGrafico("chartSem1", sem1, 1);
       montarGrafico("chartSem2", sem2, 2);
@@ -88,19 +94,29 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function montarGrafico(canvasId, lista, semestre) {
-    const ctx = document.getElementById(canvasId).getContext("2d");
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
 
-    if (!lista.length) {
-      ctx.font = "16px Arial";
-      ctx.fillText("Sem dados suficientes", 20, 40);
+    if (!Array.isArray(lista) || lista.length === 0) {
+      // remove existing chart for this semester if present
+      if (semestre === 1 && chart1) { chart1.destroy(); chart1 = null; }
+      if (semestre === 2 && chart2) { chart2.destroy(); chart2 = null; }
       return;
     }
 
-    const materias = lista.map(n => n.materia);
-    const medias = lista.map(n => n.media ?? 0);
+    const materias = lista.map(n => n.materia || "");
+    const medias = lista.map(n => {
+      if (typeof n.media === "number") return n.media;
+      const vals = [n.p1, n.p2, n.t1, n.t2].filter(v => typeof v === "number");
+      if (vals.length === 0) return 0;
+      const sum = vals.reduce((a, b) => a + b, 0);
+      return +(sum / vals.length);
+    });
 
-    if (semestre === 1 && chart1) chart1.destroy();
-    if (semestre === 2 && chart2) chart2.destroy();
+
+    if (semestre === 1 && chart1) { chart1.destroy(); chart1 = null; }
+    if (semestre === 2 && chart2) { chart2.destroy(); chart2 = null; }
 
     const novo = new Chart(ctx, {
       type: "bar",

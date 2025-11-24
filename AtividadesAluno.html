@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
     <link rel="stylesheet" href="front/Styles/AtividadesAluno.css" />
 
-    <!-- Bootstrap (mantive caso já use) -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -25,7 +24,6 @@
         --anim-ease: cubic-bezier(0.22, 0.9, 0.32, 1);
       }
 
-      /* Base layout to avoid white strip under footer */
       html,
       body {
         height: 100%;
@@ -107,7 +105,6 @@
         }
       }
 
-      /* SIDEBAR */
       .sidebar {
         height: 100%;
         width: 0;
@@ -149,7 +146,6 @@
         cursor: pointer;
       }
 
-      /* PANEL LAYOUT */
       .painel-atividades {
         display: grid;
         grid-template-columns: 1fr 360px;
@@ -163,7 +159,6 @@
         }
       }
 
-      /* left column */
       .col-esquerda {
         background: #fff;
         border-radius: 12px;
@@ -185,7 +180,6 @@
         font-size: 1.4rem;
       }
 
-      /* right column */
       .col-direita {
         background: #fff;
         border-radius: 12px;
@@ -219,13 +213,11 @@
         color: #666;
       }
 
-      /* resolution list */
       .resolucao-item {
         padding: 10px;
         border-bottom: 1px solid #f1f6fb;
       }
 
-      /* footer */
       footer {
         background: var(--blue);
         color: #fff;
@@ -234,7 +226,6 @@
         flex-shrink: 0;
       }
 
-      /* reduced motion */
       @media (prefers-reduced-motion: reduce) {
         .col-esquerda,
         .col-direita {
@@ -308,9 +299,7 @@
         <section class="col-esquerda" id="col-left">
           <h1 id="ativ-title">Minhas Atividades</h1>
           <div id="lista-atividades" aria-live="polite">
-            <!-- itens serão inseridos dinamicamente por front/Scripts/atividades.Aluno.js -->
-            <!-- exemplo estático (caso script demore): -->
-            <!-- <div class="atividade-item"><h3>Trabalho de Física</h3><div class="atividade-meta">Prazo: 10/12 - Turma: 2º Ano</div></div> -->
+
           </div>
         </section>
 
@@ -325,7 +314,7 @@
     </main>
 
     <footer>
-      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+      <p class="footer-text">© Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa.</p>
     </footer>
 
     <!-- VLibras plugin (mantive) -->
@@ -351,7 +340,6 @@
     <script src="front/Scripts/header.js" defer></script>
 
     <script>
-      /* Sidebar toggle (pattern consistent across pages) */
       (function () {
         const menuToggle = document.getElementById("menu-toggle");
         const sidebar = document.getElementById("sidebar");
@@ -381,7 +369,6 @@
         });
       })();
 
-      /* Header fade on scroll (performant) */
       (function () {
         const header = document.getElementById("site-header");
         if (!header) return;
@@ -401,7 +388,6 @@
         );
       })();
 
-      /* IntersectionObserver: animate columns when in view */
       (function () {
         if (!("IntersectionObserver" in window)) {
           document.getElementById("col-left").classList.add("in-view");
@@ -427,7 +413,6 @@
         if (right) io.observe(right);
       })();
 
-      /* Defensive UX: if atividades.Aluno.js doesn't populate anything, show a friendly message */
       (function () {
         setTimeout(() => {
           const lista = document.getElementById("lista-atividades");

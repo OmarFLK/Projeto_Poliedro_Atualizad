@@ -9,9 +9,8 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./rotas/auth');
 const atividadesRoutes = require('./rotas/atividades');
 const resolucoesRoutes = require('./rotas/resolucoes');
-const notasRoutes = require('./rotas/notas');
+const notasRoutes = require('./rotas/notas');     
 const eventosRoutes = require('./rotas/eventos');
-const notasalunosRoutes = require('./rotas/notasalunos');
 const itinerarioRoutes = require('./rotas/itinerario');
 const alunosRoutes = require('./rotas/alunos');
 const professoresRoutes = require('./rotas/professores');
@@ -19,14 +18,12 @@ const mensagensRoutes = require('./rotas/mensagens');
 
 const app = express();
 
-/* ============================
-   🔓 CORS AJUSTADO PARA CELULAR
-   ============================ */
+/* CORS — PC + CELULAR NA MESMA REDE */
 app.use(cors({
   origin: [
-    "http://127.0.0.1:5500",              // PC local
-    "http://localhost:5500",              // fallback
-    "http://192.168.15.172:5500"          // IP do PC na rede → celular acessa aqui
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "http://192.168.15.172:5500"  // seu IP local (usar esse no celular)
   ],
   credentials: true
 }));
@@ -47,31 +44,26 @@ app.get("/teste", (req, res) => {
   res.send("Rota teste funcionando corretamente");
 });
 
-/* ============================
-   🔌 CONEXÃO MONGODB
-   ============================ */
+/*MONGODB */
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => console.log("MongoDB conectado com sucesso"))
-.catch((err) => console.error("Erro ao conectar MongoDB:", err));
+.catch(err => console.error("Erro ao conectar MongoDB:", err));
 
-/* ============================
-   📌 REGISTRO DAS ROTAS
-   ============================ */
+/*REGISTRO DAS ROTAS*/
 app.use("/auth", authRoutes);
 app.use("/api/atividades", atividadesRoutes);
 app.use("/api/resolucoes", resolucoesRoutes);
-app.use('/api/notas', notasRoutes);
+app.use('/api/notas', notasRoutes);            
 app.use("/api/eventos", eventosRoutes);
 app.use('/api/professores', professoresRoutes);
-app.use('/api/notasalunos', notasalunosRoutes);
 app.use('/api/alunos', alunosRoutes);
 app.use("/api/itinerario", itinerarioRoutes);
 app.use("/api/mensagens", mensagensRoutes);
 
-// LOGIN (página inicial)
+// LOGIN
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "front", "Login.html"));
 });
@@ -81,15 +73,12 @@ app.use((req, res) => {
   res.status(404).json({ error: "Rota não encontrada" });
 });
 
-
+// SERVER
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, "0.0.0.0", () =>
   console.log(`
-
-Servidor rodando!
-Projeto Poliedro
-Servidor iniciado com sucesso!
+Servidor rodando na porta ${PORT}
+Portal Poliedro
 
 `)
 );

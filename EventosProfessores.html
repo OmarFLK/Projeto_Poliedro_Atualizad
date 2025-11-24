@@ -400,7 +400,7 @@
     </main>
 
     <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: [Nossos nomes]</p>
+      <p class="footer-text">&copy; Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa.</p>
     </footer>
 
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
@@ -421,11 +421,8 @@
         const formSection = document.getElementById("form-section");
         const listSection = document.getElementById("list-section");
 
-        // Safety
         if (!menuToggle || !sidebar) {
-          // still continue to wire observers below
         } else {
-          // keep menu button state synced with sidebar class + aria-hidden
           const mo = new MutationObserver(() => {
             const open = sidebar.classList.contains("open");
             menuToggle.classList.toggle("is-open", open);
@@ -433,7 +430,6 @@
           });
           mo.observe(sidebar, { attributes: true, attributeFilter: ["class"] });
 
-          // Toggle
           menuToggle.addEventListener("click", () => {
             const open = !sidebar.classList.contains("open");
             sidebar.classList.toggle("open", open);
@@ -441,7 +437,6 @@
             if (open && menuClose) menuClose.focus();
           });
 
-          // Close button
           if (menuClose) {
             menuClose.addEventListener("click", () => {
               sidebar.classList.remove("open");
@@ -450,7 +445,6 @@
             });
           }
 
-          // click outside closes sidebar
           window.addEventListener("click", (e) => {
             if (!sidebar.classList.contains("open")) return;
             if (sidebar.contains(e.target) || menuToggle.contains(e.target))
@@ -460,7 +454,6 @@
           });
         }
 
-        // Close menus with Esc
         window.addEventListener("keydown", (e) => {
           if (e.key === "Escape") {
             if (sidebar && sidebar.classList.contains("open")) {
@@ -471,7 +464,6 @@
           }
         });
 
-        // Header fade on scroll (rAF optimized)
         const SCROLL_THRESHOLD = 8;
         let ticking = false;
         function updateHeaderOnScroll() {
@@ -492,10 +484,9 @@
           },
           { passive: true }
         );
-        // init state
+
         updateHeaderOnScroll();
 
-        // Entrance animations
         if ("IntersectionObserver" in window) {
           const io = new IntersectionObserver(
             (entries, obs) => {
@@ -518,7 +509,6 @@
           });
         }
 
-        // Accessibility: reflect expanded state on toggle button
         if (menuToggle && sidebar) {
           const updateAria = () =>
             menuToggle.setAttribute(

@@ -192,7 +192,6 @@
         text-align: center;
       }
 
-      /* FOOTER */
       footer {
         background: var(--blue);
         color: #fff;
@@ -201,7 +200,6 @@
         flex-shrink: 0;
       }
 
-      /* reduced motion */
       @media (prefers-reduced-motion: reduce) {
         .tabela-wrapper {
           transition: none !important;
@@ -261,7 +259,6 @@
       </nav>
     </header>
 
-    <!-- MAIN -->
     <main class="container-itinerario-aluno" id="main" role="main">
       <h2 id="it-title">Meu Itinerário</h2>
       <p id="turmaInfo" class="subtitulo">
@@ -277,7 +274,6 @@
           <caption id="tabela-desc" style="display: none">
             Tabela com o itinerário semanal
           </caption>
-          <!-- conteúdo da tabela será inserido dinamicamente pelo script itinerario.aluno.js -->
         </table>
 
         <div
@@ -292,15 +288,13 @@
     </main>
 
     <footer>
-      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+      <p class="footer-text">© Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa.</p>
     </footer>
 
-    <!-- SCRIPTS -->
     <script src="front/Scripts/itinerario.aluno.js"></script>
     <script src="front/Scripts/header.js"></script>
 
     <script>
-      /* Sidebar toggle (same pattern used across site) */
       (function () {
         const menuToggle = document.getElementById("menu-toggle");
         const sidebar = document.getElementById("sidebar");
@@ -330,7 +324,6 @@
         }
       })();
 
-      /* Header fade on scroll (performant) */
       (function () {
         const header = document.getElementById("site-header");
         if (!header) return;
@@ -350,7 +343,6 @@
         );
       })();
 
-      /* IntersectionObserver: anima título e tabela */
       (function () {
         if (!("IntersectionObserver" in window)) {
           document.getElementById("it-title").style.opacity = 1;
@@ -389,9 +381,7 @@
         if (wrap) wrapObs.observe(wrap);
       })();
 
-      /* Small defensive: if itinerario.aluno.js renders nothing, show empty note */
       (function () {
-        // Delay tiny to let other script run
         setTimeout(() => {
           const table = document.getElementById("tabelaAluno");
           const empty = document.getElementById("tabela-empty");

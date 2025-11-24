@@ -336,7 +336,7 @@
 
     <!-- FOOTER -->
     <footer>
-      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+      <p class="footer-text">© Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa. </p>
     </footer>
 
     <!-- SCRIPTS -->
@@ -345,16 +345,13 @@
 
     <script>
       (function () {
-        // --- ELEMENTS ---
         const menuToggle = document.getElementById("menu-toggle");
         const sidebar = document.getElementById("sidebar");
         const menuClose = document.getElementById("menu-close");
         const header = document.getElementById("site-header");
 
-        // Ensure safe guards
         if (!menuToggle || !sidebar) return;
 
-        // Keep menu button state synced with sidebar (handles external changes)
         const mo = new MutationObserver(() => {
           const open = sidebar.classList.contains("open");
           menuToggle.classList.toggle("is-open", open);
@@ -362,7 +359,6 @@
         });
         mo.observe(sidebar, { attributes: true, attributeFilter: ["class"] });
 
-        // Toggle handler
         menuToggle.addEventListener("click", () => {
           const open = !menuToggle.classList.contains("is-open");
           menuToggle.classList.toggle("is-open", open);
@@ -371,7 +367,7 @@
           if (open && menuClose) menuClose.focus();
         });
 
-        // Close button
+
         if (menuClose) {
           menuClose.addEventListener("click", () => {
             sidebar.classList.remove("open");
@@ -381,7 +377,6 @@
           });
         }
 
-        // click outside to close
         window.addEventListener("click", (e) => {
           if (!sidebar.classList.contains("open")) return;
           if (sidebar.contains(e.target) || menuToggle.contains(e.target)) return;
@@ -390,7 +385,6 @@
           sidebar.setAttribute("aria-hidden", "true");
         });
 
-        // close with Esc for accessibility
         window.addEventListener("keydown", (e) => {
           if (e.key === "Escape" && sidebar.classList.contains("open")) {
             sidebar.classList.remove("open");
@@ -400,7 +394,6 @@
           }
         });
 
-        // --- Header fade on scroll (optimized with rAF) ---
         const SCROLL_THRESHOLD = 8;
         let ticking = false;
         function updateHeaderOnScroll() {
@@ -421,7 +414,6 @@
           { passive: true }
         );
 
-        // --- simple title/tabela observers (kept from original) ---
         const title = document.getElementById("it-title");
         const sub = document.getElementById("it-sub");
         if (title && "IntersectionObserver" in window) {

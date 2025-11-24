@@ -325,226 +325,53 @@
     </main>
 
     <footer>
-      <p class="footer-text">© Projeto desenvolvido por: [Nossos nomes]</p>
+      <p class="footer-text">© Projeto desenvolvido por:  Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa. </p>
     </footer>
+   <!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- libs & scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-      // safe global container for charts
-      window.__notasCharts = window.__notasCharts || {};
+<!-- Seu script de notas (único responsável pelos gráficos) -->
+<script src="front/Scripts/notas.aluno.js" defer></script>
 
-      // helper to create/destroy charts safely
-      function createOrReplaceChart(canvasId, configFactory) {
-        try {
-          const el = document.getElementById(canvasId);
-          if (!el) return null;
-          // destroy previous chart if exists
-          if (
-            window.__notasCharts[canvasId] &&
-            window.__notasCharts[canvasId].destroy
-          ) {
-            try {
-              window.__notasCharts[canvasId].destroy();
-            } catch (e) {
-              /* ignore */
-            }
-            window.__notasCharts[canvasId] = null;
-          }
-          const ctx = el.getContext("2d");
-          const cfg = configFactory();
-          // ensure maintainAspectRatio true so canvas respects CSS height
-          if (!cfg.options) cfg.options = {};
-          cfg.options.responsive = true;
-          cfg.options.maintainAspectRatio = true;
-          const chart = new Chart(ctx, cfg);
-          window.__notasCharts[canvasId] = chart;
-          return chart;
-        } catch (err) {
-          console.error("Erro ao inicializar chart", canvasId, err);
-          return null;
-        }
-      }
+<!-- Header / menu -->
+<script src="front/Scripts/header.js" defer></script>
 
-      // default fallback chart factory (demo)
-      function defaultChartFactory() {
-        return {
-          type: "bar",
-          data: {
-            labels: ["Mat", "Port", "Bio", "Fís", "Qui"],
-            datasets: [
-              {
-                label: "Notas",
-                data: [7, 8.5, 6.5, 7.8, 8],
-                borderRadius: 6,
-                backgroundColor: "rgba(33,115,238,0.9)",
-              },
-            ],
-          },
-          options: {
-            scales: { y: { beginAtZero: true, max: 10 } },
-            plugins: { legend: { display: false } },
-          },
-        };
-      }
-
-      // expose a render function that your notas.aluno.js can call if it wants
-      window.renderNotasChart =
-        window.renderNotasChart ||
-        function (canvasId, semKey, data) {
-          // semKey can be used to select dataset; if data provided, use it
-          const factory = () => {
-            if (data && data.labels && data.datasets) {
-              return {
-                type: "bar",
-                data: data,
-                options: {
-                  scales: { y: { beginAtZero: true, max: 10 } },
-                  plugins: { legend: { display: false } },
-                },
-              };
-            }
-            return defaultChartFactory();
-          };
-          return createOrReplaceChart(canvasId, factory);
-        };
-    </script>
-
-    <script src="front/Scripts/notas.aluno.js" defer></script>
-    <script src="front/Scripts/header.js" defer></script>
-
-    <script>
-      /* Sidebar toggle (consistent pattern) */
-      (function () {
-        const menuToggle = document.getElementById("menu-toggle");
-        const sidebar = document.getElementById("sidebar");
-        const menuClose = document.getElementById("menu-close");
-
-        if (!menuToggle || !sidebar) return;
-
-        menuToggle.addEventListener("click", () => {
-          const open = !sidebar.classList.contains("open");
-          sidebar.classList.toggle("open", open);
-          menuToggle.classList.toggle("is-open", open);
-          if (open && menuClose) menuClose.focus();
-        });
-
-        if (menuClose)
-          menuClose.addEventListener("click", () => {
-            sidebar.classList.remove("open");
-            menuToggle.classList.remove("is-open");
-          });
-
-        window.addEventListener("click", (e) => {
-          if (!sidebar.classList.contains("open")) return;
-          if (sidebar.contains(e.target) || menuToggle.contains(e.target))
-            return;
-          sidebar.classList.remove("open");
-          menuToggle.classList.remove("is-open");
-        });
-      })();
-
-      /* Header fade on scroll (performant) */
-      (function () {
-        const header = document.getElementById("site-header");
-        if (!header) return;
-        const TH = 8;
-        let ticking = false;
-        window.addEventListener(
-          "scroll",
-          () => {
-            if (ticking) return;
-            ticking = true;
-            requestAnimationFrame(() => {
-              header.classList.toggle("scrolled", window.scrollY > TH);
-              ticking = false;
-            });
-          },
-          { passive: true }
-        );
-      })();
-
-      /* IntersectionObserver: animate semester cards and charts; initialize charts lazily */
-      (function () {
-        const sem1 = document.getElementById("semestre1");
-        const sem2 = document.getElementById("semestre2");
-        const wrap1 = document.getElementById("chart-wrap-1");
-        const wrap2 = document.getElementById("chart-wrap-2");
-
-        function makeObserver(targets, cb) {
-          if (!("IntersectionObserver" in window)) {
-            targets.forEach((t) => cb(t));
-            return;
-          }
-          const io = new IntersectionObserver(
-            (entries, obs) => {
-              entries.forEach((ent) => {
-                if (ent.isIntersecting) {
-                  cb(ent.target);
-                  obs.unobserve(ent.target);
-                }
-              });
-            },
-            { threshold: 0.12 }
-          );
-          targets.forEach((t) => t && io.observe(t));
-        }
-
-        makeObserver([sem1, sem2], (el) => {
-          el.classList.add("in-view");
-        });
-
-        // lazy init charts when chart-card enters view
-        makeObserver([wrap1, wrap2], (el) => {
-          el.classList.add("in-view");
-          // if your notas.aluno.js provided a specific dataset and calls window.renderNotasChart, it will use that.
-          // Otherwise call fallback demo chart:
-          const canvas = el.querySelector("canvas");
-          if (canvas && !window.__notasCharts[canvas.id]) {
-            // try to let notas.aluno.js fill actual data by calling a known function it might expose:
-            // if not present, fallback to demo
-            if (
-              window.notasDataFor &&
-              typeof window.notasDataFor === "function"
-            ) {
-              const data = window.notasDataFor(canvas.id); // optional API your script can provide
-              if (data) {
-                window.renderNotasChart(canvas.id, null, data);
-                return;
-              }
-            }
-            // fallback demo
-            window.renderNotasChart(canvas.id, null);
-          }
-        });
-      })();
-
-      /* Defensive placeholder if notas.aluno.js didn't replace "Carregando..." */
-      (function () {
-        setTimeout(() => {
-          const t1 = document.getElementById("tabelaSem1");
-          const t2 = document.getElementById("tabelaSem2");
-
-          if (t1 && t1.textContent.trim() === "Carregando...") {
-            t1.innerHTML =
-              '<div class="empty-note">Nenhuma nota disponível para o 1º semestre.</div>';
-          }
-          if (t2 && t2.textContent.trim() === "Carregando...") {
-            t2.innerHTML =
-              '<div class="empty-note">Nenhuma nota disponível para o 2º semestre.</div>';
-          }
-        }, 600);
-      })();
-    </script>
-    <!-- VLibras -->
-<div vw class="enabled">
-  <div vw-access-button class="active"></div>
-  <div vw-plugin-wrapper></div>
-</div>
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
 <script>
-  new window.VLibras.Widget("https://vlibras.gov.br/app");
+(function () {
+  const sem1 = document.getElementById("semestre1");
+  const sem2 = document.getElementById("semestre2");
+  const wrap1 = document.getElementById("chart-wrap-1");
+  const wrap2 = document.getElementById("chart-wrap-2");
+
+  function observe(targets, cb) {
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach(t => t && cb(t));
+      return;
+    }
+
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(ent => {
+        if (ent.isIntersecting) {
+          cb(ent.target);
+          obs.unobserve(ent.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    targets.forEach(t => t && io.observe(t));
+  }
+
+  // animação dos cards
+  observe([sem1, sem2], el => el.classList.add("in-view"));
+
+  // apenas anima o card – quem cria o gráfico é o notas.aluno.js
+  observe([wrap1, wrap2], el => {
+    el.classList.add("in-view");
+  });
+})();
 </script>
+
+
 
   </body>
 </html>
