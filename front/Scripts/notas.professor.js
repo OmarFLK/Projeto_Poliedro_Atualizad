@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!Number.isNaN(med)) body.media = Number(med.toFixed(2));
 
       try {
-        const res = await fetch(`${baseUrl}/api/notasalunos`, {
+        const res = await fetch(`${baseUrl}/api/notas`,{
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -315,9 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gerarGraficosAutomatica();
   }
 
-  // =============================
   // GRÁFICOS
-  // =============================
   function gerarGraficos(lista) {
     const mapaSub = {};
     const mapaAno = {};
@@ -381,9 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gerarGraficos(filtrar());
   }
 
-  // =============================
-  // BOTÃO BUSCAR
-  // =============================
+  //BOTÃO BUSCAR
   btnBuscarSala.addEventListener("click", async () => {
     const ano = anoSelect.value;
     const sub = subSelect.value;

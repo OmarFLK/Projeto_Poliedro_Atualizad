@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (usuario && usuario.avatar) {
 
-    // 🔥 ajuste automático do caminho da foto
+    // ajuste automático do caminho da foto
     let avatarPath = usuario.avatar;
     if (!avatarPath.startsWith("/uploads/")) {
       avatarPath = "/uploads/" + avatarPath;
@@ -40,4 +40,31 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     img.src = "Assets/LogoUsuario.png";
   }
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const logout = document.getElementById("btnLogout");
+  if (!logout) return;
+
+  logout.addEventListener("click", () => {
+
+    localStorage.removeItem("usuarioAluno");
+    localStorage.removeItem("usuarioProfessor");
+
+    document.cookie = "token=; Max-Age=0; path=/";
+
+    window.location.href = "Login.html";
+  });
+});
+function executarLogout() {
+  localStorage.removeItem("usuarioProfessor");
+  localStorage.removeItem("usuarioAluno");
+  window.location.href = "Login.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btn1 = document.getElementById("btnLogout");
+  const btn2 = document.getElementById("btnLogoutMobile");
+
+  if (btn1) btn1.onclick = executarLogout;
+  if (btn2) btn2.onclick = executarLogout;
 });
