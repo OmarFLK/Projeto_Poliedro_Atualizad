@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Itinerário do Professor</title>
 
-    <!-- Seus estilos -->
     <link rel="stylesheet" href="front/Styles/Login.css" />
     <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
     <link rel="stylesheet" href="front/Styles/itinerarioProfessor.css" />
@@ -28,7 +27,6 @@
         overflow-x: hidden;
       }
 
-      /* HEADER */
       .header-aluno {
         background: var(--blue);
         display: flex;
@@ -58,7 +56,6 @@
         object-fit: cover;
       }
 
-      /* Botão hamburguer */
       .menu-toggle {
         background: transparent;
         border: none;
@@ -113,7 +110,6 @@
         transform: rotate(-45deg);
       }
 
-      /* NAV DESKTOP */
       .header-nav {
         display: flex;
         gap: 20px;
@@ -131,7 +127,6 @@
         color: var(--blue);
       }
 
-      /* SIDEBAR */
       .sidebar {
         height: 100%;
         width: 0;
@@ -152,7 +147,6 @@
         width: 250px;
       }
 
-      /* Forçar comportamento responsivo do header (evitar conflito com CSS global) */
       @media (min-width: 992px) {
         header .menu-toggle { display: none !important; }
         header .header-nav { display: flex !important; }
@@ -182,7 +176,6 @@
         cursor: pointer;
       }
 
-      /* MAIN */
       .container-itinerario {
         max-width: 1200px;
         margin: 20px auto;
@@ -191,7 +184,6 @@
         min-height: calc(100vh - var(--header-h) - var(--footer-h));
       }
 
-      /* TÍTULOS COM ANIMAÇÃO */
       #it-title {
         font-size: 2.2rem;
         font-weight: 900;
@@ -212,7 +204,6 @@
         transition-delay: 0.1s;
       }
 
-      /* FILTROS */
       .filtros-itinerario {
         margin: 20px 0;
         display: flex;
@@ -242,7 +233,6 @@
         background: #27ae60;
       }
 
-      /* TABELA */
       .tabela-wrapper {
         background: #fff;
         padding: 16px;
@@ -275,11 +265,7 @@
           flex-direction: column;
           align-items: stretch;
         }
-        /* Posicionamento responsivo do header:
-           - logo à esquerda
-           - botão hamburguer centralizado
-           - foto do usuário à direita
-        */
+    
         .header-aluno {
           position: relative;
         }
@@ -300,7 +286,6 @@
           margin: 0;
         }
 
-        /* Garantir que o link do perfil e a imagem fiquem à direita */
         a[aria-label="Perfil"] {
           position: absolute;
           right: 12px;
@@ -309,7 +294,6 @@
           z-index: 100006;
         }
 
-        /* Ajustes menores para que o ícone do usuário não quebre em telas pequenas */
         .header-profile-img {
           width: 36px;
           height: 36px;
@@ -319,7 +303,6 @@
   </head>
 
   <body>
-    <!-- HEADER -->
     <header>
       <div id="site-header" class="header-aluno">
         <img src="Assets/poliedro.png" class="poliedro-logo-header" alt="Poliedro" />
@@ -354,7 +337,6 @@
       </nav>
     </header>
 
-    <!-- MAIN -->
     <main class="container-itinerario">
       <h2 id="it-title">Gerenciador de Itinerário</h2>
       <p id="it-sub">
@@ -387,12 +369,10 @@
       </div>
     </main>
 
-    <!-- FOOTER -->
     <footer>
       <p class="footer-text">© Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa. </p>
     </footer>
 
-    <!-- SCRIPTS -->
     <script src="front/Scripts/itinerario.professor.js" defer></script>
     <script src="front/Scripts/header.js" defer></script>
 
@@ -509,7 +489,6 @@
         }
       })();
     </script>
-    <!-- VLibras -->
 <div vw class="enabled">
   <div vw-access-button class="active"></div>
   <div vw-plugin-wrapper></div>
@@ -518,6 +497,6 @@
 <script>
   new window.VLibras.Widget("https://vlibras.gov.br/app");
 </script>
-
+<script src="https://app.embed.im/accessibility.js" defer></script>
   </body>
 </html>

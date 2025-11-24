@@ -26,7 +26,7 @@
         overflow-x: hidden;
       }
 
-      /* HEADER */
+      
       .header-aluno {
         background-color: var(--blue);
         display: flex;
@@ -59,7 +59,7 @@
         cursor: pointer;
       }
 
-      /* NAV DESKTOP */
+   
       .header-nav {
         display: flex;
         gap: 20px;
@@ -78,7 +78,7 @@
         color: var(--blue);
       }
 
-      /* SIDEBAR */
+   
       .sidebar {
         height: 100%;
         width: 0;
@@ -99,7 +99,6 @@
         width: 250px;
       }
 
-      /* Forçar comportamento responsivo do header (evitar conflito com CSS global) */
       @media (min-width: 992px) {
         header .menu-toggle { display: none !important; }
         header .header-nav { display: flex !important; }
@@ -154,7 +153,7 @@
         }
       }
 
-      /* ANIMAÇÕES GERAIS */
+    
       .fade-in {
         opacity: 0;
         transform: translateY(10px);
@@ -166,7 +165,6 @@
         transform: translateY(0);
       }
 
-      /* CONTEÚDO PRINCIPAL */
       .atividades-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -223,7 +221,7 @@
         color: white;
       }
 
-      /* GRID MOBILE */
+   
       @media (max-width: 900px) {
         .atividades-grid {
           grid-template-columns: 1fr;
@@ -241,7 +239,7 @@
   </head>
 
   <body>
-    <!-- HEADER -->
+   
     <header>
       <div class="header-aluno">
         <img src="Assets/poliedro.png" class="poliedro-logo-header" />
@@ -277,10 +275,9 @@
         <a href="EventosProfessores.html" class="sidebar-link">Eventos</a>
       </nav>
     </header>
-
-    <!-- MAIN -->
+    
     <main class="atividades-grid">
-      <!-- FORMULÁRIO -->
+  
       <section class="card formulario fade-in">
         <h1>Atividades do Professor</h1>
 
@@ -332,13 +329,13 @@
         </form>
       </section>
 
-      <!-- ATIVIDADES CRIADAS -->
+      
       <section class="card atividades-card fade-in">
         <h2>Atividades Criadas</h2>
         <div id="lista-tarefas"></div>
       </section>
 
-      <!-- RESOLUÇÕES -->
+      
       <section class="card resolucoes-card fade-in" id="painel-resolucoes">
         <h2>Resoluções Enviadas</h2>
         <div id="lista-resolucoes">
@@ -347,12 +344,12 @@
       </section>
     </main>
 
-    <!-- FOOTER -->
+    
     <footer>
       <p class="footer-text">&copy; Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa.</p>
     </footer>
 
-    <!-- SCRIPTS -->
+  
     <script src="front/Scripts/header.js"></script>
     <script src="front/Scripts/atividades.Professor.js"></script>
 
@@ -378,8 +375,6 @@
           sidebar.classList.remove("open");
         }
       });
-
-      // Intersection Observer para animações
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -396,7 +391,7 @@
         .querySelectorAll(".fade-in, .card")
         .forEach((el) => observer.observe(el));
     </script>
-    <!-- VLibras -->
+
 <div vw class="enabled">
   <div vw-access-button class="active"></div>
   <div vw-plugin-wrapper></div>
@@ -405,6 +400,6 @@
 <script>
   new window.VLibras.Widget("https://vlibras.gov.br/app");
 </script>
-
+<script src="https://app.embed.im/accessibility.js" defer></script>
   </body>
 </html>

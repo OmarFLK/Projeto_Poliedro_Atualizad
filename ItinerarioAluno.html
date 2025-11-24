@@ -18,7 +18,6 @@
         --blue: #163f7a;
       }
 
-      /* Layout base — evita barra branca no fim */
       html,
       body {
         height: 100%;
@@ -47,7 +46,7 @@
       }
 
       main.container-itinerario-aluno {
-        flex: 1 1 auto; /* ocupa espaço sobrando, empurra footer para baixo */
+        flex: 1 1 auto; 
         min-height: calc(100vh - var(--header-h) - var(--footer-h));
         box-sizing: border-box;
         padding: 20px;
@@ -56,7 +55,6 @@
         width: 100%;
       }
 
-      /* HEADER */
       .header-aluno {
         background-color: var(--blue);
         display: flex;
@@ -101,7 +99,6 @@
         }
       }
 
-      /* SIDEBAR */
       .sidebar {
         height: 100%;
         width: 0;
@@ -143,7 +140,6 @@
         cursor: pointer;
       }
 
-      /* TITULO E SUBTITULO */
       h2 {
         margin: 6px 0 0;
         font-size: 1.8rem;
@@ -154,7 +150,6 @@
         color: #555;
       }
 
-      /* TABELA WRAPPER */
       .tabela-wrapper {
         background: #fff;
         border-radius: 12px;
@@ -171,7 +166,6 @@
         transform: translateY(0);
       }
 
-      /* table basic */
       .tabela-itinerario-aluno {
         width: 100%;
         border-collapse: collapse;
@@ -213,7 +207,6 @@
   </head>
 
   <body>
-    <!-- HEADER -->
     <header>
       <div class="header-aluno" id="site-header">
         <img
@@ -387,7 +380,6 @@
         setTimeout(() => {
           const table = document.getElementById("tabelaAluno");
           const empty = document.getElementById("tabela-empty");
-          // if table has no rows, show placeholder
           if (table && table.children.length === 0) {
             empty.style.display = "block";
             empty.setAttribute("aria-hidden", "false");
@@ -398,7 +390,6 @@
         }, 220);
       })();
     </script>
-    <!-- VLibras -->
 <div vw class="enabled">
   <div vw-access-button class="active"></div>
   <div vw-plugin-wrapper></div>
@@ -407,6 +398,6 @@
 <script>
   new window.VLibras.Widget("https://vlibras.gov.br/app");
 </script>
-
+<script src="https://app.embed.im/accessibility.js" defer></script>
   </body>
 </html>

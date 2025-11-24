@@ -54,7 +54,6 @@
         box-sizing: border-box;
       }
 
-      /* HEADER */
       .header-aluno {
         background-color: var(--blue);
         display: flex;
@@ -99,7 +98,6 @@
         }
       }
 
-      /* SIDEBAR */
       .sidebar {
         height: 100%;
         width: 0;
@@ -141,7 +139,7 @@
         cursor: pointer;
       }
 
-      /* NOTAS CONTENT */
+     
       .notas-box {
         display: grid;
         grid-template-columns: 1fr;
@@ -194,13 +192,11 @@
         transform: translateY(0);
       }
 
-      /* IMPORTANT: fix height for canvas to avoid infinite grow */
       .chart-card canvas {
         display: block;
         width: 100% !important;
         height: 140px !important; /* fixed height */
       }
-      /* also ensure card has min height so layout is stable */
       .chart-card {
         min-height: 160px;
       }
@@ -231,7 +227,6 @@
   </head>
 
   <body>
-    <!-- HEADER -->
     <header>
       <div class="header-aluno" id="site-header">
         <img
@@ -275,7 +270,6 @@
       </nav>
     </header>
 
-    <!-- MAIN -->
     <main class="container" role="main" id="main">
       <div class="notas-box" id="notas-box">
         <div
@@ -328,22 +322,18 @@
     <footer>
       <p class="footer-text">© Projeto desenvolvido por:  Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa. </p>
     </footer>
-   <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Seu script de notas (único responsável pelos gráficos) -->
 <script src="front/Scripts/notas.aluno.js" defer></script>
 
 <script>
   (function () {
-    // Sidebar toggle - proteção contra elementos ausentes
     const menuToggle = document.getElementById("menu-toggle");
     const sidebar = document.getElementById("sidebar");
     const menuClose = document.getElementById("menu-close");
 
     if (!menuToggle || !sidebar || !menuClose) return;
 
-    // Abre/fecha com toggle para evitar estados incoerentes
     menuToggle.addEventListener("click", (e) => {
       e.stopPropagation();
       sidebar.classList.add("open");
@@ -356,7 +346,6 @@
       menuToggle.focus();
     });
 
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
     window.addEventListener("click", (e) => {
       if (
         sidebar.classList.contains("open") &&
@@ -367,7 +356,6 @@
       }
     });
 
-    // Fecha com ESC
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && sidebar.classList.contains("open")) {
         sidebar.classList.remove("open");
@@ -377,7 +365,6 @@
   })();
 </script>
 
-<!-- Header / menu -->
 <script src="front/Scripts/header.js" defer></script>
 
 <script>
@@ -405,10 +392,8 @@
     targets.forEach(t => t && io.observe(t));
   }
 
-  // animação dos cards
   observe([sem1, sem2], el => el.classList.add("in-view"));
 
-  // apenas anima o card – quem cria o gráfico é o notas.aluno.js
   observe([wrap1, wrap2], el => {
     el.classList.add("in-view");
   });
@@ -416,6 +401,6 @@
 </script>
 
 
-
+<script src="https://app.embed.im/accessibility.js" defer></script>
   </body>
 </html>

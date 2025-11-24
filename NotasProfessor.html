@@ -6,18 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Notas do Professor</title>
 
-  <!-- CSS globais do projeto -->
   <link rel="stylesheet" href="front/Styles/Login.css">
   <link rel="stylesheet" href="front/Styles/StyleAlunos.css">
      <link rel="icon" type="image/x-icon" href="Assets/favicon.ico">
 
-  <!-- CSS específico da página -->
   <link rel="stylesheet" href="front/Styles/NotasProfessor.css">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    /* Top icons (ajusta como q empilha no mobile) */
     .top-icons {
       display: flex;
       flex-direction: row;
@@ -25,7 +22,6 @@
       justify-content: flex-end;
       gap: 8px;
       flex-wrap: nowrap;
-      /* mantem os ícones em uma fileira */
     }
 
     .top-icons a,
@@ -65,7 +61,7 @@
       }
     }
 
-    /* barra lateral */
+    
     .sidebar {
       height: 100%;
       width: 0;
@@ -77,7 +73,7 @@
       padding-top: 60px;
       transition: 0.3s;
       z-index: 1000;
-      display: none; /* escondida por padrão, apenas abre quando a classe 'open' for aplicada */
+      display: none; 
       flex-direction: column;
       gap: 15px;
     }
@@ -112,7 +108,6 @@
       cursor: pointer;
     }
 
-    /* Botão hamburguer */
     .menu-toggle {
       font-size: 2rem;
       background: none;
@@ -124,7 +119,6 @@
       align-self: center;
     }
 
-    /* Nav header */
     .header-aluno {
       background-color: #163f7a;
       display: flex;
@@ -133,7 +127,7 @@
       padding: 10px 20px;
       flex-wrap: nowrap;
       gap: 10px;
-      z-index: 1100; /* garante que o header fique acima do conteúdo */
+      z-index: 1100; 
     }
 
     .poliedro-logo-header {
@@ -141,8 +135,6 @@
       cursor: pointer;
     }
 
-    /* (removida duplicação de regras .menu-toggle acima)
-       manter apenas a definição única anterior */
 
     .header-profile-img {
       width: 40px;
@@ -157,7 +149,6 @@
         display: inline-block;
       }
 
-      /* mantém logo, menu e perfil na mesma linha */
       .header-aluno {
         justify-content: space-between;
       }
@@ -177,8 +168,6 @@
       border: none;
     }
 
-    /* Responsividade: usar seletores com maior especificidade e !important
-       para sobrescrever regras carregadas em CSS externos */
     @media (min-width: 992px) {
       header .menu-toggle { display: none !important; }
       .sidebar { display: none !important; }
@@ -198,12 +187,10 @@
     <div class="header-aluno">
       <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
 
-      <!-- Botão hamburguer para mobile -->
       <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
         &#9776;
       </button>
 
-      <!-- Navegação tradicional (desktop) -->
       <nav class="header-nav">
         <a href="HomeProfessor.html" class="header-link">Home</a>
         <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
@@ -219,7 +206,6 @@
       </a>
     </div>
 
-    <!-- Sidebar para mobile -->
     <nav id="sidebar" class="sidebar" aria-label="Menu lateral">
       <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
         &times;
@@ -234,7 +220,6 @@
     </nav>
   </header>
 
-  <!-- CONTEÚDO PRINCIPAL -->
   <main class="container-notas">
 
     <h2>Editar Notas por Sala</h2>
@@ -299,14 +284,12 @@
 
 <script>
   (function () {
-    // Sidebar toggle - proteção contra elementos ausentes
     const menuToggle = document.getElementById("menu-toggle");
     const sidebar = document.getElementById("sidebar");
     const menuClose = document.getElementById("menu-close");
 
     if (!menuToggle || !sidebar || !menuClose) return;
 
-    // Abre/fecha com toggle para evitar estados incoerentes
     menuToggle.addEventListener("click", (e) => {
       e.stopPropagation();
       sidebar.classList.add("open");
@@ -319,7 +302,6 @@
       menuToggle.focus();
     });
 
-    // Fecha sidebar clicando fora dela e fora do botão hamburguer
     window.addEventListener("click", (e) => {
       if (
         sidebar.classList.contains("open") &&
@@ -330,7 +312,6 @@
       }
     });
 
-    // Fecha com ESC
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && sidebar.classList.contains("open")) {
         sidebar.classList.remove("open");
@@ -339,6 +320,7 @@
     });
   })();
 </script>
+<script src="https://app.embed.im/accessibility.js" defer></script>
 </body>
 
 </html>

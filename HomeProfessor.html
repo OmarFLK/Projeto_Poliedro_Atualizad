@@ -141,7 +141,6 @@
         width: 250px;
       }
 
-      /* Forçar comportamento responsivo do header (evitar conflito com CSS global) */
       @media (min-width: 992px) {
         header .menu-toggle { display: none !important; }
         header .header-nav { display: flex !important; }
@@ -417,7 +416,6 @@
           <div class="card-top">
             <h2>Última atividade</h2>
             <div class="card-icon">
-              <!-- svg -->
             </div>
           </div>
           <div class="card-content" id="atividade-body">
@@ -434,7 +432,6 @@
           <div class="card-top">
             <h2>Último evento</h2>
             <div class="card-icon">
-              <!-- svg -->
             </div>
           </div>
           <div class="card-content" id="evento-body">
@@ -470,7 +467,6 @@
 
     <script>
       (function () {
-        // elements
         const menuToggle = document.getElementById("menu-toggle");
         const sidebar = document.getElementById("sidebar");
         const menuClose = document.getElementById("menu-close");
@@ -478,7 +474,6 @@
 
         if (!menuToggle || !sidebar) return;
 
-        // keep menu button synced with sidebar class + aria-hidden
         const mo = new MutationObserver(() => {
           const open = sidebar.classList.contains("open");
           menuToggle.classList.toggle("is-open", open);
@@ -486,7 +481,6 @@
         });
         mo.observe(sidebar, { attributes: true, attributeFilter: ["class"] });
 
-        // toggle handler
         menuToggle.addEventListener("click", () => {
           const open = !menuToggle.classList.contains("is-open");
           menuToggle.classList.toggle("is-open", open);
@@ -495,7 +489,6 @@
           if (open && menuClose) menuClose.focus();
         });
 
-        // close button
         if (menuClose) {
           menuClose.addEventListener("click", () => {
             sidebar.classList.remove("open");
@@ -505,7 +498,6 @@
           });
         }
 
-        // click outside to close
         window.addEventListener("click", (e) => {
           if (!sidebar.classList.contains("open")) return;
           if (sidebar.contains(e.target) || menuToggle.contains(e.target))
@@ -515,7 +507,7 @@
           sidebar.setAttribute("aria-hidden", "true");
         });
 
-        // close with Esc
+     
         window.addEventListener("keydown", (e) => {
           if (e.key === "Escape" && sidebar.classList.contains("open")) {
             sidebar.classList.remove("open");
@@ -525,7 +517,6 @@
           }
         });
 
-        // Header fade on scroll (optimized with rAF)
         const SCROLL_THRESHOLD = 8;
         let ticking = false;
         function updateHeaderOnScroll() {
@@ -546,7 +537,6 @@
           { passive: true }
         );
 
-        // welcome/title animation (kept original behavior)
         const welcome = document.querySelector(".welcome-left"),
           title = document.getElementById("welcome-title"),
           sub = document.getElementById("welcome-sub");
@@ -597,7 +587,7 @@
 
     <script src="front/Scripts/header.js"></script>
     <script src="front/Scripts/homeProfessor.js"></script>
-    <!-- VLibras -->
+   
 <div vw class="enabled">
   <div vw-access-button class="active"></div>
   <div vw-plugin-wrapper></div>
@@ -606,6 +596,6 @@
 <script>
   new window.VLibras.Widget("https://vlibras.gov.br/app");
 </script>
-
+<script src="https://app.embed.im/accessibility.js" defer></script>
   </body>
 </html>

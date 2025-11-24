@@ -239,7 +239,6 @@
   </head>
 
   <body>
-    <!-- Bootstrap JS kept -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -296,7 +295,6 @@
 
     <main role="main" aria-labelledby="ativ-title">
       <div class="painel-atividades">
-        <!-- Coluna esquerda -->
         <section class="col-esquerda" id="col-left">
           <h1 id="ativ-title">Minhas Atividades</h1>
           <div id="lista-atividades" aria-live="polite">
@@ -304,11 +302,9 @@
           </div>
         </section>
 
-        <!-- Coluna direita -->
         <aside class="col-direita" id="col-right" aria-labelledby="res-title">
           <h2 id="res-title">Minhas Resoluções</h2>
           <div id="lista-resolucoes" aria-live="polite">
-            <!-- resoluções carregadas dinamicamente -->
           </div>
         </aside>
       </div>
@@ -318,7 +314,7 @@
       <p class="footer-text">© Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa.</p>
     </footer>
 
-    <!-- VLibras plugin (mantive) -->
+  
     <div vw class="enabled" style="display: none">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper></div>
@@ -330,13 +326,13 @@
           try {
             new window.VLibras.Widget("https://vlibras.gov.br/app");
           } catch (e) {
-            /* ignore */
+           
           }
         }
       });
     </script>
 
-    <!-- local scripts -->
+   
     <script src="front/Scripts/atividades.Aluno.js" defer></script>
     <script src="front/Scripts/header.js" defer></script>
 
@@ -427,7 +423,6 @@
         }, 300);
       })();
     </script>
-    <!-- VLibras -->
 <div vw class="enabled">
   <div vw-access-button class="active"></div>
   <div vw-plugin-wrapper></div>
@@ -436,6 +431,6 @@
 <script>
   new window.VLibras.Widget("https://vlibras.gov.br/app");
 </script>
-
+<script src="https://app.embed.im/accessibility.js" defer></script>
   </body>
 </html>

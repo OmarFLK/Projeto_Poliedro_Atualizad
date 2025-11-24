@@ -183,7 +183,6 @@
           class="poliedro-logo-header"
         />
 
-        <!-- Botão hamburguer para mobile -->
         <button
           id="menu-toggle"
           aria-label="Abrir menu"
@@ -193,7 +192,6 @@
           &#9776;
         </button>
 
-        <!-- Navegação tradicional (desktop) -->
         <nav class="header-nav" role="navigation" aria-label="Links principais">
           <a href="HomeProfessor.html" class="header-link">Home</a>
           <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
@@ -214,7 +212,7 @@
         </a>
       </div>
 
-      <!-- Sidebar para mobile -->
+    
       <nav
         id="menu-sidebar"
         class="menu-sidebar"
@@ -240,9 +238,7 @@
       </nav>
     </header>
 
-    <!-- LAYOUT PRINCIPAL -->
     <div class="page-wrap">
-      <!-- SIDEBAR DE CONVERSAS -->
       <aside id="sidebar" class="sidebar" aria-label="Conversas">
         <h2 class="sidebar-title">Conversas</h2>
 
@@ -282,10 +278,8 @@
         </div>
       </aside>
 
-      <!-- CHAT -->
       <main class="chat-main" aria-live="polite">
         <header class="chat-header">
-          <!-- Botão EXCLUSIVO DO CHAT -->
           <button
             id="chat-menu-toggle"
             class="btn-menu"
@@ -374,7 +368,6 @@
             });
           }
 
-          // click outside to close
           window.addEventListener("click", (e) => {
             if (!menuSidebar.classList.contains("open")) return;
             if (menuSidebar.contains(e.target) || menuToggle.contains(e.target))
@@ -500,7 +493,7 @@
         }
       })();
     </script>
-    <!-- VLibras -->
+  
 <div vw class="enabled">
   <div vw-access-button class="active"></div>
   <div vw-plugin-wrapper></div>
@@ -509,6 +502,6 @@
 <script>
   new window.VLibras.Widget("https://vlibras.gov.br/app");
 </script>
-
+<script src="https://app.embed.im/accessibility.js" defer></script>
   </body>
 </html>

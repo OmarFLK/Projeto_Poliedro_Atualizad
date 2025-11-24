@@ -38,7 +38,6 @@
       box-sizing: inherit;
     }
 
-    /* HEADER */
     .header-aluno {
       background: var(--blue);
       display: flex;
@@ -88,7 +87,6 @@
       object-fit: cover;
     }
 
-    /* page wrap */
     .page-wrap {
       max-width: 1200px;
       margin: 20px auto;
@@ -225,7 +223,6 @@
       font-weight: 700;
     }
 
-    /* forms */
     .card-form .tabs {
       display: flex;
       gap: 8px;
@@ -293,7 +290,6 @@
       padding-right: 8px;
     }
 
-    /* footer fixo */
     footer {
       position: static;
       left: 0;
@@ -316,7 +312,6 @@
       }
     }
 
-    /* barra lateral do header (menu mobile) */
     .menu-sidebar {
       height: 100%;
       width: 0;
@@ -364,7 +359,6 @@
       cursor: pointer;
     }
 
-    /* Botão hamburguer (mobile) */
     .menu-toggle {
       font-size: 2rem;
       background: none;
@@ -376,7 +370,6 @@
       align-self: center;
     }
 
-    /* HEADER */
     .header-aluno {
       background-color: var(--blue);
       display: flex;
@@ -425,12 +418,10 @@
     <div id="site-header" class="header-aluno" role="banner">
       <img src="Assets/poliedro.png" alt="Logo Poliedro" class="poliedro-logo-header" />
 
-      <!-- Botão hamburguer para mobile -->
       <button id="menu-toggle" aria-label="Abrir menu" class="menu-toggle" type="button">
         &#9776;
       </button>
 
-      <!-- Navegação tradicional (desktop) -->
       <nav class="header-nav" role="navigation" aria-label="Links principais">
         <a href="HomeProfessor.html" class="header-link">Home</a>
         <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
@@ -445,7 +436,6 @@
       </a>
     </div>
 
-    <!-- Sidebar para mobile -->
     <nav id="menu-sidebar" class="menu-sidebar" aria-label="Menu lateral" aria-hidden="true">
       <button id="menu-close" aria-label="Fechar menu" class="menu-close" type="button">
         &times;
@@ -461,7 +451,6 @@
 
   <main class="page-wrap">
     <div class="profile-grid">
-      <!-- CARD DE PERFIL -->
       <div class="card card-perfil" id="card-perfil">
         <h2 class="titulo-perfil">Meu Perfil</h2>
 
@@ -500,7 +489,6 @@
         </div>
       </div>
 
-      <!-- CARD DE FORMULARIOS -->
       <div class="card card-form" id="card-form">
         <div class="tabs">
           <button class="tab-btn active" data-tab="tab-aluno">
@@ -511,7 +499,6 @@
           </button>
         </div>
 
-        <!-- FORM ALUNO -->
         <div class="tab-pane active" id="tab-aluno">
           <form id="formAluno">
             <div class="form-grid">
@@ -550,7 +537,6 @@
           </form>
         </div>
 
-        <!-- FORM PROFESSOR -->
         <div class="tab-pane" id="tab-professor">
           <form id="formProfessor">
             <div class="form-grid">
@@ -587,9 +573,7 @@
       </div>
     </div>
 
-    <!--DOIS CARDS LADO A LADO (ALUNOS + PROFESSORES) -->
     <div class="list-two-grid">
-      <!-- ALUNOS -->
       <div class="card card-list" id="card-alunos">
         <h2 class="list-title">Lista de Alunos</h2>
 
@@ -614,7 +598,6 @@
         </div>
       </div>
 
-      <!-- PROFESSORES -->
       <div class="card card-list" id="card-professores">
         <h2 class="list-title">Lista de Professores</h2>
 
@@ -631,7 +614,6 @@
   </footer>
 
   <script>
-    // TABS (mantive seu script e adicionei isolação)
     document.addEventListener("DOMContentLoaded", () => {
       const tabs = document.querySelectorAll(".tab-btn");
       const panes = document.querySelectorAll(".tab-pane");
@@ -749,11 +731,8 @@
         pageCards.forEach((c) => c.classList.add("in-view"));
       }
 
-      // Accessibility nicety: ensure footer isn't covering focusable elements
-      // (we already reserved padding-bottom in .page-wrap)
     })();
   </script>
-  <!-- Copia do script de sidebar/chat do MensagensProfessor (para habilitar sidebar) -->
   <script>
     (function () {
       const menuToggle = document.getElementById("menu-toggle");
@@ -784,7 +763,6 @@
         });
       }
 
-      // click outside to close
       window.addEventListener("click", (e) => {
         if (!menuSidebar.classList.contains("open")) return;
         if (menuSidebar.contains(e.target) || menuToggle.contains(e.target)) return;
@@ -801,7 +779,6 @@
       });
     })();
   </script>
-  <!-- VLibras -->
   <div vw class="enabled">
     <div vw-access-button class="active"></div>
     <div vw-plugin-wrapper></div>
@@ -810,7 +787,7 @@
   <script>
     new window.VLibras.Widget("https://vlibras.gov.br/app");
   </script>
-
+<script src="https://app.embed.im/accessibility.js" defer></script>
 </body>
 
 </html>

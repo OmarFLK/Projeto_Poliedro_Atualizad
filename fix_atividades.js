@@ -1,4 +1,4 @@
-// fix_atividades.js
+
 require("dotenv").config();
 const mongoose = require("mongoose");
 const Atividade = require("./models/Atividade");

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="front/Styles/Login.css" />
     <link rel="stylesheet" href="front/Styles/StyleAlunos.css" />
     <link rel="stylesheet" href="front/Styles/EventosProfessor.css" />
-    <link rel="icon" type="image/x-icon" href="Assets/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="Assets/favicon.ico" />
 
     <title>Eventos do Professor</title>
 
@@ -16,7 +16,6 @@
         --footer-h: 56px;
         --blue: #163f7a;
       }
-      /* Reset / base */
       html,
       body {
         height: 100%;
@@ -34,7 +33,6 @@
         box-sizing: inherit;
       }
 
-      /* Top icons (ajusta como q empilha no mobile) */
       .top-icons {
         display: flex;
         flex-direction: row;
@@ -76,7 +74,6 @@
         }
       }
 
-      /* Sidebar (mobile) */
       .sidebar {
         height: 100%;
         width: 0;
@@ -120,7 +117,6 @@
         cursor: pointer;
       }
 
-      /* Botão hamburguer */
       .menu-toggle {
         font-size: 2rem;
         background: none;
@@ -133,9 +129,8 @@
       }
       .menu-toggle.mobile-white {
         color: white;
-      } /* when used on dark header */
+      }
 
-      /* HEADER */
       .header-aluno {
         background-color: var(--blue);
         display: flex;
@@ -177,7 +172,6 @@
         }
       }
 
-      /* MAIN layout */
       main.painel-eventos {
         max-width: 1500px;
         margin: 18px auto;
@@ -255,7 +249,6 @@
         color: #6b7280;
       }
 
-      /* fixed footer */
       footer {
         position: static;
         left: 0;
@@ -289,7 +282,6 @@
           class="poliedro-logo-header"
         />
 
-        <!-- Botão hamburguer para mobile -->
         <button
           id="menu-toggle"
           class="menu-toggle mobile-white"
@@ -299,7 +291,6 @@
           &#9776;
         </button>
 
-        <!-- Navegação tradicional (desktop) -->
         <nav class="header-nav" role="navigation" aria-label="Links principais">
           <a href="HomeProfessor.html" class="header-link">Home</a>
           <a href="ItinerarioProfessor.html" class="header-link">Itinerário</a>
@@ -320,7 +311,6 @@
         </a>
       </div>
 
-      <!-- Sidebar para mobile -->
       <nav
         id="sidebar"
         class="sidebar"
@@ -346,7 +336,6 @@
       </nav>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <main class="painel-eventos" role="main">
       <section class="section-card col-esquerda" id="form-section">
         <h1>Publicar Evento</h1>
@@ -402,13 +391,11 @@
     </main>
 
     <footer>
-      <p class="footer-text">&copy; Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey Salomão, Bernardo Putini e Arthur Uchoa.</p>
+      <p class="footer-text">
+        &copy; Projeto desenvolvido por: Fernando Engi, Omar Saliba, Andrey
+        Salomão, Bernardo Putini e Arthur Uchoa.
+      </p>
     </footer>
-
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-      new window.VLibras.Widget("https://vlibras.gov.br/app");
-    </script>
 
     <script src="front/Scripts/eventos.Professor.js"></script>
     <script src="front/Scripts/header.js"></script>
@@ -526,15 +513,15 @@
         }
       })();
     </script>
-    <!-- VLibras -->
-<div vw class="enabled">
-  <div vw-access-button class="active"></div>
-  <div vw-plugin-wrapper></div>
-</div>
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-<script>
-  new window.VLibras.Widget("https://vlibras.gov.br/app");
-</script>
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
 
+    <script src="https://app.embed.im/accessibility.js" defer></script>
   </body>
 </html>

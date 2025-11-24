@@ -1,229 +1,385 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Página de Login — Poliedro</title>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Página de Login — Poliedro</title>
+    <link rel="stylesheet" href="front/Styles/Login.css" />
+    <link rel="stylesheet" href="front/Styles/acesso.css" />
+    <link rel="icon" type="image/x-icon" href="Assets/favicon.ico" />
+    <style>
+      
+      .terms-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 10px 16px;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+      }
 
-  <link rel="stylesheet" href="front/Styles/Login.css" />
-  <link rel="stylesheet" href="front/Styles/acesso.css">
-  <link rel="icon" type="image/x-icon" href="Assets/favicon.ico">
+      #termsBtnOk,
+      #termsBtnCancel {
+        color: #fff;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-size: 15px;
+        cursor: pointer;
+        min-width: 90px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
 
+      #termsBtnOk {
+        background: #0b5fa5;
+      } 
+      #termsBtnCancel {
+        background: #d9534f;
+      } 
 
-</head>
+      #termsBtnOk:hover,
+      #termsBtnCancel:hover {
+        opacity: 0.95;
+      }
 
-<body>
-  <div id="pageContent">
-    <main class="login-container" id="loginRoot">
-      <section class="login-box" role="region" aria-label="Área de login" aria-labelledby="loginTitle">
-        <img src="Assets/poliedro02.png" alt="Poliedro" class="logo" />
+      #termsOverlay {
+        display: none; 
+        position: fixed;
+        inset: 0;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 2000;
+      }
 
-        <nav class="toggle-buttons" aria-label="Tipo de login">
-          <button type="button" id="btnAluno" class="toggle active" aria-pressed="true">
-            Aluno
-          </button>
-          <button type="button" id="btnProfessor" class="toggle" aria-pressed="false">
-            Professor
-          </button>
-        </nav>
+      .terms-modal {
+        width: min(920px, 96%);
+        max-height: 85vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+      }
 
-        <form id="loginForm" autocomplete="off" novalidate>
-          <h1 id="loginTitle" style="margin: 0 0 6px; font-size: 1.15rem">
-            Entrar
-          </h1>
+      .terms-content {
+        padding: 18px;
+        overflow: auto;
+        flex: 1 1 auto;
+      }
 
-          <label for="email">RA (aluno) ou Email (professor) </label>
-          <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required />
+      .terms-header {
+        padding: 14px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
 
-          <label for="senha">Senha</label>
-          <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required />
+      .terms-close {
+        background: transparent;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        line-height: 1;
+      }
+    </style>
+  </head>
 
-          <div class="actions" role="group" aria-label="Ações de login">
-            <div class="terms-inline">
-              <input type="checkbox" id="aceitarTermos" aria-label="Aceito os termos" />
-              <label for="aceitarTermos" class="terms-label-text">
-                Li e aceito os
-                <button type="button" id="openTermsLink" class="terms-link">
-                  Termos de Uso
+  <body>
+    <div id="pageContent">
+      <main class="login-container" id="loginRoot">
+        <section
+          class="login-box"
+          role="region"
+          aria-label="Área de login"
+          aria-labelledby="loginTitle"
+        >
+          <img src="Assets/poliedro02.png" alt="Poliedro" class="logo" />
+
+          <nav class="toggle-buttons" aria-label="Tipo de login">
+            <button
+              type="button"
+              id="btnAluno"
+              class="toggle active"
+              aria-pressed="true"
+            >
+              Aluno
+            </button>
+            <button
+              type="button"
+              id="btnProfessor"
+              class="toggle"
+              aria-pressed="false"
+            >
+              Professor
+            </button>
+          </nav>
+
+          <form id="loginForm" autocomplete="off" novalidate>
+            <h1 id="loginTitle" style="margin: 0 0 6px; font-size: 1.15rem">
+              Entrar
+            </h1>
+
+            <label for="email">RA (aluno) ou Email (professor)</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Digite seu e-mail"
+              required
+            />
+
+            <label for="senha">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              name="senha"
+              placeholder="Digite sua senha"
+              required
+            />
+
+            <div class="actions" role="group" aria-label="Ações de login">
+              <div class="terms-inline">
+                <input
+                  type="checkbox"
+                  id="aceitarTermos"
+                  aria-label="Aceito os termos"
+                />
+                <label for="aceitarTermos" class="terms-label-text">
+                  Li e aceito os
+                  <button type="button" id="openTermsLink" class="terms-link">
+                    Termos de Uso
+                  </button>
+                </label>
+              </div>
+
+              <div class="recover-row">
+                <a
+                  href="LoginRecover.html"
+                  id="recoverLink"
+                  class="recover-text"
+                  >Recuperar a senha</a
+                >
+              </div>
+
+              <div class="action-center">
+                <button
+                  id="btnLogin"
+                  type="submit"
+                  disabled
+                  class="primary-access"
+                  aria-disabled="true"
+                >
+                  Acessar
                 </button>
-              </label>
+              </div>
             </div>
-
-            <div class="recover-row">
-              <a href="LoginRecover.html" id="recoverLink" class="recover-text">Recuperar a senha</a>
-            </div>
-
-            <div class="action-center">
-              <button id="btnLogin" type="submit" disabled class="primary-access" aria-disabled="true">
-                Acessar
-              </button>
-            </div>
-          </div>
-        </form>
-      </section>
-    </main>
-  </div>
-
-  <!-- MODAL DOS TERMOS -->
-  <div id="termsOverlay" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="terms-modal" role="document" tabindex="-1" aria-labelledby="termsTitle">
-
-      <header class="terms-header">
-        <h2 id="termsTitle" style="margin: 0; font-size: 1.05rem">
-          Termos de Uso do Site
-        </h2>
-        <button class="terms-close" aria-label="Fechar termos">✖</button>
-      </header>
-
-      <div class="terms-content" id="termsContent" tabindex="0" role="region" aria-label="Conteúdo dos termos">
-
-        <article>
-
-          <header>
-            <h1>Termos de Uso do Site Poliedro</h1>
-            <p>Bem-vindo ao site do <strong>Poliedro</strong>. Leia atentamente os Termos abaixo.</p>
-          </header>
-
-          <section>
-            <h2>1. Definições</h2>
-            <ul>
-              <li><strong>Usuário:</strong> qualquer pessoa que acesse ou utilize o site.</li>
-              <li><strong>Site:</strong> ambiente digital oficial do Poliedro.</li>
-              <li><strong>Conteúdo:</strong> materiais, informações e recursos disponibilizados.</li>
-              <li><strong>Dados Pessoais:</strong> informações identificáveis conforme a LGPD.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>2. Aceitação dos Termos</h2>
-            <p>Ao acessar o site, o usuário declara que leu, compreendeu e concorda com estes Termos.</p>
-            <ul>
-              <li>Os termos podem ser alterados a qualquer momento.</li>
-              <li>Usuários menores de idade devem estar autorizados por responsáveis legais.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>3. Finalidade do Site</h2>
-            <ul>
-              <li>Exibir informações institucionais.</li>
-              <li>Disponibilizar materiais pedagógicos.</li>
-              <li>Realizar matrículas e inscrições.</li>
-              <li>Divulgar eventos e comunicados.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>4. Cadastro e Acesso</h2>
-            <p>Algumas funcionalidades exigem cadastro prévio.</p>
-
-            <h3>4.1 Responsabilidades do Usuário</h3>
-            <ul>
-              <li>Fornecer dados verídicos.</li>
-              <li>Preservar sigilo de login e senha.</li>
-              <li>Notificar acessos indevidos.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>5. Propriedade Intelectual</h2>
-            <p>Todo o conteúdo pertence ao Poliedro ou parceiros autorizados.</p>
-            <ul>
-              <li>É proibida reprodução sem permissão.</li>
-              <li>Uso indevido pode gerar penalidades legais.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>6. Conduta do Usuário</h2>
-            <ul>
-              <li>Não publicar conteúdos ofensivos ou ilegais.</li>
-              <li>Não tentar invadir sistemas.</li>
-              <li>Não utilizar o site para fins comerciais sem autorização.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>7. Proteção de Dados</h2>
-            <p>Tratamento conforme a LGPD.</p>
-
-            <h3>7.1 Dados Coletados</h3>
-            <ul>
-              <li>Formulários de contato/matrícula.</li>
-              <li>Cookies e ferramentas de análise.</li>
-              <li>Interações em áreas restritas.</li>
-            </ul>
-
-            <h3>7.2 Compartilhamento</h3>
-            <p>Apenas com parceiros autorizados, sob contrato de confidencialidade.</p>
-
-            <h3>7.3 Direitos do Usuário</h3>
-            <ul>
-              <li>Acesso, correção ou exclusão de dados.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>8. Links Externos</h2>
-            <p>O Poliedro não se responsabiliza por conteúdos de terceiros.</p>
-          </section>
-
-          <section>
-            <h2>9. Disponibilidade e Atualizações</h2>
-            <ul>
-              <li>Podem existir falhas ou interrupções.</li>
-              <li>Conteúdos podem ser alterados sem aviso prévio.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>10. Isenção de Responsabilidade</h2>
-            <ul>
-              <li>Perdas causadas pelo uso do site.</li>
-              <li>Erros do dispositivo ou conexão do usuário.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>11. Modificações</h2>
-            <p>Termos podem ser atualizados periodicamente.</p>
-          </section>
-
-          <section>
-            <h2>12. Legislação e Foro</h2>
-            <p>Regido pelas leis brasileiras. Foro: São José dos Campos – SP.</p>
-          </section>
-
-          <footer style="margin-top: 14px">
-            <p><strong>Última atualização:</strong> 14 de outubro de 2025</p>
-            <p><strong>Contato: </strong><a href="mailto:contato@poliedro.com.br">contato@poliedro.com.br</a></p>
-          </footer>
-
-        </article>
-
-      </div>
-
-      <div class="terms-actions">
-        <button class="terms-btn terms-close">Fechar</button>
-        <button id="termsBtnAccept" class="terms-btn terms-accept" disabled>Aceitar</button>
-      </div>
-
+          </form>
+        </section>
+      </main>
     </div>
-  </div>
-  
-  <script src="front/Scripts/login.js"></script>
 
-  <!-- VLibras -->
-  <div vw class="enabled">
-    <div vw-access-button class="active"></div>
-    <div vw-plugin-wrapper></div>
-  </div>
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-  <script>
-    new window.VLibras.Widget("https://vlibras.gov.br/app");
-  </script>
+    <div id="termsOverlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div
+        class="terms-modal"
+        role="document"
+        tabindex="-1"
+        aria-labelledby="termsTitle"
+      >
+        <header class="terms-header">
+          <h2 id="termsTitle" style="margin: 0; font-size: 1.05rem">
+            Termos de Uso do Site
+          </h2>
+          <button class="terms-close" aria-label="Fechar termos">✖</button>
+        </header>
 
-</body>
+        <div
+          class="terms-content"
+          id="termsContent"
+          tabindex="0"
+          role="region"
+          aria-label="Conteúdo dos termos"
+        >
+          <article>
+            <header>
+              <h1>Termos de Uso do Site Poliedro</h1>
+              <p>
+                Bem-vindo ao site do <strong>Poliedro</strong>. Leia atentamente
+                os Termos abaixo.
+              </p>
+            </header>
 
+            <section>
+              <h2>1. Definições</h2>
+              <ul>
+                <li>
+                  <strong>Usuário:</strong> qualquer pessoa que acesse ou
+                  utilize o site.
+                </li>
+                <li>
+                  <strong>Site:</strong> ambiente digital oficial do Poliedro.
+                </li>
+                <li>
+                  <strong>Conteúdo:</strong> materiais, informações e recursos
+                  disponibilizados.
+                </li>
+                <li>
+                  <strong>Dados Pessoais:</strong> informações identificáveis
+                  conforme a LGPD.
+                </li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>2. Aceitação dos Termos</h2>
+              <p>
+                Ao acessar o site, o usuário declara que leu, compreendeu e
+                concorda com estes Termos.
+              </p>
+              <ul>
+                <li>Os termos podem ser alterados a qualquer momento.</li>
+                <li>
+                  Usuários menores de idade devem estar autorizados por
+                  responsáveis legais.
+                </li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>3. Finalidade do Site</h2>
+              <ul>
+                <li>Exibir informações institucionais.</li>
+                <li>Disponibilizar materiais pedagógicos.</li>
+                <li>Realizar matrículas e inscrições.</li>
+                <li>Divulgar eventos e comunicados.</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>4. Cadastro e Acesso</h2>
+              <p>Algumas funcionalidades exigem cadastro prévio.</p>
+
+              <h3>4.1 Responsabilidades do Usuário</h3>
+              <ul>
+                <li>Fornecer dados verídicos.</li>
+                <li>Preservar sigilo de login e senha.</li>
+                <li>Notificar acessos indevidos.</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>5. Propriedade Intelectual</h2>
+              <p>
+                Todo o conteúdo pertence ao Poliedro ou parceiros autorizados.
+              </p>
+              <ul>
+                <li>É proibida reprodução sem permissão.</li>
+                <li>Uso indevido pode gerar penalidades legais.</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>6. Conduta do Usuário</h2>
+              <ul>
+                <li>Não publicar conteúdos ofensivos ou ilegais.</li>
+                <li>Não tentar invadir sistemas.</li>
+                <li>
+                  Não utilizar o site para fins comerciais sem autorização.
+                </li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>7. Proteção de Dados</h2>
+              <p>Tratamento conforme a LGPD.</p>
+
+              <h3>7.1 Dados Coletados</h3>
+              <ul>
+                <li>Formulários de contato/matrícula.</li>
+                <li>Cookies e ferramentas de análise.</li>
+                <li>Interações em áreas restritas.</li>
+              </ul>
+
+              <h3>7.2 Compartilhamento</h3>
+              <p>
+                Apenas com parceiros autorizados, sob contrato de
+                confidencialidade.
+              </p>
+
+              <h3>7.3 Direitos do Usuário</h3>
+              <ul>
+                <li>Acesso, correção ou exclusão de dados.</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>8. Links Externos</h2>
+              <p>
+                O Poliedro não se responsabiliza por conteúdos de terceiros.
+              </p>
+            </section>
+
+            <section>
+              <h2>9. Disponibilidade e Atualizações</h2>
+              <ul>
+                <li>Podem existir falhas ou interrupções.</li>
+                <li>Conteúdos podem ser alterados sem aviso prévio.</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>10. Isenção de Responsabilidade</h2>
+              <ul>
+                <li>Perdas causadas pelo uso do site.</li>
+                <li>Erros do dispositivo ou conexão do usuário.</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>11. Modificações</h2>
+              <p>Termos podem ser atualizados periodicamente.</p>
+            </section>
+
+            <section>
+              <h2>12. Legislação e Foro</h2>
+              <p>
+                Regido pelas leis brasileiras. Foro: São José dos Campos – SP.
+              </p>
+            </section>
+
+            <footer style="margin-top: 14px">
+              <p><strong>Última atualização:</strong> 14 de outubro de 2025</p>
+              <p>
+                <strong>Contato: </strong
+                ><a href="mailto:contato@poliedro.com.br"
+                  >contato@poliedro.com.br</a
+                >
+              </p>
+            </footer>
+          </article>
+        </div>
+
+        <div class="terms-actions">
+          <button id="termsBtnCancel" class="terms-btn terms-close">
+            Cancelar
+          </button>
+          <button id="termsBtnOk" class="terms-btn terms-accept">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="front/Scripts/login.js"></script>
+
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper></div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+    <script src="https://app.embed.im/accessibility.js" defer></script>
+  </body>
 </html>
