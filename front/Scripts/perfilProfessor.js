@@ -169,9 +169,7 @@ document.getElementById("formProfessor").addEventListener("submit", async e => {
   }
 });
 
-/* ======================================================
-   FILTROS — CORRIGIDOS
-====================================================== */
+/*FILTROS — CORRIGIDOS*/
 
 const filtroAno = document.getElementById("filtro-ano");
 const filtroSub = document.getElementById("filtro-sub"); // ID CORRETO DO HTML
